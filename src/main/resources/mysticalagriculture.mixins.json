@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.alex.mysticalagriculture.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "CropBlockMixin",
+    "ExperienceOrbEntityMixin",
+    "LivingEntityMixin"
+  ],
+  "client": [
+    "ClientRecipeBookMixin",
+    "ItemRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

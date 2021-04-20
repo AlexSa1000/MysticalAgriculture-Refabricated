@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:lapis_lazuli"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:lapis_lazuli"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "lapis_lazuli"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "essence",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "material",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "essence",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "material",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "essence",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "material",
+      "crop": "lapis_lazuli"
+    },
+    {
+      "component": "essence",
+      "crop": "lapis_lazuli"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:lapis_lazuli_seeds"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:obsidian"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:obsidian"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "obsidian"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "obsidian"
+    },
+    {
+      "component": "essence",
+      "crop": "obsidian"
+    },
+    {
+      "component": "material",
+      "crop": "obsidian"
+    },
+    {
+      "component": "essence",
+      "crop": "obsidian"
+    },
+    {
+      "component": "material",
+      "crop": "obsidian"
+    },
+    {
+      "component": "essence",
+      "crop": "obsidian"
+    },
+    {
+      "component": "material",
+      "crop": "obsidian"
+    },
+    {
+      "component": "essence",
+      "crop": "obsidian"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:obsidian_seeds"
+  }
+}

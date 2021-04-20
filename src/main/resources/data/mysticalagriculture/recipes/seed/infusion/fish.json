@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:fish"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:fish"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "fish"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "fish"
+    },
+    {
+      "component": "essence",
+      "crop": "fish"
+    },
+    {
+      "component": "material",
+      "crop": "fish"
+    },
+    {
+      "component": "essence",
+      "crop": "fish"
+    },
+    {
+      "component": "material",
+      "crop": "fish"
+    },
+    {
+      "component": "essence",
+      "crop": "fish"
+    },
+    {
+      "component": "material",
+      "crop": "fish"
+    },
+    {
+      "component": "essence",
+      "crop": "fish"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:fish_seeds"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "mysticalagriculture:blocks/soulstone_smooth",
+    "side": "mysticalagriculture:blocks/soulstone_smooth_slab_side"
+  }
+}

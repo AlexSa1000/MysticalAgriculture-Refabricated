@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:zombie"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:zombie"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "zombie"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "zombie"
+    },
+    {
+      "component": "essence",
+      "crop": "zombie"
+    },
+    {
+      "component": "material",
+      "crop": "zombie"
+    },
+    {
+      "component": "essence",
+      "crop": "zombie"
+    },
+    {
+      "component": "material",
+      "crop": "zombie"
+    },
+    {
+      "component": "essence",
+      "crop": "zombie"
+    },
+    {
+      "component": "material",
+      "crop": "zombie"
+    },
+    {
+      "component": "essence",
+      "crop": "zombie"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:zombie_seeds"
+  }
+}

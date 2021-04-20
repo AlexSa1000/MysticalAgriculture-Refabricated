@@ -1,0 +1,19 @@
+{
+  "type": "mysticalagriculture:farmland_till",
+  "group": "mysticalagriculture:farmland_till",
+  "ingredients": [
+    {
+      "tag": "mysticalagriculture:all_hoes"
+    },
+    {
+      "item": "mysticalagriculture:tertium_essence"
+    },
+    {
+      "item": "minecraft:dirt"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:tertium_farmland",
+    "count": 1
+  }
+}

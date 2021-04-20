@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" BI",
+		"IWI",
+		" I "
+	],
+	"key": {
+		"I": {
+			"tag": "c:iron_ingots"
+		},
+		"W": {
+			"item": "minecraft:bowl"
+		},
+		"B": {
+			"item": "minecraft:bone_meal"
+		}
+	},
+	"result": {
+		"item": "mysticalagriculture:watering_can"
+	}
+}

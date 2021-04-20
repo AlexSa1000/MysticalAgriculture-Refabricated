@@ -1,0 +1,13 @@
+accessWidener v1 named
+extendable class net/minecraft/recipe/Ingredient
+accessible class net/minecraft/recipe/Ingredient$Entry
+accessible method net/minecraft/recipe/Ingredient <init> (Ljava/util/stream/Stream;)V
+accessible method net/minecraft/recipe/Ingredient$StackEntry <init> (Lnet/minecraft/item/ItemStack;)V
+accessible method net/minecraft/item/ItemStack isEqual (Lnet/minecraft/item/ItemStack;)Z
+
+accessible method net/minecraft/recipe/ShapedRecipe getComponents (Lcom/google/gson/JsonObject;)Ljava/util/Map;
+accessible method net/minecraft/recipe/ShapedRecipe getPattern (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
+accessible method net/minecraft/recipe/ShapedRecipe getIngredients ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
+accessible method net/minecraft/recipe/ShapedRecipe combinePattern ([Ljava/lang/String;)[Ljava/lang/String;
+accessible field net/minecraft/recipe/ShapedRecipe group Ljava/lang/String;
+accessible field net/minecraft/recipe/ShapelessRecipe group Ljava/lang/String;

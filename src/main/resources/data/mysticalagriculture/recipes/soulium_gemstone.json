@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mysticalagriculture:prosperity_gemstone"
+    },
+    {
+      "item": "mysticalagriculture:soulium_dust"
+    },
+    {
+      "item": "mysticalagriculture:soulium_dust"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:soulium_gemstone"
+  }
+}

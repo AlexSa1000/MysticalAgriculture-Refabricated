@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:redstone"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:redstone"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "redstone"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "redstone"
+    },
+    {
+      "component": "essence",
+      "crop": "redstone"
+    },
+    {
+      "component": "material",
+      "crop": "redstone"
+    },
+    {
+      "component": "essence",
+      "crop": "redstone"
+    },
+    {
+      "component": "material",
+      "crop": "redstone"
+    },
+    {
+      "component": "essence",
+      "crop": "redstone"
+    },
+    {
+      "component": "material",
+      "crop": "redstone"
+    },
+    {
+      "component": "essence",
+      "crop": "redstone"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:redstone_seeds"
+  }
+}

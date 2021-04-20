@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:honey"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:honey"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "honey"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "honey"
+    },
+    {
+      "component": "essence",
+      "crop": "honey"
+    },
+    {
+      "component": "material",
+      "crop": "honey"
+    },
+    {
+      "component": "essence",
+      "crop": "honey"
+    },
+    {
+      "component": "material",
+      "crop": "honey"
+    },
+    {
+      "component": "essence",
+      "crop": "honey"
+    },
+    {
+      "component": "material",
+      "crop": "honey"
+    },
+    {
+      "component": "essence",
+      "crop": "honey"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:honey_seeds"
+  }
+}

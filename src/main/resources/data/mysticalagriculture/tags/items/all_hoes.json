@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wooden_hoe",
+    "minecraft:stone_hoe",
+    "minecraft:golden_hoe",
+    "minecraft:iron_hoe",
+    "minecraft:diamond_hoe",
+    "minecraft:netherite_hoe",
+    "mysticalagriculture:inferium_hoe",
+    "mysticalagriculture:supremium_hoe",
+    "mysticalagriculture:tertium_hoe",
+    "mysticalagriculture:imperium_hoe",
+    "mysticalagriculture:supremium_hoe"
+  ]
+}

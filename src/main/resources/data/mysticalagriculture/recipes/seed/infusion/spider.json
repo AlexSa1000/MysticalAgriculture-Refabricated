@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:spider"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:spider"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "spider"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "spider"
+    },
+    {
+      "component": "essence",
+      "crop": "spider"
+    },
+    {
+      "component": "material",
+      "crop": "spider"
+    },
+    {
+      "component": "essence",
+      "crop": "spider"
+    },
+    {
+      "component": "material",
+      "crop": "spider"
+    },
+    {
+      "component": "essence",
+      "crop": "spider"
+    },
+    {
+      "component": "material",
+      "crop": "spider"
+    },
+    {
+      "component": "essence",
+      "crop": "spider"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:spider_seeds"
+  }
+}

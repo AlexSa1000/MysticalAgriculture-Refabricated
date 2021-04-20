@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:cow"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:cow"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "cow"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "cow"
+    },
+    {
+      "component": "essence",
+      "crop": "cow"
+    },
+    {
+      "component": "material",
+      "crop": "cow"
+    },
+    {
+      "component": "essence",
+      "crop": "cow"
+    },
+    {
+      "component": "material",
+      "crop": "cow"
+    },
+    {
+      "component": "essence",
+      "crop": "cow"
+    },
+    {
+      "component": "material",
+      "crop": "cow"
+    },
+    {
+      "component": "essence",
+      "crop": "cow"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:cow_seeds"
+  }
+}

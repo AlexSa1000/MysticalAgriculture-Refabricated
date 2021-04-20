@@ -1,0 +1,9 @@
+
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "mysticalagriculture:blocks/imperium_reprocessor_side",
+    "front": "mysticalagriculture:blocks/imperium_reprocessor_front",
+    "side": "mysticalagriculture:blocks/imperium_reprocessor_side"
+  }
+}

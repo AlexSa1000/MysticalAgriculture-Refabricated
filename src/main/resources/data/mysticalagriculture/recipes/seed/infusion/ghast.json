@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:ghast"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:ghast"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "ghast"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "ghast"
+    },
+    {
+      "component": "essence",
+      "crop": "ghast"
+    },
+    {
+      "component": "material",
+      "crop": "ghast"
+    },
+    {
+      "component": "essence",
+      "crop": "ghast"
+    },
+    {
+      "component": "material",
+      "crop": "ghast"
+    },
+    {
+      "component": "essence",
+      "crop": "ghast"
+    },
+    {
+      "component": "material",
+      "crop": "ghast"
+    },
+    {
+      "component": "essence",
+      "crop": "ghast"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:ghast_seeds"
+  }
+}

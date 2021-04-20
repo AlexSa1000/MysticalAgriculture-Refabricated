@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:pig"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:pig"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "pig"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "pig"
+    },
+    {
+      "component": "essence",
+      "crop": "pig"
+    },
+    {
+      "component": "material",
+      "crop": "pig"
+    },
+    {
+      "component": "essence",
+      "crop": "pig"
+    },
+    {
+      "component": "material",
+      "crop": "pig"
+    },
+    {
+      "component": "essence",
+      "crop": "pig"
+    },
+    {
+      "component": "material",
+      "crop": "pig"
+    },
+    {
+      "component": "essence",
+      "crop": "pig"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:pig_seeds"
+  }
+}

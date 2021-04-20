@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:iron"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:iron"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "iron"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "iron"
+    },
+    {
+      "component": "essence",
+      "crop": "iron"
+    },
+    {
+      "component": "material",
+      "crop": "iron"
+    },
+    {
+      "component": "essence",
+      "crop": "iron"
+    },
+    {
+      "component": "material",
+      "crop": "iron"
+    },
+    {
+      "component": "essence",
+      "crop": "iron"
+    },
+    {
+      "component": "material",
+      "crop": "iron"
+    },
+    {
+      "component": "essence",
+      "crop": "iron"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:iron_seeds"
+  }
+}

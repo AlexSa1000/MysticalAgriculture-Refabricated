@@ -1,0 +1,19 @@
+{
+  "type": "mysticalagriculture:infusion_crystal",
+  "pattern": [
+    " # ",
+    "#X#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "mysticalagriculture:tertium_essence"
+    },
+    "X": {
+      "tag": "mysticalagriculture:infusion_crystals"
+    }
+  },
+  "result": {
+    "item": "mysticalagriculture:imperium_essence"
+  }
+}

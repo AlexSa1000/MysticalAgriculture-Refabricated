@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "mysticalagriculture",
+  "version": "${version}",
+  "accessWidener" : "mysticalagriculture.accesswidener",
+
+  "name": "Mystical Agriculture: Refabricated",
+  "description": "",
+  "authors": [
+    "AlexSa1000"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/mysticalagriculture/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.alex.mysticalagriculture.MysticalAgriculture"
+    ],
+    "client": [
+      "com.alex.mysticalagriculture.MysticalAgricultureClient"
+    ],
+    "rei_plugins_v0": [
+      "com.alex.mysticalagriculture.compat.rei.REIPlugin"
+    ]
+  },
+  "mixins": [
+    "mysticalagriculture.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

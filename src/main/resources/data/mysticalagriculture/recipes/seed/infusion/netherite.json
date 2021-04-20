@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:netherite"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:netherite"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "netherite"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "netherite"
+    },
+    {
+      "component": "essence",
+      "crop": "netherite"
+    },
+    {
+      "component": "material",
+      "crop": "netherite"
+    },
+    {
+      "component": "essence",
+      "crop": "netherite"
+    },
+    {
+      "component": "material",
+      "crop": "netherite"
+    },
+    {
+      "component": "essence",
+      "crop": "netherite"
+    },
+    {
+      "component": "material",
+      "crop": "netherite"
+    },
+    {
+      "component": "essence",
+      "crop": "netherite"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:netherite_seeds"
+  }
+}

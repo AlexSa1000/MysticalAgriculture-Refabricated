@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:glowstone"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:glowstone"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "glowstone"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "glowstone"
+    },
+    {
+      "component": "essence",
+      "crop": "glowstone"
+    },
+    {
+      "component": "material",
+      "crop": "glowstone"
+    },
+    {
+      "component": "essence",
+      "crop": "glowstone"
+    },
+    {
+      "component": "material",
+      "crop": "glowstone"
+    },
+    {
+      "component": "essence",
+      "crop": "glowstone"
+    },
+    {
+      "component": "material",
+      "crop": "glowstone"
+    },
+    {
+      "component": "essence",
+      "crop": "glowstone"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:glowstone_seeds"
+  }
+}

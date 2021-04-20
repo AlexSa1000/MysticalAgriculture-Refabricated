@@ -1,0 +1,54 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:coal"
+    },
+    {
+      "type": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:coal"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "coal"
+  },
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "coal"
+    },
+    {
+      "component": "essence",
+      "crop": "coal"
+    },
+    {
+      "component": "material",
+      "crop": "coal"
+    },
+    {
+      "component": "essence",
+      "crop": "coal"
+    },
+    {
+      "component": "material",
+      "crop": "coal"
+    },
+    {
+      "component": "essence",
+      "crop": "coal"
+    },
+    {
+      "component": "material",
+      "crop": "coal"
+    },
+    {
+      "component": "essence",
+      "crop": "coal"
+    }
+  ],
+  "result": {
+    "item": "mysticalagriculture:coal_seeds"
+  }
+}
