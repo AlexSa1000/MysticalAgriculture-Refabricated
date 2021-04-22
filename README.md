@@ -1,9 +1,3 @@
-# Fabric Example Mod
+# Mystical Agriculture: Refabricated
 
-## Setup
-
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This is a Fabric port of [Mystical Agriculture](https://www.curseforge.com/minecraft/mc-mods/mystical-agriculture) (by [BlakeBr0](https://www.curseforge.com/members/blakebr0)), a minecraft mod based around the concept of growing your resources with crops.
