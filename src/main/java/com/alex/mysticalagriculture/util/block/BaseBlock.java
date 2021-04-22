@@ -19,6 +19,6 @@ public class BaseBlock extends Block {
     }
 
     public BaseBlock(Material material, BlockSoundGroup sound, float hardness, float resistance, Tag<Item> tool) {
-        super(FabricBlockSettings.of(material).sounds(sound).strength(hardness, resistance).breakByTool(tool));
+        super(FabricBlockSettings.of(material).sounds(sound).strength(hardness, resistance).breakByTool(tool).requiresTool());
     }
 }

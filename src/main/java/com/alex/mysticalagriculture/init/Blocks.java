@@ -60,9 +60,9 @@ public class Blocks {
     public static final Block TERTIUM_FURNACE = register(new EssenceFurnaceBlock(EssenceFurnaceBlock.FurnaceTier.TERTIUM), "tertium_furnace");
     public static final Block IMPERIUM_FURNACE = register(new EssenceFurnaceBlock(EssenceFurnaceBlock.FurnaceTier.IMPERIUM), "imperium_furnace");
     public static final Block SUPREMIUM_FURNACE = register(new EssenceFurnaceBlock(EssenceFurnaceBlock.FurnaceTier.SUPREMIUM), "supremium_furnace");
-    public static final Block PROSPERITY_ORE = register(new BaseOreBlock(Material.STONE, BlockSoundGroup.STONE, 3.0F, 3.0F, 2, 5), "prosperity_ore");
-    public static final Block INFERIUM_ORE = register(new BaseOreBlock(Material.STONE, BlockSoundGroup.STONE, 3.0F, 3.0F, 2, 5), "inferium_ore");
-    public static final Block SOULIUM_ORE = register(new BaseOreBlock(Material.STONE, BlockSoundGroup.STONE, 3.0F, 3.0F, 3, 7), "soulium_ore");
+    public static final Block PROSPERITY_ORE = register(new BaseOreBlock(Material.STONE, BlockSoundGroup.STONE, 3.0F, 3.0F, 0, 2, 5), "prosperity_ore");
+    public static final Block INFERIUM_ORE = register(new BaseOreBlock(Material.STONE, BlockSoundGroup.STONE, 3.0F, 3.0F, 0, 2, 5), "inferium_ore");
+    public static final Block SOULIUM_ORE = register(new BaseOreBlock(Material.STONE, BlockSoundGroup.STONE, 3.0F, 3.0F, 0, 3, 7), "soulium_ore");
     public static final Block SOULSTONE = register(new BaseBlock(Material.STONE, BlockSoundGroup.STONE, 1.5F, 6.0F, FabricToolTags.PICKAXES), "soulstone");
     public static final Block SOULSTONE_COBBLE = register(new BaseBlock(Material.STONE, BlockSoundGroup.STONE, 2.0F, 6.0F, FabricToolTags.PICKAXES), "soulstone_cobble");
     public static final Block SOULSTONE_BRICKS = register(new BaseBlock(Material.STONE, BlockSoundGroup.STONE, 1.5F, 6.0F, FabricToolTags.PICKAXES), "soulstone_bricks");

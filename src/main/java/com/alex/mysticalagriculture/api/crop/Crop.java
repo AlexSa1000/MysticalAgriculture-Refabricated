@@ -27,13 +27,14 @@ public class Crop {
     private Supplier<? extends Item> essence;
     private Supplier<? extends AliasedBlockItem> seeds;
     private final LazyIngredient craftingMaterial;
+    private boolean enabled;
 
     public Crop(String id, CropTier tier, CropType type, LazyIngredient craftingMaterial) {
         this.id = id;
         this.tier = tier;
         this.type = type;
         this.craftingMaterial = craftingMaterial;
-        this.getCraftingMaterial();
+        this.enabled = true;
     }
 
     public Crop(String id, CropTier tier, CropType type, int color, LazyIngredient craftingMaterial) {
@@ -42,7 +43,7 @@ public class Crop {
         this.type = type;
         this.setColor(color);
         this.craftingMaterial = craftingMaterial;
-        this.getCraftingMaterial();
+        this.enabled = true;
     }
 
     public String getId() {
@@ -104,6 +105,15 @@ public class Crop {
         this.setEssenceColor(color);
         this.setSeedColor(color);
 
+        return this;
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public Crop setEnabled(boolean enabled) {
+        this.enabled = enabled;
         return this;
     }
 

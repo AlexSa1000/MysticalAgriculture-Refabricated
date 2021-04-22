@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "mysticalagriculture:inferium_sword",
+    "mysticalagriculture:prudentium_sword",
+    "mysticalagriculture:tertium_sword",
+    "mysticalagriculture:imperium_sword",
+    "mysticalagriculture:supremium_sword"
+  ]
+}

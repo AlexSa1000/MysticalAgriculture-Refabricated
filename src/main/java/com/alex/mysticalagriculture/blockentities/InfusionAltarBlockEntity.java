@@ -192,4 +192,9 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
         this.setStack(1, stack);
     }
 
+    @Override
+    public int getMaxCountPerStack() {
+        return 1;
+    }
+
 }

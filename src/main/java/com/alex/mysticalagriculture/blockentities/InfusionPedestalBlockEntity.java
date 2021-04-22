@@ -22,5 +22,9 @@ public class InfusionPedestalBlockEntity extends BaseInventoryBlockEntity {
         return this.getStack(0).isEmpty();
     }
 
+    @Override
+    public int getMaxCountPerStack() {
+        return 1;
+    }
 }
 
