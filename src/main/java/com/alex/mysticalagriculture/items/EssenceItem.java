@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.util.item.BaseItem;
-import com.alex.mysticalagriculture.util.FarmlandConverter;
+import com.alex.mysticalagriculture.api.farmland.FarmlandConverter;
 import net.minecraft.block.FarmlandBlock;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
@@ -18,7 +18,7 @@ public class EssenceItem extends BaseItem implements FarmlandConverter {
     }
 
     @Override
-    public ActionResult convert(ItemUsageContext context) {
+    public ActionResult useOnBlock(ItemUsageContext context) {
         return this.convert(context);
     }
 

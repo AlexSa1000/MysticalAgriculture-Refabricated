@@ -1,4 +1,5 @@
 accessWidener v1 named
+
 extendable class net/minecraft/recipe/Ingredient
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible method net/minecraft/recipe/Ingredient <init> (Ljava/util/stream/Stream;)V
@@ -11,3 +12,7 @@ accessible method net/minecraft/recipe/ShapedRecipe getIngredients ([Ljava/lang/
 accessible method net/minecraft/recipe/ShapedRecipe combinePattern ([Ljava/lang/String;)[Ljava/lang/String;
 accessible field net/minecraft/recipe/ShapedRecipe group Ljava/lang/String;
 accessible field net/minecraft/recipe/ShapelessRecipe group Ljava/lang/String;
+
+accessible field net/minecraft/recipe/RecipeManager GSON Lcom/google/gson/Gson;
+accessible field net/minecraft/recipe/RecipeManager LOGGER Lorg/apache/logging/log4j/Logger;
+accessible method net/minecraft/recipe/RecipeManager apply (Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V

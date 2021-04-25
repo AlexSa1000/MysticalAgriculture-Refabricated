@@ -6,7 +6,10 @@
   "mixins": [
     "CropBlockMixin",
     "ExperienceOrbEntityMixin",
-    "LivingEntityMixin"
+    "JsonDataLoaderMixin",
+    "LivingEntityMixin",
+    "RecipeManagerAccessor",
+    "ServerResourceManagerMixin"
   ],
   "client": [
     "ClientRecipeBookMixin",

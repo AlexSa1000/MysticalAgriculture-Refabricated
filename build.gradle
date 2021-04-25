@@ -49,6 +49,7 @@ dependencies {
         exclude group: "me.shedaniel.cloth"
 		exclude group: "io.github.prospector", module: "modmenu"
 	}
+
 }
 
 processResources {

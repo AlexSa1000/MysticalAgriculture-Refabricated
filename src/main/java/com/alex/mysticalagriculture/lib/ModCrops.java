@@ -14,6 +14,7 @@ import com.alex.mysticalagriculture.items.MysticalEssenceItem;
 import com.alex.mysticalagriculture.items.MysticalSeedItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.CropBlock;
 import net.minecraft.block.FarmlandBlock;
 import net.minecraft.client.render.RenderLayer;
@@ -83,12 +84,51 @@ public class ModCrops {
     public static final Crop NETHERITE = register(new Crop("netherite", CropTier.FIVE, CropType.RESOURCE, LazyIngredient.item("minecraft:netherite_ingot")));
     public static final Crop WITHER_SKELETON = register(new Crop("wither_skeleton", CropTier.FIVE, CropType.MOB, LazyIngredient.item("mysticalagriculture:soul_jar", MobSoulUtils.makeTag(ModMobSoulTypes.WITHER))));
 
+    //Common
+    public static final Crop SULFUR = register(withRequiredMods(new Crop("sulfur", CropTier.TWO, CropType.RESOURCE, 0xFDDC4B, LazyIngredient.tag("c:sulfur_dusts")), "indrev", "techreborn"));
+    public static final Crop ALUMINUM = register(withRequiredMods(new Crop("aluminum", CropTier.TWO, CropType.RESOURCE, 0xA4A6B1, LazyIngredient.tag("c:aluminum_ingots")), "modern_industrialization", "techreborn"));
+    public static final Crop COPPER = register(withRequiredMods(new Crop("copper", CropTier.TWO, CropType.RESOURCE, 0xF48702, LazyIngredient.tag("c:copper_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop TIN = register(withRequiredMods(new Crop("tin", CropTier.THREE, CropType.RESOURCE, 0x9ABDD6, LazyIngredient.tag("c:tin_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop BRONZE = register(withRequiredMods(new Crop("bronze", CropTier.THREE, CropType.RESOURCE, 0xC98C52, LazyIngredient.tag("c:bronze_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop ZINC = register(withRequiredMods(new Crop("zinc", CropTier.THREE, CropType.RESOURCE, 0xE9EBE7, LazyIngredient.tag("c:zinc_ingots")), "mythicmetals", "techreborn"));
+    public static final Crop BRASS = register(withRequiredMods(new Crop("brass", CropTier.THREE, CropType.RESOURCE, 0xDAAA4C, LazyIngredient.tag("c:brass_ingots")), "mythicmetals", "techreborn"));
+    public static final Crop SILVER = register(withRequiredMods(new Crop("silver", CropTier.THREE, CropType.RESOURCE, 0xA9DBE5, LazyIngredient.tag("c:silver_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop LEAD = register(withRequiredMods(new Crop("lead", CropTier.THREE, CropType.RESOURCE, 0x677193, LazyIngredient.tag("c:lead_ingots")), "indrev", "modern_industrialization", "techreborn"));
+    public static final Crop STEEL = register(withRequiredMods(new Crop("steel", CropTier.FOUR, CropType.RESOURCE, 0x737373, LazyIngredient.tag("c:steel_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop NICKEL = register(withRequiredMods(new Crop("nickel", CropTier.FOUR, CropType.RESOURCE, 0xD8CC93, LazyIngredient.tag("c:nickel_ingots")), "modern_industrialization", "techreborn"));
+    public static final Crop ELECTRUM = register(withRequiredMods(new Crop("electrum", CropTier.FOUR, CropType.RESOURCE, 0xD5BB4F, LazyIngredient.tag("c:electrum_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop INVAR = register(withRequiredMods(new Crop("invar", CropTier.FOUR, CropType.RESOURCE, 0xADB7B2, LazyIngredient.tag("c:invar_ingots")), "modern_industrialization", "techreborn"));
+    public static final Crop TUNGSTEN = register(withRequiredMods(new Crop("tungsten", CropTier.FOUR, CropType.RESOURCE, 0x616669, LazyIngredient.tag("c:tungsten_ingots")), "indrev", "techreborn"));
+    public static final Crop TITANIUM = register(withRequiredMods(new Crop("titanium", CropTier.FOUR, CropType.RESOURCE, 0xD0D1DA, LazyIngredient.tag("c:titanium_ingots")), "modern_industrialization", "techreborn"));
+    public static final Crop CHROME = register(withRequiredMods(new Crop("chrome", CropTier.FOUR, CropType.RESOURCE, 0xCDB9BD, LazyIngredient.tag("c:chrome_ingots")), "modern_industrialization", "techreborn"));
+    public static final Crop PLATINUM = register(withRequiredMods(new Crop("platinum", CropTier.FIVE, CropType.RESOURCE, 0x6FEAEF, LazyIngredient.tag("c:platinum_ingots")), "mythicmetals", "techreborn"));
+
+    //Industrial Revolution
+    public static final Crop NIKOLITE = register(withRequiredMods(new Crop("nikolite", CropTier.THREE, CropType.RESOURCE, 0x006D6B, LazyIngredient.item("indrev:nikolite_dust")), "indrev"));
+
+    //Modern Industrialization
+    public static final Crop ANTIMONY = register(withRequiredMods(new Crop("antimony", CropTier.THREE, CropType.RESOURCE, 0x81A9A1, LazyIngredient.item("modern_industrialization:antimony_ingot")), "modern_industrialization"));
+
+    //AE2
+    public static final Crop SKY_STONE = register(withRequiredMods(new Crop("sky_stone", CropTier.THREE, CropType.RESOURCE, LazyIngredient.item("appliedenergistics2:sky_stone_block")), "appliedenergistics2"));
+    public static final Crop CERTUS_QUARTZ = register(withRequiredMods(new Crop("certus_quartz", CropTier.THREE, CropType.RESOURCE, LazyIngredient.tag("appliedenergistics2:crystals/certus_quartz")), "appliedenergistics2"));
+    public static final Crop FLUIX = register(withRequiredMods(new Crop("fluix", CropTier.FOUR, CropType.RESOURCE, LazyIngredient.tag("appliedenergistics2:crystals/fluix")), "appliedenergistics2"));
+
+    //Tech Reborn
+    public static final Crop RUBBER = register(withRequiredMods(new Crop("rubber", CropTier.TWO, CropType.RESOURCE, LazyIngredient.item("techreborn:rubber")), "techreborn"));
+    public static final Crop RUBY = register(withRequiredMods(new Crop("ruby", CropTier.FOUR, CropType.RESOURCE, LazyIngredient.item("techreborn:ruby_gem")), "techreborn"));
+    public static final Crop SAPPHIRE = register(withRequiredMods(new Crop("sapphire", CropTier.FOUR, CropType.RESOURCE, LazyIngredient.item("techreborn:sapphire_gem")), "techreborn"));
+    public static final Crop PERIDOT = register(withRequiredMods(new Crop("peridot", CropTier.FOUR, CropType.RESOURCE, LazyIngredient.item("techreborn:peridot_gem")), "techreborn"));
+    public static final Crop IRIDIUM = register(withRequiredMods(new Crop("iridium", CropTier.FIVE, CropType.RESOURCE, 0xC7C5DC, LazyIngredient.tag("c:iridium_ingots")), "techreborn"));
+
+
     public static Crop getCropById(String id) {
         return crops.stream().filter(c -> id.equals(c.getId())).findFirst().orElse(null);
     }
 
     public static Crop register(Crop crop) {
-        crops.add(crop);
+        if (crop.isEnabled())
+            crops.add(crop);
         return crop;
     }
 
@@ -122,16 +162,15 @@ public class ModCrops {
             AliasedBlockItem defaultSeeds = new MysticalSeedItem(c, p -> p.group(ITEM_GROUP));
             c.setSeeds(() -> defaultSeeds);
 
-
             Registry.register(Registry.ITEM, new Identifier(MOD_ID, c.getId() + "_seeds"), defaultSeeds);
         });
 
         CropTier.ELEMENTAL.setFarmland(() -> (FarmlandBlock) Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.INFERIUM_ESSENCE);
         CropTier.ONE.setFarmland(() -> (FarmlandBlock) Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.INFERIUM_ESSENCE);
-        CropTier.TWO.setFarmland(() -> (FarmlandBlock) Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.PRUDENTIUM_ESSENCE);
-        CropTier.THREE.setFarmland(() -> (FarmlandBlock) Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.TERTIUM_ESSENCE);
-        CropTier.FOUR.setFarmland(() -> (FarmlandBlock) Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.IMPERIUM_ESSENCE);
-        CropTier.FIVE.setFarmland(() -> (FarmlandBlock) Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.SUPREMIUM_ESSENCE);
+        CropTier.TWO.setFarmland(() -> (FarmlandBlock) Blocks.PRUDENTIUM_FARMLAND).setEssence(() -> Items.PRUDENTIUM_ESSENCE);
+        CropTier.THREE.setFarmland(() -> (FarmlandBlock) Blocks.TERTIUM_FARMLAND).setEssence(() -> Items.TERTIUM_ESSENCE);
+        CropTier.FOUR.setFarmland(() -> (FarmlandBlock) Blocks.IMPERIUM_FARMLAND).setEssence(() -> Items.IMPERIUM_ESSENCE);
+        CropTier.FIVE.setFarmland(() -> (FarmlandBlock) Blocks.SUPREMIUM_FARMLAND).setEssence(() -> Items.SUPREMIUM_ESSENCE);
 
         CropType.RESOURCE.setCraftingSeed(Items.PROSPERITY_SEED_BASE);
         CropType.MOB.setCraftingSeed(Items.SOULIUM_SEED_BASE);
@@ -148,5 +187,13 @@ public class ModCrops {
 
             BlockRenderLayerMap.INSTANCE.putBlock(crop.getCrop(), RenderLayer.getCutout());
         });
+    }
+
+    private static Crop withRequiredMods(Crop crop, String... mods) {
+        for (String mod : mods) {
+            if (FabricLoader.getInstance().isModLoaded(mod))
+                return crop.setEnabled(true);
+        }
+        return crop.setEnabled(false);
     }
 }

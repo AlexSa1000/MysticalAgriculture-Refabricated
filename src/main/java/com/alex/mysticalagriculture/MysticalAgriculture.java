@@ -6,6 +6,7 @@ import com.alex.mysticalagriculture.init.*;
 import com.alex.mysticalagriculture.lib.ModAugments;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import com.alex.mysticalagriculture.lib.ModMobSoulTypes;
+import com.alex.mysticalagriculture.util.crafting.TagMapper;
 import com.alex.mysticalagriculture.world.ModWorldFeatures;
 import com.alex.mysticalagriculture.world.ModWorldgenRegistration;
 import net.fabricmc.api.ModInitializer;
@@ -78,5 +79,7 @@ public class MysticalAgriculture implements ModInitializer {
 
         ModWorldFeatures.registerFeatures();
         ModWorldgenRegistration.onCommonSetup();
+
+        TagMapper.reloadTagMappings();
     }
 }

@@ -1,4 +1,4 @@
-package com.alex.mysticalagriculture.util;
+package com.alex.mysticalagriculture.api.farmland;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 public interface FarmlandConverter {
 
     FarmlandBlock getConvertedFarmland();
-
 
     default ActionResult convert(ItemUsageContext context) {
         BlockPos pos = context.getBlockPos();

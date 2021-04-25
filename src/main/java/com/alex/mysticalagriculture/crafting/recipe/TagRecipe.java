@@ -1,14 +1,17 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.util.crafting.TagMapper;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -16,7 +19,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.Map;
 
-public class TagRecipe extends ShapedNoMirrorRecipe{
+public class TagRecipe extends ShapedNoMirrorRecipe {
     public TagRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> inputs, ItemStack output) {
         super(id, group, width, height, inputs, output);
     }
@@ -26,7 +29,7 @@ public class TagRecipe extends ShapedNoMirrorRecipe{
         return RecipeSerializers.CRAFTING_TAG;
     }
 
-    public static class Serializer implements  RecipeSerializer<TagRecipe> {
+    public static class Serializer implements RecipeSerializer<TagRecipe> {
         @Override
         public TagRecipe read(Identifier recipeId, JsonObject json) {
             String group = JsonHelper.getString(json, "group", "");
@@ -39,10 +42,9 @@ public class TagRecipe extends ShapedNoMirrorRecipe{
             JsonObject result = JsonHelper.getObject(json, "result");
             String tag = JsonHelper.getString(result, "tag");
             int count = JsonHelper.getInt(result, "count", 1);
-            Tag<Item> tagItem = TagRegistry.item(new Identifier(tag));
-            if (tagItem.values().isEmpty())
+            Item item = TagMapper.getItemForTag(tag);
+            if (item == Items.AIR)
                 return null;
-            Item item = tagItem.values().get(0);
 
             ItemStack output = new ItemStack(item, count);
 
