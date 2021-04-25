@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "antimony"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "antimony"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "antimony"
+      },
+      {
+        "component": "essence",
+        "crop": "antimony"
+      },
+      {
+        "component": "material",
+        "crop": "antimony"
+      },
+      {
+        "component": "essence",
+        "crop": "antimony"
+      },
+      {
+        "component": "material",
+        "crop": "antimony"
+      },
+      {
+        "component": "essence",
+        "crop": "antimony"
+      },
+      {
+        "component": "material",
+        "crop": "antimony"
+      },
+      {
+        "component": "essence",
+        "crop": "antimony"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:antimony_seeds"
+    }
+  }
+}

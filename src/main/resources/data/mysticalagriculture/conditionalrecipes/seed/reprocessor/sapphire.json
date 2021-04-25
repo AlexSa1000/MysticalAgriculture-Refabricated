@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "crop": "sapphire"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:reprocessor",
+    "input": {
+      "item": "mysticalagriculture:sapphire_seeds"
+    },
+    "result": {
+      "item": "mysticalagriculture:sapphire_essence",
+      "count": 2
+    }
+  }
+}

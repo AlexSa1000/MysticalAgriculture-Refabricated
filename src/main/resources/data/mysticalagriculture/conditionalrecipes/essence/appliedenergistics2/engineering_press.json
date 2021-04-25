@@ -1,0 +1,25 @@
+{
+  "condition": {
+    "crop": "certus_quartz"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:shaped_no_mirror",
+    "pattern": [
+      "EEE",
+      "EME",
+      "EEE"
+    ],
+    "key": {
+      "E": {
+        "item": "mysticalagriculture:certus_quartz_essence"
+      },
+      "M": {
+        "tag": "c:diamonds"
+      }
+    },
+    "result": {
+      "item": "appliedenergistics2:engineering_processor_press",
+      "count": 1
+    }
+  }
+}

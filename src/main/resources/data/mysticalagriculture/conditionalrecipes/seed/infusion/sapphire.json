@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "sapphire"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "sapphire"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "sapphire"
+      },
+      {
+        "component": "essence",
+        "crop": "sapphire"
+      },
+      {
+        "component": "material",
+        "crop": "sapphire"
+      },
+      {
+        "component": "essence",
+        "crop": "sapphire"
+      },
+      {
+        "component": "material",
+        "crop": "sapphire"
+      },
+      {
+        "component": "essence",
+        "crop": "sapphire"
+      },
+      {
+        "component": "material",
+        "crop": "sapphire"
+      },
+      {
+        "component": "essence",
+        "crop": "sapphire"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:sapphire_seeds"
+    }
+  }
+}

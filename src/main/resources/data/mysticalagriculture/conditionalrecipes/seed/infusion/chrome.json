@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "chrome"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "chrome"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "chrome"
+      },
+      {
+        "component": "essence",
+        "crop": "chrome"
+      },
+      {
+        "component": "material",
+        "crop": "chrome"
+      },
+      {
+        "component": "essence",
+        "crop": "chrome"
+      },
+      {
+        "component": "material",
+        "crop": "chrome"
+      },
+      {
+        "component": "essence",
+        "crop": "chrome"
+      },
+      {
+        "component": "material",
+        "crop": "chrome"
+      },
+      {
+        "component": "essence",
+        "crop": "chrome"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:chrome_seeds"
+    }
+  }
+}

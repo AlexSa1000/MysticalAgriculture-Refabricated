@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "nikolite"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "nikolite"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "nikolite"
+      },
+      {
+        "component": "essence",
+        "crop": "nikolite"
+      },
+      {
+        "component": "material",
+        "crop": "nikolite"
+      },
+      {
+        "component": "essence",
+        "crop": "nikolite"
+      },
+      {
+        "component": "material",
+        "crop": "nikolite"
+      },
+      {
+        "component": "essence",
+        "crop": "nikolite"
+      },
+      {
+        "component": "material",
+        "crop": "nikolite"
+      },
+      {
+        "component": "essence",
+        "crop": "nikolite"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:nikolite_seeds"
+    }
+  }
+}

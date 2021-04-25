@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "steel"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "steel"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "steel"
+      },
+      {
+        "component": "essence",
+        "crop": "steel"
+      },
+      {
+        "component": "material",
+        "crop": "steel"
+      },
+      {
+        "component": "essence",
+        "crop": "steel"
+      },
+      {
+        "component": "material",
+        "crop": "steel"
+      },
+      {
+        "component": "essence",
+        "crop": "steel"
+      },
+      {
+        "component": "material",
+        "crop": "steel"
+      },
+      {
+        "component": "essence",
+        "crop": "steel"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:steel_seeds"
+    }
+  }
+}

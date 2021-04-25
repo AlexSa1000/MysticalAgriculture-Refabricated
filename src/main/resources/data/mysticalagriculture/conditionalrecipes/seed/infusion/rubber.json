@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "rubber"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "rubber"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "rubber"
+      },
+      {
+        "component": "essence",
+        "crop": "rubber"
+      },
+      {
+        "component": "material",
+        "crop": "rubber"
+      },
+      {
+        "component": "essence",
+        "crop": "rubber"
+      },
+      {
+        "component": "material",
+        "crop": "rubber"
+      },
+      {
+        "component": "essence",
+        "crop": "rubber"
+      },
+      {
+        "component": "material",
+        "crop": "rubber"
+      },
+      {
+        "component": "essence",
+        "crop": "rubber"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:rubber_seeds"
+    }
+  }
+}

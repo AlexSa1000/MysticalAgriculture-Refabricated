@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "copper"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "copper"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "copper"
+      },
+      {
+        "component": "essence",
+        "crop": "copper"
+      },
+      {
+        "component": "material",
+        "crop": "copper"
+      },
+      {
+        "component": "essence",
+        "crop": "copper"
+      },
+      {
+        "component": "material",
+        "crop": "copper"
+      },
+      {
+        "component": "essence",
+        "crop": "copper"
+      },
+      {
+        "component": "material",
+        "crop": "copper"
+      },
+      {
+        "component": "essence",
+        "crop": "copper"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:copper_seeds"
+    }
+  }
+}

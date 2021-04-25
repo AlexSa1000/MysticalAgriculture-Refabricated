@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "crop": "rubber"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:reprocessor",
+    "input": {
+      "item": "mysticalagriculture:rubber_seeds"
+    },
+    "result": {
+      "item": "mysticalagriculture:rubber_essence",
+      "count": 2
+    }
+  }
+}

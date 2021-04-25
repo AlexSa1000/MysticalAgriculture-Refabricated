@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "tin"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "tin"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "tin"
+      },
+      {
+        "component": "essence",
+        "crop": "tin"
+      },
+      {
+        "component": "material",
+        "crop": "tin"
+      },
+      {
+        "component": "essence",
+        "crop": "tin"
+      },
+      {
+        "component": "material",
+        "crop": "tin"
+      },
+      {
+        "component": "essence",
+        "crop": "tin"
+      },
+      {
+        "component": "material",
+        "crop": "tin"
+      },
+      {
+        "component": "essence",
+        "crop": "tin"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:tin_seeds"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "crop": "silver"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:reprocessor",
+    "input": {
+      "item": "mysticalagriculture:silver_seeds"
+    },
+    "result": {
+      "item": "mysticalagriculture:silver_essence",
+      "count": 2
+    }
+  }
+}

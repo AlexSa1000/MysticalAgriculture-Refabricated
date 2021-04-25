@@ -1,0 +1,22 @@
+{
+  "condition": {
+    "crop": "nikolite"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:shaped_no_mirror",
+    "pattern": [
+      "EEE",
+      "   ",
+      "   "
+    ],
+    "key": {
+      "E": {
+        "item": "mysticalagriculture:nikolite_essence"
+      }
+    },
+    "result": {
+      "item": "indrev:nikolite_dust",
+      "count": 8
+    }
+  }
+}

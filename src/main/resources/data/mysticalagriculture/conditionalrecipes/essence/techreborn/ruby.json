@@ -1,0 +1,22 @@
+{
+  "condition": {
+    "crop": "ruby"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:shaped_no_mirror",
+    "pattern": [
+      "EEE",
+      "   ",
+      "   "
+    ],
+    "key": {
+      "E": {
+        "item": "mysticalagriculture:ruby_essence"
+      }
+    },
+    "result": {
+      "item": "techreborn:ruby_gem",
+      "count": 6
+    }
+  }
+}

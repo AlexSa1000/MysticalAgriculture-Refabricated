@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "crop": "tin"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:reprocessor",
+    "input": {
+      "item": "mysticalagriculture:tin_seeds"
+    },
+    "result": {
+      "item": "mysticalagriculture:tin_essence",
+      "count": 2
+    }
+  }
+}

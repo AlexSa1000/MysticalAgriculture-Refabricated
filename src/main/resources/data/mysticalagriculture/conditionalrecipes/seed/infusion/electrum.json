@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "electrum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "electrum"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "electrum"
+      },
+      {
+        "component": "essence",
+        "crop": "electrum"
+      },
+      {
+        "component": "material",
+        "crop": "electrum"
+      },
+      {
+        "component": "essence",
+        "crop": "electrum"
+      },
+      {
+        "component": "material",
+        "crop": "electrum"
+      },
+      {
+        "component": "essence",
+        "crop": "electrum"
+      },
+      {
+        "component": "material",
+        "crop": "electrum"
+      },
+      {
+        "component": "essence",
+        "crop": "electrum"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:electrum_seeds"
+    }
+  }
+}

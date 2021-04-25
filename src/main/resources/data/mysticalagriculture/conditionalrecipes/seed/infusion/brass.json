@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "brass"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "brass"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "brass"
+      },
+      {
+        "component": "essence",
+        "crop": "brass"
+      },
+      {
+        "component": "material",
+        "crop": "brass"
+      },
+      {
+        "component": "essence",
+        "crop": "brass"
+      },
+      {
+        "component": "material",
+        "crop": "brass"
+      },
+      {
+        "component": "essence",
+        "crop": "brass"
+      },
+      {
+        "component": "material",
+        "crop": "brass"
+      },
+      {
+        "component": "essence",
+        "crop": "brass"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:brass_seeds"
+    }
+  }
+}

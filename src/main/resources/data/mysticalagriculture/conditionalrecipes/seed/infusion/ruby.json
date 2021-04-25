@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "ruby"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "ruby"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "ruby"
+      },
+      {
+        "component": "essence",
+        "crop": "ruby"
+      },
+      {
+        "component": "material",
+        "crop": "ruby"
+      },
+      {
+        "component": "essence",
+        "crop": "ruby"
+      },
+      {
+        "component": "material",
+        "crop": "ruby"
+      },
+      {
+        "component": "essence",
+        "crop": "ruby"
+      },
+      {
+        "component": "material",
+        "crop": "ruby"
+      },
+      {
+        "component": "essence",
+        "crop": "ruby"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:ruby_seeds"
+    }
+  }
+}
