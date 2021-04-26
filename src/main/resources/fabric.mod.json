@@ -10,11 +10,12 @@
     "AlexSa1000"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/mystical-agriculture-refabricated",
+    "sources": "https://github.com/AlexSa1000/MysticalAgriculture-Refabricated",
+    "issues": "https://github.com/AlexSa1000/MysticalAgriculture-Refabricated/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT License",
   "icon": "assets/mysticalagriculture/icon.png",
 
   "environment": "*",
