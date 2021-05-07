@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "metite"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "metite"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "metite"
+      },
+      {
+        "component": "essence",
+        "crop": "metite"
+      },
+      {
+        "component": "material",
+        "crop": "metite"
+      },
+      {
+        "component": "essence",
+        "crop": "metite"
+      },
+      {
+        "component": "material",
+        "crop": "metite"
+      },
+      {
+        "component": "essence",
+        "crop": "metite"
+      },
+      {
+        "component": "material",
+        "crop": "metite"
+      },
+      {
+        "component": "essence",
+        "crop": "metite"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:metite_seeds"
+    }
+  }
+}

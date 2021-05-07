@@ -87,16 +87,16 @@ public class ModCrops {
     //Common
     public static final Crop SULFUR = register(withRequiredMods(new Crop("sulfur", CropTier.TWO, CropType.RESOURCE, 0xFDDC4B, LazyIngredient.tag("c:sulfur_dusts")), "indrev", "techreborn"));
     public static final Crop ALUMINUM = register(withRequiredMods(new Crop("aluminum", CropTier.TWO, CropType.RESOURCE, 0xA4A6B1, LazyIngredient.tag("c:aluminum_ingots")), "modern_industrialization", "techreborn"));
-    public static final Crop COPPER = register(withRequiredMods(new Crop("copper", CropTier.TWO, CropType.RESOURCE, 0xF48702, LazyIngredient.tag("c:copper_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
-    public static final Crop TIN = register(withRequiredMods(new Crop("tin", CropTier.THREE, CropType.RESOURCE, 0x9ABDD6, LazyIngredient.tag("c:tin_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
-    public static final Crop BRONZE = register(withRequiredMods(new Crop("bronze", CropTier.THREE, CropType.RESOURCE, 0xC98C52, LazyIngredient.tag("c:bronze_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop COPPER = register(withRequiredMods(new Crop("copper", CropTier.TWO, CropType.RESOURCE, 0xF48702, LazyIngredient.tag("c:copper_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn", "astromine"));
+    public static final Crop TIN = register(withRequiredMods(new Crop("tin", CropTier.THREE, CropType.RESOURCE, 0x9ABDD6, LazyIngredient.tag("c:tin_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn", "astromine"));
+    public static final Crop BRONZE = register(withRequiredMods(new Crop("bronze", CropTier.THREE, CropType.RESOURCE, 0xC98C52, LazyIngredient.tag("c:bronze_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn", "astromine"));
     public static final Crop ZINC = register(withRequiredMods(new Crop("zinc", CropTier.THREE, CropType.RESOURCE, 0xE9EBE7, LazyIngredient.tag("c:zinc_ingots")), "mythicmetals", "techreborn"));
     public static final Crop BRASS = register(withRequiredMods(new Crop("brass", CropTier.THREE, CropType.RESOURCE, 0xDAAA4C, LazyIngredient.tag("c:brass_ingots")), "mythicmetals", "techreborn"));
-    public static final Crop SILVER = register(withRequiredMods(new Crop("silver", CropTier.THREE, CropType.RESOURCE, 0xA9DBE5, LazyIngredient.tag("c:silver_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
-    public static final Crop LEAD = register(withRequiredMods(new Crop("lead", CropTier.THREE, CropType.RESOURCE, 0x677193, LazyIngredient.tag("c:lead_ingots")), "indrev", "modern_industrialization", "techreborn"));
-    public static final Crop STEEL = register(withRequiredMods(new Crop("steel", CropTier.FOUR, CropType.RESOURCE, 0x737373, LazyIngredient.tag("c:steel_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop SILVER = register(withRequiredMods(new Crop("silver", CropTier.THREE, CropType.RESOURCE, 0xA9DBE5, LazyIngredient.tag("c:silver_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn", "astromine"));
+    public static final Crop LEAD = register(withRequiredMods(new Crop("lead", CropTier.THREE, CropType.RESOURCE, 0x677193, LazyIngredient.tag("c:lead_ingots")), "indrev", "modern_industrialization", "techreborn", "astromine"));
+    public static final Crop STEEL = register(withRequiredMods(new Crop("steel", CropTier.FOUR, CropType.RESOURCE, 0x737373, LazyIngredient.tag("c:steel_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn", "astromine"));
     public static final Crop NICKEL = register(withRequiredMods(new Crop("nickel", CropTier.FOUR, CropType.RESOURCE, 0xD8CC93, LazyIngredient.tag("c:nickel_ingots")), "modern_industrialization", "techreborn"));
-    public static final Crop ELECTRUM = register(withRequiredMods(new Crop("electrum", CropTier.FOUR, CropType.RESOURCE, 0xD5BB4F, LazyIngredient.tag("c:electrum_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn"));
+    public static final Crop ELECTRUM = register(withRequiredMods(new Crop("electrum", CropTier.FOUR, CropType.RESOURCE, 0xD5BB4F, LazyIngredient.tag("c:electrum_ingots")), "indrev", "modern_industrialization", "mythicmetals", "techreborn", "astromine"));
     public static final Crop INVAR = register(withRequiredMods(new Crop("invar", CropTier.FOUR, CropType.RESOURCE, 0xADB7B2, LazyIngredient.tag("c:invar_ingots")), "modern_industrialization", "techreborn"));
     public static final Crop TUNGSTEN = register(withRequiredMods(new Crop("tungsten", CropTier.FOUR, CropType.RESOURCE, 0x616669, LazyIngredient.tag("c:tungsten_ingots")), "indrev", "techreborn"));
     public static final Crop TITANIUM = register(withRequiredMods(new Crop("titanium", CropTier.FOUR, CropType.RESOURCE, 0xD0D1DA, LazyIngredient.tag("c:titanium_ingots")), "modern_industrialization", "techreborn"));
@@ -121,6 +121,31 @@ public class ModCrops {
     public static final Crop PERIDOT = register(withRequiredMods(new Crop("peridot", CropTier.FOUR, CropType.RESOURCE, LazyIngredient.item("techreborn:peridot_gem")), "techreborn"));
     public static final Crop IRIDIUM = register(withRequiredMods(new Crop("iridium", CropTier.FIVE, CropType.RESOURCE, 0xC7C5DC, LazyIngredient.tag("c:iridium_ingots")), "techreborn"));
 
+    //Mythic Metals
+    public static final Crop ADAMANTITE = register(withRequiredMods(new Crop("adamantite", CropTier.THREE, CropType.RESOURCE, 0xBD0000, LazyIngredient.item("mythicmetals:adamantite_ingot")), "mythicmetals"));
+    public static final Crop AETHERIUM = register(withRequiredMods(new Crop("aetherium", CropTier.THREE, CropType.RESOURCE, 0x44746C, LazyIngredient.item("mythicmetals:aetherium_ingot")), "mythicmetals"));
+    public static final Crop AQUARIUM = register(withRequiredMods(new Crop("aquarium", CropTier.THREE, CropType.RESOURCE, 0x4096E4, LazyIngredient.item("mythicmetals:aquarium_ingot")), "mythicmetals"));
+    public static final Crop BANGLUM = register(withRequiredMods(new Crop("banglum", CropTier.THREE, CropType.RESOURCE, 0x985924, LazyIngredient.item("mythicmetals:banglum_ingot")), "mythicmetals"));
+    public static final Crop CARMOT = register(withRequiredMods(new Crop("carmot", CropTier.THREE, CropType.RESOURCE, 0xE63B73, LazyIngredient.item("mythicmetals:carmot_ingot")), "mythicmetals"));
+    public static final Crop KYBER = register(withRequiredMods(new Crop("kyber", CropTier.THREE, CropType.RESOURCE, 0xB476DA, LazyIngredient.item("mythicmetals:kyber_ingot")), "mythicmetals"));
+    public static final Crop MIDAS_GOLD = register(withRequiredMods(new Crop("midas_gold", CropTier.THREE, CropType.RESOURCE, 0xFFE182, LazyIngredient.item("mythicmetals:midas_gold_ingot")), "mythicmetals"));
+    public static final Crop MYTHRIL = register(withRequiredMods(new Crop("mythril", CropTier.THREE, CropType.RESOURCE, 0x10959C, LazyIngredient.item("mythicmetals:mythril_ingot")), "mythicmetals"));
+    public static final Crop ORICHALCUM = register(withRequiredMods(new Crop("orichalcum", CropTier.THREE, CropType.RESOURCE, 0x62B468, LazyIngredient.item("mythicmetals:orichalcum_ingot")), "mythicmetals"));
+    public static final Crop OSMIUM = register(withRequiredMods(new Crop("osmium", CropTier.THREE, CropType.RESOURCE, 0x19223A, LazyIngredient.item("mythicmetals:osmium_ingot")), "mythicmetals"));
+    public static final Crop PROMETHEUM = register(withRequiredMods(new Crop("prometheum", CropTier.THREE, CropType.RESOURCE, 0x53976C, LazyIngredient.item("mythicmetals:prometheum_ingot")), "mythicmetals"));
+    public static final Crop QUADRILLUM = register(withRequiredMods(new Crop("quadrillum", CropTier.THREE, CropType.RESOURCE, 0x3E4747, LazyIngredient.item("mythicmetals:quadrillum_ingot")), "mythicmetals"));
+    public static final Crop RUNITE = register(withRequiredMods(new Crop("runite", CropTier.THREE, CropType.RESOURCE, 0x0088AA, LazyIngredient.item("mythicmetals:runite_ingot")), "mythicmetals"));
+    public static final Crop STARRITE = register(withRequiredMods(new Crop("starrite", CropTier.THREE, CropType.RESOURCE, 0x9b3AA2, LazyIngredient.item("mythicmetals:starrite_ingot")), "mythicmetals"));
+    public static final Crop STORMYX = register(withRequiredMods(new Crop("stormyx", CropTier.THREE, CropType.RESOURCE, 0x6C2AAB, LazyIngredient.item("mythicmetals:stormyx_ingot")), "mythicmetals"));
+    public static final Crop TANTALITE = register(withRequiredMods(new Crop("tantalite", CropTier.THREE, CropType.RESOURCE, 0x796A61, LazyIngredient.item("mythicmetals:tantalite_ingot")), "mythicmetals"));
+    public static final Crop TRUESILVER = register(withRequiredMods(new Crop("truesilver", CropTier.THREE, CropType.RESOURCE, 0xAFDADB, LazyIngredient.item("mythicmetals:truesilver_ingot")), "mythicmetals"));
+    public static final Crop UR = register(withRequiredMods(new Crop("ur", CropTier.THREE, CropType.RESOURCE, 0xEACBD6, LazyIngredient.item("mythicmetals:ur_ingot")), "mythicmetals"));
+
+    //Astromine
+    public static final Crop METITE = register(withRequiredMods(new Crop("metite", CropTier.THREE, CropType.RESOURCE, 0xf55ffd, LazyIngredient.item("astromine:metite_ingot")), "astromine"));
+    public static final Crop STELLUM = register(withRequiredMods(new Crop("stellum", CropTier.THREE, CropType.RESOURCE, 0xfcc484, LazyIngredient.item("astromine:stellum_ingot")), "astromine"));
+    public static final Crop ASTERITE = register(withRequiredMods(new Crop("asterite", CropTier.THREE, CropType.RESOURCE, 0xac2444, LazyIngredient.item("astromine:asterite")), "astromine"));
+    public static final Crop GALAXIUM = register(withRequiredMods(new Crop("galaxium", CropTier.THREE, CropType.RESOURCE, 0x502669, LazyIngredient.item("astromine:galaxium")), "astromine"));
 
     public static Crop getCropById(String id) {
         return crops.stream().filter(c -> id.equals(c.getId())).findFirst().orElse(null);

@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "crop": "aetherium"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:reprocessor",
+    "input": {
+      "item": "mysticalagriculture:aetherium_seeds"
+    },
+    "result": {
+      "item": "mysticalagriculture:aetherium_essence",
+      "count": 2
+    }
+  }
+}

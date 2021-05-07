@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "banglum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "banglum"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "banglum"
+      },
+      {
+        "component": "essence",
+        "crop": "banglum"
+      },
+      {
+        "component": "material",
+        "crop": "banglum"
+      },
+      {
+        "component": "essence",
+        "crop": "banglum"
+      },
+      {
+        "component": "material",
+        "crop": "banglum"
+      },
+      {
+        "component": "essence",
+        "crop": "banglum"
+      },
+      {
+        "component": "material",
+        "crop": "banglum"
+      },
+      {
+        "component": "essence",
+        "crop": "banglum"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:banglum_seeds"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "osmium"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "osmium"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "osmium"
+      },
+      {
+        "component": "essence",
+        "crop": "osmium"
+      },
+      {
+        "component": "material",
+        "crop": "osmium"
+      },
+      {
+        "component": "essence",
+        "crop": "osmium"
+      },
+      {
+        "component": "material",
+        "crop": "osmium"
+      },
+      {
+        "component": "essence",
+        "crop": "osmium"
+      },
+      {
+        "component": "material",
+        "crop": "osmium"
+      },
+      {
+        "component": "essence",
+        "crop": "osmium"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:osmium_seeds"
+    }
+  }
+}

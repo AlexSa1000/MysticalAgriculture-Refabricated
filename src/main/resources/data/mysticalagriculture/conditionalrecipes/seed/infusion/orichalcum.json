@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "orichalcum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "orichalcum"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "essence",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "material",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "essence",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "material",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "essence",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "material",
+        "crop": "orichalcum"
+      },
+      {
+        "component": "essence",
+        "crop": "orichalcum"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:orichalcum_seeds"
+    }
+  }
+}

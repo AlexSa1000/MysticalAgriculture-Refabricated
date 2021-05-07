@@ -1,6 +1,6 @@
 {
   "condition": {
-    "crop": "ruby"
+    "crop": "runite"
   },
   "recipe": {
     "type": "mysticalagriculture:shaped_no_mirror",
@@ -11,12 +11,12 @@
     ],
     "key": {
       "E": {
-        "item": "mysticalagriculture:ruby_essence"
+        "item": "mysticalagriculture:runite_essence"
       }
     },
     "result": {
-      "item": "techreborn:ruby_gem",
-      "count": 6
+      "item": "mythicmetals:runite_ingot",
+      "count": 4
     }
   }
 }

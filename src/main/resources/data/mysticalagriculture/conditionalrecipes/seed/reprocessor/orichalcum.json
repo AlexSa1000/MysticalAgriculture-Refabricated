@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "crop": "orichalcum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:reprocessor",
+    "input": {
+      "item": "mysticalagriculture:orichalcum_seeds"
+    },
+    "result": {
+      "item": "mysticalagriculture:orichalcum_essence",
+      "count": 2
+    }
+  }
+}

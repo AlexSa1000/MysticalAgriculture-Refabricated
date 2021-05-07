@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "mythril"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "mythril"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "mythril"
+      },
+      {
+        "component": "essence",
+        "crop": "mythril"
+      },
+      {
+        "component": "material",
+        "crop": "mythril"
+      },
+      {
+        "component": "essence",
+        "crop": "mythril"
+      },
+      {
+        "component": "material",
+        "crop": "mythril"
+      },
+      {
+        "component": "essence",
+        "crop": "mythril"
+      },
+      {
+        "component": "material",
+        "crop": "mythril"
+      },
+      {
+        "component": "essence",
+        "crop": "mythril"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:mythril_seeds"
+    }
+  }
+}

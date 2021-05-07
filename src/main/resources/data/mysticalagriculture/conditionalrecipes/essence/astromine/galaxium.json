@@ -1,6 +1,6 @@
 {
   "condition": {
-    "crop": "ruby"
+    "crop": "galaxium"
   },
   "recipe": {
     "type": "mysticalagriculture:shaped_no_mirror",
@@ -11,11 +11,12 @@
     ],
     "key": {
       "E": {
-        "item": "mysticalagriculture:ruby_essence"
+        "item": "mysticalagriculture:galaxium_essence"
       }
     },
     "result": {
-      "item": "techreborn:ruby_gem",
+
+      "item": "astromine:galaxium",
       "count": 6
     }
   }

@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "aquarium"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "aquarium"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "aquarium"
+      },
+      {
+        "component": "essence",
+        "crop": "aquarium"
+      },
+      {
+        "component": "material",
+        "crop": "aquarium"
+      },
+      {
+        "component": "essence",
+        "crop": "aquarium"
+      },
+      {
+        "component": "material",
+        "crop": "aquarium"
+      },
+      {
+        "component": "essence",
+        "crop": "aquarium"
+      },
+      {
+        "component": "material",
+        "crop": "aquarium"
+      },
+      {
+        "component": "essence",
+        "crop": "aquarium"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:aquarium_seeds"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "kyber"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "kyber"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "kyber"
+      },
+      {
+        "component": "essence",
+        "crop": "kyber"
+      },
+      {
+        "component": "material",
+        "crop": "kyber"
+      },
+      {
+        "component": "essence",
+        "crop": "kyber"
+      },
+      {
+        "component": "material",
+        "crop": "kyber"
+      },
+      {
+        "component": "essence",
+        "crop": "kyber"
+      },
+      {
+        "component": "material",
+        "crop": "kyber"
+      },
+      {
+        "component": "essence",
+        "crop": "kyber"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:kyber_seeds"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "prometheum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "prometheum"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "prometheum"
+      },
+      {
+        "component": "essence",
+        "crop": "prometheum"
+      },
+      {
+        "component": "material",
+        "crop": "prometheum"
+      },
+      {
+        "component": "essence",
+        "crop": "prometheum"
+      },
+      {
+        "component": "material",
+        "crop": "prometheum"
+      },
+      {
+        "component": "essence",
+        "crop": "prometheum"
+      },
+      {
+        "component": "material",
+        "crop": "prometheum"
+      },
+      {
+        "component": "essence",
+        "crop": "prometheum"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:prometheum_seeds"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "stormyx"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "stormyx"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "stormyx"
+      },
+      {
+        "component": "essence",
+        "crop": "stormyx"
+      },
+      {
+        "component": "material",
+        "crop": "stormyx"
+      },
+      {
+        "component": "essence",
+        "crop": "stormyx"
+      },
+      {
+        "component": "material",
+        "crop": "stormyx"
+      },
+      {
+        "component": "essence",
+        "crop": "stormyx"
+      },
+      {
+        "component": "material",
+        "crop": "stormyx"
+      },
+      {
+        "component": "essence",
+        "crop": "stormyx"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:stormyx_seeds"
+    }
+  }
+}

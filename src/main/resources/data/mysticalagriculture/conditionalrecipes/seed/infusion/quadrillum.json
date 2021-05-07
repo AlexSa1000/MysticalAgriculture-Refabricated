@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "quadrillum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "quadrillum"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "essence",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "material",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "essence",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "material",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "essence",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "material",
+        "crop": "quadrillum"
+      },
+      {
+        "component": "essence",
+        "crop": "quadrillum"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:quadrillum_seeds"
+    }
+  }
+}

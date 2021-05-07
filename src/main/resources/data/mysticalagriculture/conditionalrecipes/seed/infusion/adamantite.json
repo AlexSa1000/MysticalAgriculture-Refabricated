@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "adamantite"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "adamantite"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "adamantite"
+      },
+      {
+        "component": "essence",
+        "crop": "adamantite"
+      },
+      {
+        "component": "material",
+        "crop": "adamantite"
+      },
+      {
+        "component": "essence",
+        "crop": "adamantite"
+      },
+      {
+        "component": "material",
+        "crop": "adamantite"
+      },
+      {
+        "component": "essence",
+        "crop": "adamantite"
+      },
+      {
+        "component": "material",
+        "crop": "adamantite"
+      },
+      {
+        "component": "essence",
+        "crop": "adamantite"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:adamantite_seeds"
+    }
+  }
+}

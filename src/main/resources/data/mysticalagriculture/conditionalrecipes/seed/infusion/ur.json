@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "ur"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "ur"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "ur"
+      },
+      {
+        "component": "essence",
+        "crop": "ur"
+      },
+      {
+        "component": "material",
+        "crop": "ur"
+      },
+      {
+        "component": "essence",
+        "crop": "ur"
+      },
+      {
+        "component": "material",
+        "crop": "ur"
+      },
+      {
+        "component": "essence",
+        "crop": "ur"
+      },
+      {
+        "component": "material",
+        "crop": "ur"
+      },
+      {
+        "component": "essence",
+        "crop": "ur"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:ur_seeds"
+    }
+  }
+}

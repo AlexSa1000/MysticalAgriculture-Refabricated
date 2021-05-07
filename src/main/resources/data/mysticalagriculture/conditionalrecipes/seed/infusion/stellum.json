@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "stellum"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "stellum"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "stellum"
+      },
+      {
+        "component": "essence",
+        "crop": "stellum"
+      },
+      {
+        "component": "material",
+        "crop": "stellum"
+      },
+      {
+        "component": "essence",
+        "crop": "stellum"
+      },
+      {
+        "component": "material",
+        "crop": "stellum"
+      },
+      {
+        "component": "essence",
+        "crop": "stellum"
+      },
+      {
+        "component": "material",
+        "crop": "stellum"
+      },
+      {
+        "component": "essence",
+        "crop": "stellum"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:stellum_seeds"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "condition": {
+    "crop": "truesilver"
+  },
+  "recipe": {
+    "type": "mysticalagriculture:infusion",
+    "input": {
+      "component": "seed",
+      "crop": "truesilver"
+    },
+    "ingredients": [
+      {
+        "component": "material",
+        "crop": "truesilver"
+      },
+      {
+        "component": "essence",
+        "crop": "truesilver"
+      },
+      {
+        "component": "material",
+        "crop": "truesilver"
+      },
+      {
+        "component": "essence",
+        "crop": "truesilver"
+      },
+      {
+        "component": "material",
+        "crop": "truesilver"
+      },
+      {
+        "component": "essence",
+        "crop": "truesilver"
+      },
+      {
+        "component": "material",
+        "crop": "truesilver"
+      },
+      {
+        "component": "essence",
+        "crop": "truesilver"
+      }
+    ],
+    "result": {
+      "item": "mysticalagriculture:truesilver_seeds"
+    }
+  }
+}
