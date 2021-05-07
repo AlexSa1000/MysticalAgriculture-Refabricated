@@ -6,8 +6,8 @@
     "type": "mysticalagriculture:shaped_no_mirror",
     "pattern": [
       "EEE",
-      "   ",
-      "   "
+      "EEE",
+      "EEE"
     ],
     "key": {
       "E": {
@@ -16,7 +16,7 @@
     },
     "result": {
       "item": "indrev:nikolite_dust",
-      "count": 8
+      "count": 16
     }
   }
 }
