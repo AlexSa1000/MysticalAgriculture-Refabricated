@@ -70,6 +70,8 @@
   "block.mysticalagriculture.imperium_reprocessor": "Imperium Seed Reprocessor",
   "block.mysticalagriculture.supremium_reprocessor": "Supremium Seed Reprocessor",
 
+  "block.mysticalagriculture.mystical_crop": "%s Crop",
+
   "item.mysticalagriculture.mystical_essence": "%s Essence",
   "item.mysticalagriculture.mystical_seeds": "%s Seeds",
 

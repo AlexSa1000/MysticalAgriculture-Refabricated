@@ -3,12 +3,14 @@ package com.alex.mysticalagriculture.blocks;
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.util.util.Localizable;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
@@ -88,6 +90,11 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
     @Override
     protected ItemConvertible getSeedsItem() {
         return this.crop.getSeeds();
+    }
+
+    @Override
+    public MutableText getName() {
+        return Localizable.of("block.mysticalagriculture.mystical_crop").args(this.crop.getDisplayName()).build();
     }
 
     public Crop getCrop() {
