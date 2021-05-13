@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mysticalagriculture:soulstone_bricks_column"
+    ]
+  },
+  "criteria": {
+    "has_soulstone_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "mysticalagriculture:soulstone_bricks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mysticalagriculture:soulstone_bricks_column"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_soulstone_bricks",
+      "has_the_recipe"
+    ]
+  ]
+}

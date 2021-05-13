@@ -72,6 +72,9 @@
 
   "block.mysticalagriculture.mystical_crop": "%s Crop",
 
+  "block.mysticalagriculture.soulstone_cobble_column": "Soulstone Cobble Column",
+  "block.mysticalagriculture.soulstone_bricks_column": "Soulstone Bricks Column",
+
   "item.mysticalagriculture.mystical_essence": "%s Essence",
   "item.mysticalagriculture.mystical_seeds": "%s Seeds",
 

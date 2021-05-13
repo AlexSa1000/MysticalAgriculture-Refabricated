@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb",
+    " b ",
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "item": "mysticalagriculture:soulstone_cobble"
+    }
+  },
+  "result": {
+    "item": "mysticalagriculture:soulstone_cobble_column",
+    "count": 6
+  }
+}

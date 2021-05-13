@@ -37,9 +37,11 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
+    "libcd": "*",
     "minecraft": "1.16.x"
   },
   "suggests": {
+    "columns": "*",
     "another-mod": "*"
   }
 }

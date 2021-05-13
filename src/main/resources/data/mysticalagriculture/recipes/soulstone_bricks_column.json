@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb",
+    " b ",
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "item": "mysticalagriculture:soulstone_bricks"
+    }
+  },
+  "result": {
+    "item": "mysticalagriculture:soulstone_bricks_column",
+    "count": 6
+  }
+}

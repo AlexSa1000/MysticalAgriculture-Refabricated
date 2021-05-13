@@ -27,6 +27,16 @@ repositories {
 
 	maven { url = 'https://jitpack.io' }
 
+	maven {
+		name = "Cotton"
+		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
+
+	maven {
+		name = "Curse"
+		url = "https://www.cursemaven.com"
+	}
+
 }
 
 dependencies {
@@ -49,6 +59,12 @@ dependencies {
         exclude group: "me.shedaniel.cloth"
 		exclude group: "io.github.prospector", module: "modmenu"
 	}
+
+	modImplementation "io.github.cottonmc:LibCD:${project.libcd_version}"
+	include "io.github.cottonmc:LibCD:${project.libcd_version}"
+
+	// Columns
+	modImplementation "curse.maven:columns-385230:3107117"
 
 }
 

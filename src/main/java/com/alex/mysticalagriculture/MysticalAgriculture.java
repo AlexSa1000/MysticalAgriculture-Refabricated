@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture;
 
 
 import com.alex.mysticalagriculture.api.tinkerer.Tinkerable;
+import com.alex.mysticalagriculture.compat.columns.BlockusColumnBlocks;
 import com.alex.mysticalagriculture.init.*;
 import com.alex.mysticalagriculture.lib.ModAugments;
 import com.alex.mysticalagriculture.lib.ModCrops;
@@ -12,6 +13,7 @@ import com.alex.mysticalagriculture.world.ModWorldgenRegistration;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -81,5 +83,9 @@ public class MysticalAgriculture implements ModInitializer {
         ModWorldgenRegistration.onCommonSetup();
 
         TagMapper.reloadTagMappings();
+
+        if (FabricLoader.getInstance().isModLoaded("columns")) {
+            BlockusColumnBlocks.init();
+        }
     }
 }
