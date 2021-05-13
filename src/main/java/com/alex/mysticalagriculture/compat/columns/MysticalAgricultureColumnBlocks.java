@@ -12,8 +12,8 @@ import net.minecraft.util.registry.Registry;
 import static com.alex.mysticalagriculture.MysticalAgriculture.ITEM_GROUP;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public final class BlockusColumnBlocks {
-    private BlockusColumnBlocks() {
+public final class MysticalAgricultureColumnBlocks {
+    private MysticalAgricultureColumnBlocks() {
         return;
     }
 

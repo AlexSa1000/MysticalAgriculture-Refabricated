@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture;
 
 
 import com.alex.mysticalagriculture.api.tinkerer.Tinkerable;
-import com.alex.mysticalagriculture.compat.columns.BlockusColumnBlocks;
+import com.alex.mysticalagriculture.compat.columns.MysticalAgricultureColumnBlocks;
 import com.alex.mysticalagriculture.init.*;
 import com.alex.mysticalagriculture.lib.ModAugments;
 import com.alex.mysticalagriculture.lib.ModCrops;
@@ -85,7 +85,7 @@ public class MysticalAgriculture implements ModInitializer {
         TagMapper.reloadTagMappings();
 
         if (FabricLoader.getInstance().isModLoaded("columns")) {
-            BlockusColumnBlocks.init();
+            MysticalAgricultureColumnBlocks.init();
         }
     }
 }
