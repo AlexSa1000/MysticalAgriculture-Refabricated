@@ -178,15 +178,23 @@ public class ModCrops {
                 c.setEssence(() -> Items.INFERIUM_ESSENCE);
                 Registry.register(Registry.ITEM, new Identifier(MOD_ID, c.getId() + "_essence"), Items.INFERIUM_ESSENCE);
             } else {
-                Item defaultEssence = new MysticalEssenceItem(c, p -> p.group(ITEM_GROUP));
+                Item defaultEssence;
+                if (c.getId().equals("netherite")) {
+                    defaultEssence = new MysticalEssenceItem(c, p -> p.group(ITEM_GROUP).fireproof());
+                } else {
+                    defaultEssence = new MysticalEssenceItem(c, p -> p.group(ITEM_GROUP));
+                }
                 c.setEssence(() -> defaultEssence);
                 Registry.register(Registry.ITEM, new Identifier(MOD_ID, c.getId() + "_essence"), defaultEssence);
             }
 
-
-            AliasedBlockItem defaultSeeds = new MysticalSeedItem(c, p -> p.group(ITEM_GROUP));
+            AliasedBlockItem defaultSeeds;
+            if (c.getId().equals("netherite")) {
+                defaultSeeds = new MysticalSeedItem(c, p -> p.group(ITEM_GROUP).fireproof());
+            } else {
+                defaultSeeds = new MysticalSeedItem(c, p -> p.group(ITEM_GROUP));
+            }
             c.setSeeds(() -> defaultSeeds);
-
             Registry.register(Registry.ITEM, new Identifier(MOD_ID, c.getId() + "_seeds"), defaultSeeds);
         });
 

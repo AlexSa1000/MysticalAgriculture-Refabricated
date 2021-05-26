@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.lib.ModTooltips;
+import com.alex.mysticalagriculture.util.item.BaseItem;
 import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BoneMealItem;
@@ -16,12 +17,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import static net.minecraft.block.SaplingBlock.STAGE;
+import static net.minecraft.item.BoneMealItem.useOnGround;
 
-public class MysticalFertilizerItem extends BoneMealItem {
+public class MysticalFertilizerItem extends BaseItem {
 
-    public MysticalFertilizerItem(Settings settings) {
+    public MysticalFertilizerItem(Function<Settings, Settings> settings) {
         super(settings);
     }
 

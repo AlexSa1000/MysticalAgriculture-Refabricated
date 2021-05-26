@@ -35,7 +35,7 @@ public class TinkeringTableRenderer extends BlockEntityRenderer<TinkeringTableBl
             matrices.scale(scale, scale, scale);
             matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
             int index = state.get(TinkeringTableBlock.FACING).getHorizontal();
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90 * index));
+            matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90 * index));
             MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrices, vertexConsumers);
             matrices.pop();
         }

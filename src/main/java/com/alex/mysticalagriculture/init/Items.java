@@ -74,7 +74,7 @@ public class Items {
     public static final Item PRISMARINE_AGGLOMERATIO = register("prismarine_agglomeratio");
     public static final Item END_AGGLOMERATIO = register("end_agglomeratio");
     public static final Item FERTILIZED_ESSENCE = register(new FertilizedEssenceItem(new Item.Settings().group(ITEM_GROUP)), "fertilized_essence");
-    public static final Item MYSTICAL_FERTILIZER = register(new MysticalFertilizerItem(new Item.Settings().group(ITEM_GROUP)), "mystical_fertilizer");
+    public static final Item MYSTICAL_FERTILIZER = register(new MysticalFertilizerItem(p -> p.group(ITEM_GROUP)), "mystical_fertilizer");
     public static final Item EXPERIENCE_DROPLET = register(new ExperienceDropletItem(p -> p.group(ITEM_GROUP)), "experience_droplet");
     public static final Item BLANK_SKULL = register("blank_skull");
     public static final Item BLANK_RECORD = register("blank_record");
