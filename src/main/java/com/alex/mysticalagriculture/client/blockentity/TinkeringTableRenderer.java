@@ -28,6 +28,7 @@ public class TinkeringTableRenderer extends BlockEntityRenderer<TinkeringTableBl
         BlockPos pos = entity.getPos();
         BlockState state = world.getBlockState(pos);
         ItemStack stack = entity.getStack(0);
+
         if (!stack.isEmpty()) {
             matrices.push();
             matrices.translate(0.5D, 0.9D, 0.5D);
@@ -35,7 +36,18 @@ public class TinkeringTableRenderer extends BlockEntityRenderer<TinkeringTableBl
             matrices.scale(scale, scale, scale);
             matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
             int index = state.get(TinkeringTableBlock.FACING).getHorizontal();
-            matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90 * index));
+            if (index == 0) {
+                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(270));
+                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
+            } else if (index == 1) {
+                matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(90));
+            } else if (index == 2) {
+                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(90));
+                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(270));
+            } else if (index == 3) {
+                matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(270));
+            }
+
             MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrices, vertexConsumers);
             matrices.pop();
         }
