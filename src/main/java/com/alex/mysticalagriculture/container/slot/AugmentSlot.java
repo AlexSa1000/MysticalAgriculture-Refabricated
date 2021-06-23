@@ -63,4 +63,10 @@ public class AugmentSlot extends Slot implements ToggleableSlot {
 
         return false;
     }
+
+    @Override
+    public int getMaxItemCount() {
+        return 1;
+    }
+
 }
