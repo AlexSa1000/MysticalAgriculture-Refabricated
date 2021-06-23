@@ -35,13 +35,13 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
             .pos(3, 0, 0).pos(0, 0, 3).pos(-3, 0, 0).pos(0, 0, -3)
             .pos(2, 0, 2).pos(2, 0, -2).pos(-2, 0, 2).pos(-2, 0, -2).build();
 
+    private InfusionRecipe recipe;
     private int progress;
     private boolean active;
 
     public InfusionAltarBlockEntity() {
         super(BlockEntities.INFUSION_ALTAR, 2);
     }
-
 
     @Override
     public void fromTag(BlockState state, CompoundTag tag) {
@@ -65,25 +65,28 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
         if (world != null && !world.isClient()) {
             ItemStack input = this.getStack(0);
             if (input.isEmpty()) {
-                this.resetBlock();
+                this.reset();
                 return;
             }
 
             if (this.isActive()) {
                 List<InfusionPedestalBlockEntity> pedestals = this.getPedestalsWithStuff();
                 this.updateRecipeInventory(pedestals);
-                Optional<InfusionRecipe> match = world.getRecipeManager().getFirstMatch(RecipeTypes.INFUSION, this.recipeInventory, world);
-                if (match.isPresent()) {
+                if (this.recipe == null || !this.recipe.matches(this.recipeInventory)) {
+                    this.recipe = world.getRecipeManager().getFirstMatch(RecipeTypes.INFUSION, this.recipeInventory, world).orElse(null);
+                }
+
+                if (this.recipe != null) {
                     this.progress++;
                     if (this.progress >= 100) {
-                        DefaultedList<ItemStack> remaining = match.get().getRemainingStacks(this.recipeInventory);
+                        DefaultedList<ItemStack> remaining = this.recipe.getRemainingStacks(this.recipeInventory);
                         for (int i = 0; i < pedestals.size(); i++) {
                             InfusionPedestalBlockEntity pedestal = pedestals.get(i);
                             pedestal.setStack(0, remaining.get(i + 1));
                             this.spawnParticles(ParticleTypes.SMOKE, pedestal.getPos(), 1.2D, 20);
                         }
 
-                        ItemStack result = match.get().craft(this.recipeInventory);
+                        ItemStack result = this.recipe.craft(this.recipeInventory);
 
                         this.setOutput(result);
                         this.reset();
@@ -105,7 +108,6 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
         }
     }
 
-
     public List<BlockPos> getPedestalPositions() {
         return this.pedestalLocations.get(this.getPos());
     }
@@ -123,6 +125,7 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
         this.active = false;
     }
     private void updateRecipeInventory(List<InfusionPedestalBlockEntity> pedestals) {
+        this.recipeInventory.clearToList();
         this.recipeInventory.setStack(0, this.getStack(0));
         for (int i = 0; i < pedestals.size(); i++) {
             ItemStack stack = pedestals.get(i).getStack(0);
