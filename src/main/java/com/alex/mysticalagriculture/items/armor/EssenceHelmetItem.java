@@ -40,7 +40,7 @@ public class EssenceHelmetItem extends BaseArmorItem implements Tinkerable {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof PlayerEntity && slot == 1) {
+        if (entity instanceof PlayerEntity && slot == 3) {
             AugmentUtils.getAugments(stack).forEach(a -> a.onArmorTick(stack, world, (PlayerEntity) entity));
         }
     }
@@ -49,27 +49,6 @@ public class EssenceHelmetItem extends BaseArmorItem implements Tinkerable {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
         AugmentUtils.getAugments(stack).forEach(a -> tooltip.add(a.getDisplayName().formatted(Formatting.GRAY)));
-    }
-
-    @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> modifiers = HashMultimap.create();
-        if (slot == this.getSlotType()) {
-            ArmorMaterial material = this.getMaterial();
-
-            modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor modifier", material.getProtectionAmount(slot), EntityAttributeModifier.Operation.ADDITION));
-            modifiers.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor toughness", material.getToughness(), EntityAttributeModifier.Operation.ADDITION));
-
-            if (material.getKnockbackResistance() > 0) {
-                modifiers.put(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor knockback resistance", material.getKnockbackResistance(), EntityAttributeModifier.Operation.ADDITION));
-            }
-
-//            AugmentUtils.getAugments(stack).forEach(a -> {
-//                a.addArmorAttributeModifiers(modifiers, slot, stack);
-//            });
-        }
-
-        return modifiers;
     }
 
     @Override

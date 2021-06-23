@@ -127,18 +127,8 @@ public class EssenceHoeItem extends BaseHoeItem implements Tinkerable {
     }
 
     @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        Multimap<EntityAttribute, EntityAttributeModifier> modifiers = HashMultimap.create();
-        if (slot == EquipmentSlot.MAINHAND) {
-            modifiers.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", this.getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
-            modifiers.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", this.getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
-
-//            AugmentUtils.getAugments(stack).forEach(a -> {
-//                a.addToolAttributeModifiers(modifiers, slot, stack);
-//            });
-        }
-
-        return modifiers;
+    public boolean isEnchantable(ItemStack stack) {
+        return /*ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get()*/false || super.isEnchantable(stack);
     }
 
     @Override
