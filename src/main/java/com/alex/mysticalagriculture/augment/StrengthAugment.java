@@ -24,7 +24,7 @@ public class StrengthAugment extends Augment {
     }
 
     @Override
-    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) {
+    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
         attributes.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTRIBUTE_ID, "Tool modifier", 5 * this.amplifier, EntityAttributeModifier.Operation.ADDITION));
     }
 

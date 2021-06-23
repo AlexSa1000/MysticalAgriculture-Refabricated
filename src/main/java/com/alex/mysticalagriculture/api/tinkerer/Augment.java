@@ -102,7 +102,10 @@ public class Augment {
     public void onInventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
     }
 
-    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) {
+    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
+    }
+
+    public void addArmorAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
     }
 
     public String getNameWithSuffix(String suffix) {

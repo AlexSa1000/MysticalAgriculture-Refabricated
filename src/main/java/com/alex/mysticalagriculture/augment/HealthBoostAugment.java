@@ -24,7 +24,7 @@ public class HealthBoostAugment extends Augment {
     }
 
     @Override
-    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) {
+    public void addArmorAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
         attributes.put(EntityAttributes.GENERIC_MAX_HEALTH, new EntityAttributeModifier(ATTRIBUTE_ID, "Armor modifier", 4 * this.amplifier, EntityAttributeModifier.Operation.ADDITION));
     }
 
