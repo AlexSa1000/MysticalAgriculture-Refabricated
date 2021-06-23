@@ -14,10 +14,10 @@ import net.minecraft.util.Identifier;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class REIPlugin implements REIPluginV0 {
-    public static Identifier INFUSION = new Identifier(MOD_ID, "plugins/infusion");
+    public static Identifier INFUSION = new Identifier(MOD_ID, "infusion");
     public static InfusionRecipeCategory INFUSION_CATEGORY = new InfusionRecipeCategory();
 
-    public static Identifier REPROCESSOR = new Identifier(MOD_ID, "plugins/reprocessor");
+    public static Identifier REPROCESSOR = new Identifier(MOD_ID, "reprocessor");
     public static ReprocessorRecipeCategory REPROCESSOR_CATEGORY = new ReprocessorRecipeCategory();
 
     @Override
