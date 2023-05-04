@@ -1,10 +1,9 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.InfusionPedestalBlockEntity;
-import com.alex.mysticalagriculture.util.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.util.helper.StackHelper;
-import com.alex.mysticalagriculture.util.util.VoxelShapeBuilder;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import com.alex.mysticalagriculture.zucchini.blockentity.BaseBlockEntity;
+import com.alex.mysticalagriculture.zucchini.helper.StackHelper;
+import com.alex.mysticalagriculture.zucchini.util.VoxelShapeBuilder;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
@@ -25,10 +24,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntityProvider {
 
-    public static final VoxelShape PEDESTAL_SHAPE = new VoxelShapeBuilder()
+    public static final VoxelShape PEDESTAL_SHAPE = VoxelShapeBuilder.builder()
             .cuboid(2.0, 0.0, 2.0, 5.0, 2.0, 5.0).cuboid(11.0, 0.0, 2.0, 14.0, 2.0, 5.0)
             .cuboid(2.0, 0.0, 11.0, 5.0, 2.0, 14.0).cuboid(11.0, 0.0, 11.0, 14.0, 2.0, 14.0)
             .cuboid(3.0, 2.0, 3.0, 13.0, 4.0, 13.0).cuboid(4.0, 4.0, 4.0, 12.0, 14.0, 12.0)
@@ -36,22 +36,45 @@ public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntit
             .cuboid(3.0, 14.0, 5.0, 5.0, 16.0, 11.0).cuboid(11.0, 14.0, 5.0, 13.0, 16.0, 11.0).build();
 
     public InfusionPedestalBlock() {
-        super(Material.STONE, BlockSoundGroup.STONE, 10.0F, 12.0F, FabricToolTags.PICKAXES);
+        super(Material.STONE, BlockSoundGroup.STONE, 10.0F, 12.0F, true);
     }
 
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView blockView) {
-        return new InfusionPedestalBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new InfusionPedestalBlockEntity(pos, state);
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        BlockEntity block = world.getBlockEntity(pos);
+        var block = world.getBlockEntity(pos);
 
-        if (block instanceof InfusionPedestalBlockEntity) {
-            InfusionPedestalBlockEntity pedestal = (InfusionPedestalBlockEntity) block;
-            ItemStack input = pedestal.getStack(0);
-            ItemStack held = player.getStackInHand(hand);
+        if (block instanceof InfusionPedestalBlockEntity pedestal) {
+            var inventory = pedestal.getInventory();
+            var input = inventory.getStack(0);
+            var held = player.getStackInHand(hand);
+
+            if (input.isEmpty() && !held.isEmpty()) {
+                inventory.setStack(0, StackHelper.withSize(held, 1, false));
+                player.setStackInHand(hand, StackHelper.shrink(held, 1, false));
+                world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            } else if (!input.isEmpty()) {
+                inventory.setStack(0, ItemStack.EMPTY);
+
+                var item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), input);
+
+                item.resetPickupDelay();
+                world.spawnEntity(item);
+            }
+        }
+
+        return ActionResult.SUCCESS;
+        /*var block = world.getBlockEntity(pos);
+
+        if (block instanceof InfusionPedestalBlockEntity pedestal) {
+
+            var input = pedestal.getStack(0);
+            var held = player.getStackInHand(hand);
 
             if (input.isEmpty() && !held.isEmpty()) {
                 pedestal.setStack(0, StackHelper.withSize(held, 1, false));
@@ -59,22 +82,24 @@ public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntit
                 world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
             } else if (!input.isEmpty()) {
                 pedestal.setStack(0, ItemStack.EMPTY);
-                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), input);
+
+                var item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), input);
+
                 item.resetPickupDelay();
                 world.spawnEntity(item);
             }
         }
 
-        return ActionResult.SUCCESS;
+        return ActionResult.SUCCESS;*/
     }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            Inventory blockEntity = (Inventory) world.getBlockEntity(pos);
-            if (blockEntity instanceof InfusionPedestalBlockEntity) {
-                InfusionPedestalBlockEntity pedestal = (InfusionPedestalBlockEntity) blockEntity;
-                ItemScatterer.spawn(world, pos, pedestal.getStacks());
+            var blockEntity = world.getBlockEntity(pos);
+
+            if (blockEntity instanceof InfusionPedestalBlockEntity pedestal) {
+                ItemScatterer.spawn(world, pos, pedestal.getInventory().getStacks());
             }
         }
 

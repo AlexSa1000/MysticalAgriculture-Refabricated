@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "all": "mysticalagriculture:blocks/soulstone",
-    "overlay": "mysticalagriculture:blocks/soulium_ore",
-    "particle": "mysticalagriculture:blocks/soulstone"
+    "all": "mysticalagriculture:block/soulstone",
+    "overlay": "mysticalagriculture:block/soulium_ore",
+    "particle": "mysticalagriculture:block/soulstone"
   },
   "elements": [
     {

@@ -1,29 +1,29 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.api.soul.MobSoulType;
-import com.alex.mysticalagriculture.lib.ModMobSoulTypes;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.util.item.BaseItem;
+import com.alex.mysticalagriculture.zucchini.item.BaseItem;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import net.minecraft.client.item.ModelPredicateProvider;
+import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.List;
-import java.util.function.Function;
 
 public class SoulJarItem extends BaseItem {
-    public SoulJarItem(Function<Settings, Settings> properties) {
-        super(properties.compose(p -> p.maxCount(1)));
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
+
+    public SoulJarItem() {
+        super(p -> p.maxCount(1));
     }
 
-    @Override
+    /*@Override
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> items) {
         if (this.isIn(group)) {
             items.add(new ItemStack(this));
@@ -34,15 +34,18 @@ public class SoulJarItem extends BaseItem {
                 }
             });
         }
-    }
+    }*/
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        MobSoulType type = MobSoulUtils.getType(stack);
+        var type = MobSoulUtils.getType(stack);
+
         if (type != null) {
-            Text entityName = type.getEntityDisplayName();
-            double souls = MobSoulUtils.getSouls(stack);
-            tooltip.add(ModTooltips.SOUL_JAR.args(entityName, souls, type.getSoulRequirement()).build());
+            var entityName = type.getEntityDisplayName();
+            var souls = DECIMAL_FORMAT.format(MobSoulUtils.getSouls(stack));
+            var requirement = DECIMAL_FORMAT.format(type.getSoulRequirement());
+
+            tooltip.add(ModTooltips.SOUL_JAR.args(entityName, souls, requirement).build());
 
             if (context.isAdvanced()) {
                 tooltip.add(ModTooltips.MST_ID.args(type.getId()).color(Formatting.DARK_GRAY).build());
@@ -50,17 +53,27 @@ public class SoulJarItem extends BaseItem {
         }
     }
 
-    public static ModelPredicateProvider getFillPropertyGetter() {
-        return (stack, world, entity) -> {
-            MobSoulType type = MobSoulUtils.getType(stack);
-            if (type != null) {
-                double souls = MobSoulUtils.getSouls(stack);
-                if (souls > 0) {
-                    return (int) ((souls / type.getSoulRequirement()) * 9);
-                }
+    public static ClampedModelPredicateProvider getFillPropertyGetter() {
+        return new ClampedModelPredicateProvider() {
+            @Override
+            public float call(ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity livingEntity, int i) {
+                return this.unclampedCall(itemStack, clientWorld, livingEntity, i);
             }
 
-            return 0;
+            @Override
+            public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
+                var type = MobSoulUtils.getType(stack);
+
+                if (type != null) {
+                    double souls = MobSoulUtils.getSouls(stack);
+
+                    if (souls > 0) {
+                        return (int) ((souls / type.getSoulRequirement()) * 9);
+                    }
+                }
+
+                return 0;
+            }
         };
     }
 }

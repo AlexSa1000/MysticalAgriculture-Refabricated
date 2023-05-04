@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:durasteel"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:durasteel_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:durasteel_essence"
+  }
+}

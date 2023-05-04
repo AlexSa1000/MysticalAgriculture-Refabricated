@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mysticalagriculture:blocks/soulstone_cracked_bricks"
+    "all": "mysticalagriculture:block/soulstone_cracked_bricks"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:end"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:end_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:end_essence"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:sulfur"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:sulfur_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:sulfur_essence"
+  }
+}

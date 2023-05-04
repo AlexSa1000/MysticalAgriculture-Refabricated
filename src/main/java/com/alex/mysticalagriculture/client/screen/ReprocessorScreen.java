@@ -1,28 +1,48 @@
 package com.alex.mysticalagriculture.client.screen;
 
-import com.alex.mysticalagriculture.container.ReprocessorContainer;
-import com.alex.mysticalagriculture.util.BaseHandledScreen;
+import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
+import com.alex.mysticalagriculture.screenhandler.ReprocessorScreenHandler;
+import com.alex.mysticalagriculture.zucchini.client.screen.BaseHandledScreen;
+import com.alex.mysticalagriculture.zucchini.client.screen.widget.EnergyBarWidget;
+import com.alex.mysticalagriculture.zucchini.util.Formatting;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public class ReprocessorScreen extends BaseHandledScreen<ReprocessorContainer> {
+public class ReprocessorScreen extends BaseHandledScreen<ReprocessorScreenHandler> {
     private static final Identifier BACKGROUND = new Identifier(MOD_ID, "textures/gui/reprocessor.png");
+    private ReprocessorBlockEntity block;
 
-    public ReprocessorScreen(ReprocessorContainer container, PlayerInventory inv, Text title) {
-        super(container, inv, title, BACKGROUND, 176, 183);
+    public ReprocessorScreen(ReprocessorScreenHandler container, PlayerInventory inv, Text title) {
+        super(container, inv, title, BACKGROUND, 176, 194);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        int x = this.x;
+        int y = this.y;
+
+        this.block = this.getBlockEntity();
+
+        if (this.block != null) {
+            this.addDrawableChild(new EnergyBarWidget(x + 7, y + 17, this.block.getEnergy(), this));
+        }
     }
 
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-        String title = this.getTitle().getString();
+        var title = this.getTitle().getString();
+
         this.textRenderer.draw(matrices, title, (float) (this.backgroundWidth / 2 - this.textRenderer.getWidth(title) / 2), 6.0F, 4210752);
-        String inventory = this.playerInventory.getDisplayName().getString();
-        this.textRenderer.draw(matrices, inventory, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
+        this.textRenderer.draw(matrices, this.playerInventoryTitle, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
     }
 
     @Override
@@ -32,18 +52,14 @@ public class ReprocessorScreen extends BaseHandledScreen<ReprocessorContainer> {
         int x = this.x;
         int y = this.y;
 
-        ReprocessorContainer container = this.getScreenHandler();
-        int i1 = container.getFuelBarScaled(66);
-        this.drawTexture(matrices, x + 20, y + 84 - i1, 176, 97 - i1, 15, i1);
-
-        if (container.isFuelItemValuable()) {
-            int lol = container.getBurnLeftScaled(13);
-            this.drawTexture(matrices, x + 36, y + 33 + 12 - lol, 176, 12 - lol, 14, lol + 1);
+        if (this.getFuelItemValue() > 0) {
+            int lol = this.getBurnLeftScaled(13);
+            this.drawTexture(matrices, x + 31, y + 52 - lol, 176, 12 - lol, 14, lol + 1);
         }
 
-        if (container.isProgressing()) {
-            int i2 = container.getCookProgressScaled(24);
-            this.drawTexture(matrices, x + 98, y + 41, 176, 14, i2 + 1, 16);
+        if (this.getProgress() > 0) {
+            int i2 = this.getProgressScaled(24);
+            this.drawTexture(matrices, x + 98, y + 51, 176, 14, i2 + 1, 16);
         }
     }
 
@@ -54,17 +70,63 @@ public class ReprocessorScreen extends BaseHandledScreen<ReprocessorContainer> {
 
         super.drawMouseoverTooltip(stack, mouseX, mouseY);
 
-        ReprocessorContainer container = this.getScreenHandler();
-        if (mouseX > x + 19 && mouseX < x + 29 && mouseY > y + 17 && mouseY < y + 84) {
-            LiteralText text = new LiteralText(container.getFuel() + " / " + container.getFuelCapacity());
+        if (this.getFuelLeft() > 0 && mouseX > x + 30 && mouseX < x + 45 && mouseY > y + 39 && mouseY < y + 53) {
+            var text = Text.literal(Formatting.energy(this.getFuelLeft()).getString());
             this.renderTooltip(stack, text, mouseX, mouseY);
         }
+    }
 
-        if (container.hasFuel()) {
-            if (mouseX > x + 36 && mouseX < x + 50 && mouseY > y + 33 && mouseY < y + 47) {
-                LiteralText text = new LiteralText(String.valueOf(container.getFuelLeft()));
-                this.renderTooltip(stack, text, mouseX, mouseY);
+    private ReprocessorBlockEntity getBlockEntity() {
+        var level = this.client.world;
+
+        if (level != null) {
+            var block = level.getBlockEntity(this.getScreenHandler().getBlockPos());
+
+            if (block instanceof ReprocessorBlockEntity reprocessor) {
+                return reprocessor;
             }
         }
+
+        return null;
+    }
+
+    public int getProgress() {
+        if (this.block == null)
+            return 0;
+
+        return this.block.getProgress();
+    }
+
+    public int getOperationTime() {
+        if (this.block == null)
+            return 0;
+
+        return this.block.getTier().getOperationTime();
+    }
+
+    public int getFuelLeft() {
+        if (this.block == null)
+            return 0;
+
+        return this.block.getFuelLeft();
+    }
+
+    public int getFuelItemValue() {
+        if (this.block == null)
+            return 0;
+
+        return this.block.getFuelItemValue();
+    }
+
+    public int getProgressScaled(int pixels) {
+        int i = this.getProgress();
+        int j = this.getOperationTime();
+        return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
+
+    public int getBurnLeftScaled(int pixels) {
+        int i = this.getFuelLeft();
+        int j = this.getFuelItemValue();
+        return (int) (j != 0 && i != 0 ? (long) i * pixels / j : 0);
     }
 }

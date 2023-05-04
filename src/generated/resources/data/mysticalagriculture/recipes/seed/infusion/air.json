@@ -1,0 +1,63 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:air"
+    },
+    {
+      "condition": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:air"
+    }
+  ],
+  "type": "mysticalagriculture:infusion",
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:air",
+      "fabric:type": "mysticalagriculture:crop_component"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "mysticalagriculture:air",
+    "fabric:type": "mysticalagriculture:crop_component"
+  },
+  "result": {
+    "item": "mysticalagriculture:air_seeds"
+  }
+}

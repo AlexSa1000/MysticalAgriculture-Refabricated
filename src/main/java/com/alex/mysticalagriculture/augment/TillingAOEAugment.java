@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.augment;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
-import com.alex.mysticalagriculture.util.helper.ColorHelper;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.zucchini.helper.ColorHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -23,7 +23,7 @@ import java.util.EnumSet;
 import java.util.Map;
 
 public class TillingAOEAugment extends Augment {
-    private static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.getDefaultState(), Blocks.GRASS_PATH, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT, Blocks.FARMLAND.getDefaultState(), Blocks.COARSE_DIRT, Blocks.DIRT.getDefaultState()));
+    private static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT_PATH, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT, Blocks.FARMLAND.getDefaultState(), Blocks.COARSE_DIRT, Blocks.DIRT.getDefaultState()));
     private final int range;
 
     public TillingAOEAugment(Identifier id, int tier, int range) {
@@ -33,36 +33,52 @@ public class TillingAOEAugment extends Augment {
 
     @Override
     public boolean onItemUse(ItemUsageContext context) {
-        PlayerEntity player = context.getPlayer();
+        var player = context.getPlayer();
         if (player == null)
             return false;
 
-        ItemStack stack = context.getStack();
-        World world = context.getWorld();
-        BlockPos pos = context.getBlockPos();
-        Direction direction = context.getSide();
-        Hand hand = context.getHand();
+        var stack = context.getStack();
+        var world = context.getWorld();
+        var pos = context.getBlockPos();
+        var direction = context.getSide();
+        var hand = context.getHand();
 
-        if (this.tryTill(stack, player, world, pos, direction, hand)) {
+        var playedSound = false;
+
+        if (tryTill(stack, player, world, pos, direction, hand)) {
             world.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+            playedSound = true;
 
             if (!player.isInSneakingPose())
                 return false;
         }
 
         if (player.isInSneakingPose()) {
-            BlockPos.stream(pos.add(-this.range, 0, -this.range), pos.add(this.range, 0, this.range)).forEach(aoePos -> this.tryTill(stack, player, world, aoePos, direction, hand));
+            var positions = BlockPos.stream(pos.add(-this.range, 0, -this.range), pos.add(this.range, 0, this.range)).iterator();
+
+            while (positions.hasNext()) {
+                var aoePos = positions.next();
+
+                if (tryTill(stack, player, world, aoePos, direction, hand) && !playedSound) {
+                    world.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                    playedSound = true;
+                }
+            }
         }
 
         return true;
     }
 
-    private boolean tryTill(ItemStack stack, PlayerEntity player, World world, BlockPos pos, Direction direction, Hand hand) {
+    private static boolean tryTill(ItemStack stack, PlayerEntity player, World world, BlockPos pos, Direction direction, Hand hand) {
         if (direction != Direction.DOWN && world.isAir(pos.up())) {
-            BlockState state = HOE_LOOKUP.get(world.getBlockState(pos).getBlock());
+            var state = HOE_LOOKUP.get(world.getBlockState(pos).getBlock());
+
             if (state != null) {
                 if (!world.isClient()) {
                     world.setBlockState(pos, state, 11);
+
                     if (player != null) {
                         stack.damage(1, player, (entity) -> entity.sendToolBreakStatus(hand));
                     }

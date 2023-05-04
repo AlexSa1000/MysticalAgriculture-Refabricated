@@ -1,6 +1,0 @@
-{
-  "parent": "mysticalagriculture:block/mystical_mob_crop_7",
-  "textures": {
-    "flower": "mysticalagriculture:blocks/turtle_flower"
-  }
-}

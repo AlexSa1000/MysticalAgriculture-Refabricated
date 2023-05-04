@@ -1,0 +1,23 @@
+{
+  "type": "mysticalagriculture:shaped_tag",
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:sulfur"
+    }
+  ],
+  "pattern": [
+    "EEE",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "E": {
+      "item": "mysticalagriculture:sulfur_essence"
+    }
+  },
+  "result": {
+    "tag": "c:sulfur_dusts",
+    "count": 8
+  }
+}

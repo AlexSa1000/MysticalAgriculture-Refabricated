@@ -20,14 +20,17 @@
 
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "com.alex.mysticalagriculture.data.ModDataGenerators"
+    ],
     "main": [
       "com.alex.mysticalagriculture.MysticalAgriculture"
     ],
     "client": [
       "com.alex.mysticalagriculture.MysticalAgricultureClient"
     ],
-    "rei_plugins_v0": [
-      "com.alex.mysticalagriculture.compat.rei.REIPlugin"
+    "rei_client": [
+      "com.alex.mysticalagriculture.compat.rei.ReiCompat"
     ]
   },
   "mixins": [
@@ -37,8 +40,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "libcd": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.19.4"
   },
   "suggests": {
     "columns": "*",

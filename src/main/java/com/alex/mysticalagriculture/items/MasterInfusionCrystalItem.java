@@ -1,13 +1,11 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.util.BaseReusableItem;
+import com.alex.mysticalagriculture.zucchini.item.BaseReusableItem;
 import net.minecraft.item.ItemStack;
 
-import java.util.function.Function;
-
 public class MasterInfusionCrystalItem extends BaseReusableItem {
-    public MasterInfusionCrystalItem(Function<Settings, Settings> properties) {
-        super(properties);
+    public MasterInfusionCrystalItem() {
+        super(0);
     }
 
     @Override

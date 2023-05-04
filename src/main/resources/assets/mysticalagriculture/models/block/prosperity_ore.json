@@ -2,7 +2,7 @@
   "parent": "block/block",
   "textures": {
     "all": "block/stone",
-    "overlay": "mysticalagriculture:blocks/prosperity_ore",
+    "overlay": "mysticalagriculture:block/prosperity_ore",
     "particle": "block/stone"
   },
   "elements": [

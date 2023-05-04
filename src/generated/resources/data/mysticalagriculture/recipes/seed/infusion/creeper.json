@@ -1,0 +1,63 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:creeper"
+    },
+    {
+      "condition": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:creeper"
+    }
+  ],
+  "type": "mysticalagriculture:infusion",
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:creeper",
+      "fabric:type": "mysticalagriculture:crop_component"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "mysticalagriculture:creeper",
+    "fabric:type": "mysticalagriculture:crop_component"
+  },
+  "result": {
+    "item": "mysticalagriculture:creeper_seeds"
+  }
+}

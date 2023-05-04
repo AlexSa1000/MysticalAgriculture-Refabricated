@@ -1,6 +1,6 @@
 {
   "parent": "block/wall_inventory",
   "textures": {
-    "wall": "mysticalagriculture:blocks/soulstone_bricks"
+    "wall": "mysticalagriculture:block/soulstone_bricks"
   }
 }

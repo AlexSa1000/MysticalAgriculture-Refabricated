@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture.lib;
 
 import com.alex.mysticalagriculture.init.Items;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
@@ -49,13 +50,13 @@ public enum ModArmorMaterial implements ArmorMaterial {
     }
 
     @Override
-    public int getDurability(EquipmentSlot slot) {
-        return MAX_DAMAGE_ARRAY[slot.getEntitySlotId()] * this.maxDamageFactor;
+    public int getDurability(ArmorItem.Type type) {
+        return MAX_DAMAGE_ARRAY[type.ordinal()] * this.maxDamageFactor;
     }
 
     @Override
-    public int getProtectionAmount(EquipmentSlot slot) {
-        return this.damageReductionAmountArray[slot.getEntitySlotId()];
+    public int getProtection(ArmorItem.Type type) {
+        return this.damageReductionAmountArray[type.ordinal()];
     }
 
     @Override

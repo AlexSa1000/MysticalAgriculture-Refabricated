@@ -1,0 +1,23 @@
+{
+  "type": "mysticalagriculture:shaped_no_mirror",
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:fluix"
+    }
+  ],
+  "pattern": [
+    "EEE",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "E": {
+      "item": "mysticalagriculture:fluix_essence"
+    }
+  },
+  "result": {
+    "item": "ae2:fluix_dust",
+    "count": 3
+  }
+}

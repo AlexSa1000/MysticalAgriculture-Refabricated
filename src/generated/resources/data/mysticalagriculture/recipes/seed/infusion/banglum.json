@@ -1,0 +1,63 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:banglum"
+    },
+    {
+      "condition": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:banglum"
+    }
+  ],
+  "type": "mysticalagriculture:infusion",
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:banglum",
+      "fabric:type": "mysticalagriculture:crop_component"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "mysticalagriculture:banglum",
+    "fabric:type": "mysticalagriculture:crop_component"
+  },
+  "result": {
+    "item": "mysticalagriculture:banglum_seeds"
+  }
+}

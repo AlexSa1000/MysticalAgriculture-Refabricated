@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:wither_skeleton"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:wither_skeleton_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:wither_skeleton_essence"
+  }
+}

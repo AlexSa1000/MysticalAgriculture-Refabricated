@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "mysticalagriculture:items/imperium_nugget"
+    "layer0": "mysticalagriculture:item/imperium_nugget"
   }
 }

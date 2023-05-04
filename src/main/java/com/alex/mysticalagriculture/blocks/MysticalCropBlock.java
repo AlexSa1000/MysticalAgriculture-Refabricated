@@ -3,23 +3,20 @@ package com.alex.mysticalagriculture.blocks;
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.util.util.Localizable;
+import com.alex.mysticalagriculture.zucchini.util.Localizable;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MysticalCropBlock extends CropBlock implements CropProvider {
     private final Crop crop;
@@ -31,9 +28,17 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
     }
 
     @Override
-    public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+    public boolean canGrow(World world, net.minecraft.util.math.random.Random random, BlockPos pos, BlockState state) {
         return false;
     }
+
+    /*@Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if (!this.canGrow(world, pos))
+            return;
+
+        super.randomTick(state, world, pos, random);
+    }*/
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -51,20 +56,21 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
         if (age == this.getMaxAge()) {
             crop = 1;
 
-            Vec3d vec = builder.get(LootContextParameters.ORIGIN);
+            var vec = builder.get(LootContextParameters.ORIGIN);
+
             if (vec != null) {
-                ServerWorld world = builder.getWorld();
-                BlockPos pos = new BlockPos(vec);
-                Block below = world.getBlockState(pos.down()).getBlock();
+                var world = builder.getWorld();
+                var pos = new BlockPos((int) Math.floor(vec.x), (int) Math.floor(vec.y), (int) Math.floor(vec.z));
+                var below = world.getBlockState(pos.down()).getBlock();
                 double chance = this.crop.getSecondaryChance(below);
 
                 if (Math.random() < chance)
                     crop = 2;
 
-                if (Math.random() < chance)
+                if ((/*ModConfigs.SECONDARY_SEED_DROPS.get() &&*/ Math.random() < chance))
                     seed = 2;
 
-                double fertilizerChance = 0.1;
+                double fertilizerChance =  /*ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get()*/ 0.1;
                 if (Math.random() < fertilizerChance)
                     fertilizer = 1;
             }
@@ -82,14 +88,21 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
         return drops;
     }
 
-    @Override
+
+
+    /*@Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
         return super.getPickStack(world, pos, state);
+    }*/
+
+    @Override
+    protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
+        return floor.getBlock() instanceof FarmlandBlock;
     }
 
     @Override
     protected ItemConvertible getSeedsItem() {
-        return this.crop.getSeeds();
+        return this.crop.getSeedsItem();
     }
 
     @Override
@@ -102,6 +115,6 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
     }
 
     protected ItemConvertible getCropsItem() {
-        return this.crop.getEssence();
+        return this.crop.getEssenceItem();
     }
 }

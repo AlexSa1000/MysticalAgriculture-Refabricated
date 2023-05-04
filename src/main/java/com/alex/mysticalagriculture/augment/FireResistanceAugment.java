@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.augment;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,22 +1,22 @@
 package com.alex.mysticalagriculture.api.util;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class ExperienceCapsuleUtils {
 
     public static final int MAX_XP_POINTS = 1200;
 
+    public static NbtCompound makeTag(int xp) {
+        var nbt = new NbtCompound();
 
-    public static CompoundTag makeTag(int xp) {
-        CompoundTag nbt = new CompoundTag();
         nbt.putInt("Experience", Math.min(MAX_XP_POINTS, xp));
 
         return nbt;
     }
 
     public static int getExperience(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
+        var nbt = stack.getNbt();
         if (nbt != null && nbt.contains("Experience"))
             return nbt.getInt("Experience");
 
@@ -29,10 +29,10 @@ public class ExperienceCapsuleUtils {
             return amount;
         } else {
             int newAmount = Math.min(MAX_XP_POINTS, xp + amount);
-            CompoundTag nbt = stack.getTag();
+            var nbt = stack.getNbt();
             if (nbt == null) {
-                CompoundTag tag = makeTag(newAmount);
-                stack.setTag(tag);
+                var tag = makeTag(newAmount);
+                stack.setNbt(tag);
             } else {
                 nbt.putInt("Experience", newAmount);
             }

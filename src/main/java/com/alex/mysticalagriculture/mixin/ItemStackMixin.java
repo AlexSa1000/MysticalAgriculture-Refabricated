@@ -6,7 +6,7 @@ import com.alex.mysticalagriculture.items.armor.EssenceChestplateItem;
 import com.alex.mysticalagriculture.items.armor.EssenceHelmetItem;
 import com.alex.mysticalagriculture.items.armor.EssenceLeggingsItem;
 import com.alex.mysticalagriculture.items.tool.*;
-import com.alex.mysticalagriculture.util.item.tool.*;
+import com.alex.mysticalagriculture.zucchini.item.tool.*;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.EquipmentSlot;
@@ -14,7 +14,6 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,15 +32,18 @@ public abstract class ItemStackMixin {
     @Shadow
     public abstract Item getItem();
 
+    @Shadow private boolean empty;
+
     @Inject(method = "getAttributeModifiers(Lnet/minecraft/entity/EquipmentSlot;)Lcom/google/common/collect/Multimap;", at = @At(value = "HEAD"), cancellable = true)
     private void injected(EquipmentSlot slot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
 
         if (((ItemStack) ((Object) this)).getItem() instanceof EssenceHelmetItem || ((ItemStack) ((Object) this)).getItem() instanceof EssenceChestplateItem || ((ItemStack) ((Object) this)).getItem() instanceof EssenceLeggingsItem || ((ItemStack) ((Object) this)).getItem() instanceof EssenceBootsItem) {
             Multimap<EntityAttribute, EntityAttributeModifier> modifiers = HashMultimap.create();
-            if (slot == ((ArmorItem) this.getItem()).getSlotType()) {
-                ArmorMaterial material = ((ArmorItem) this.getItem()).getMaterial();
+            var item = (ArmorItem) this.getItem();
+            if (slot == item.type.getEquipmentSlot()) {
+                var material = item.getMaterial();
 
-                modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor modifier", material.getProtectionAmount(slot), EntityAttributeModifier.Operation.ADDITION));
+                modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor modifier", material.getProtection(item.type), EntityAttributeModifier.Operation.ADDITION));
                 modifiers.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor toughness", material.getToughness(), EntityAttributeModifier.Operation.ADDITION));
 
                 if (material.getKnockbackResistance() > 0) {

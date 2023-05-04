@@ -1,21 +1,26 @@
 package com.alex.mysticalagriculture.lib;
 
+import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.google.common.collect.Sets;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class ModMobSoulTypes {
+    private static final boolean DEBUG = false;
+
     private static final List<MobSoulType> mobSoulTypes = new ArrayList<>();
 
-    private static final Set<Identifier> FISH_IDS = Sets.newHashSet(new Identifier("minecraft:cod"), new Identifier("minecraft:salmon"), new Identifier("minecraft:tropical_fish"), new Identifier
-            ("minecraft:pufferfish"));
+    private static final Set<Identifier> FISH_IDS = Sets.newHashSet(new Identifier("minecraft:cod"), new Identifier("minecraft:salmon"), new Identifier("minecraft:tropical_fish"), new Identifier("minecraft:pufferfish"));
+    private static final Set<Identifier> SLIME_IDS = Sets.newHashSet(new Identifier("minecraft:slime"), new Identifier("tconstruct:earth_slime"));
     private static final Set<Identifier> ZOMBIE_IDS = Sets.newHashSet(new Identifier("minecraft:zombie"), new Identifier("minecraft:zombie_villager"));
     private static final Set<Identifier> SPIDER_IDS = Sets.newHashSet(new Identifier("minecraft:spider"), new Identifier("minecraft:cave_spider"));
 
@@ -38,7 +43,7 @@ public class ModMobSoulTypes {
     public static final MobSoulType ENDERMAN = new MobSoulType(new Identifier(MOD_ID, "enderman"), new Identifier("minecraft:enderman"), 8, 1447446);
     public static final MobSoulType WITHER = new MobSoulType(new Identifier(MOD_ID, "wither_skeleton"), new Identifier("minecraft:wither_skeleton"), 8, 1315860);
 
-    public static void register() {
+    /*public static void register() {
         mobSoulTypes.add(PIG);
         mobSoulTypes.add(CHICKEN);
         mobSoulTypes.add(COW);
@@ -56,9 +61,36 @@ public class ModMobSoulTypes {
         mobSoulTypes.add(GHAST);
         mobSoulTypes.add(ENDERMAN);
         mobSoulTypes.add(WITHER);
+    }*/
+    public static void onRegisterMobSoulTypes(MobSoulTypeRegistry registry) {
+        registry.register(PIG);
+        registry.register(CHICKEN);
+        registry.register(COW);
+        registry.register(SHEEP);
+        registry.register(SQUID);
+        registry.register(FISH);
+        registry.register(SLIME);
+        registry.register(TURTLE);
+        registry.register(ZOMBIE);
+        registry.register(SKELETON);
+        registry.register(CREEPER);
+        registry.register(SPIDER);
+        registry.register(RABBIT);
+        registry.register(BLAZE);
+        registry.register(GHAST);
+        registry.register(ENDERMAN);
+        registry.register(WITHER);
     }
 
-    public static List<MobSoulType> getMobSoulTypes() {
+    private static MobSoulType withRequiredMods(MobSoulType type, String... mods) {
+        if (DEBUG) return type;
+
+        boolean enabled = Arrays.stream(mods).anyMatch(FabricLoader.getInstance()::isModLoaded);
+        return type.setEnabled(enabled);
+    }
+
+
+    /*public static List<MobSoulType> getMobSoulTypes() {
         return mobSoulTypes;
     }
 
@@ -66,7 +98,11 @@ public class ModMobSoulTypes {
         return mobSoulTypes.stream().filter(c -> id.equals(c.getId())).findFirst().orElse(null);
     }
 
+    /*public static MobSoulType getMobSoulTypeById(Identifier id) {
+        return mobSoulTypes.;
+    }
+
     public static MobSoulType getMobSoulTypeByEntity(LivingEntity entity) {
         return mobSoulTypes.stream().filter(t -> t.isEntityApplicable(entity)).findFirst().orElse(null);
-    }
+    }*/
 }

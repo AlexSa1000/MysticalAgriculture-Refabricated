@@ -1,0 +1,63 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:runite"
+    },
+    {
+      "condition": "mysticalagriculture:crop_has_material",
+      "crop": "mysticalagriculture:runite"
+    }
+  ],
+  "type": "mysticalagriculture:infusion",
+  "ingredients": [
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "material",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    },
+    {
+      "component": "essence",
+      "crop": "mysticalagriculture:runite",
+      "fabric:type": "mysticalagriculture:crop_component"
+    }
+  ],
+  "input": {
+    "component": "seed",
+    "crop": "mysticalagriculture:runite",
+    "fabric:type": "mysticalagriculture:crop_component"
+  },
+  "result": {
+    "item": "mysticalagriculture:runite_seeds"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mysticalagriculture:blocks/imperium_growth_accelerator"
+    "all": "mysticalagriculture:block/imperium_growth_accelerator"
   }
 }

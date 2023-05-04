@@ -11,7 +11,7 @@
   },
   "ingredients": [
     {
-      "tag": "c:gold_ingots"
+      "tag": "forge:ingots/gold"
     },
     {
       "item": "mysticalagriculture:imperium_essence"
@@ -23,7 +23,7 @@
       "item": "mysticalagriculture:imperium_essence"
     },
     {
-      "tag": "c:gold_ingots"
+      "tag": "forge:ingots/gold"
     },
     {
       "item": "mysticalagriculture:imperium_essence"

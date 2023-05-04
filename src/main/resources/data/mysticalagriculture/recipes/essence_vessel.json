@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GCG",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "mysticalagriculture:soulstone"
+    },
+    "C": {
+      "item": "minecraft:glass"
+    },
+    "G": {
+      "tag": "c:gold_ingots"
+    }
+  },
+  "result": {
+    "item": "mysticalagriculture:essence_vessel"
+  }
+}

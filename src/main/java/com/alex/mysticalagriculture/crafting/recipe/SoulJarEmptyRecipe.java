@@ -14,24 +14,28 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapelessRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class SoulJarEmptyRecipe extends ShapelessRecipe {
     public SoulJarEmptyRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> inputs) {
-        super(id, group, output, inputs);
+        super(id, group, CraftingRecipeCategory.MISC, output, inputs);
     }
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
         boolean hasJar = false;
+
         for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+            var stack = inv.getStack(i);
+
             if (hasJar && !stack.isEmpty())
                 return false;
 
-            Item item = stack.getItem();
+            var item = stack.getItem();
+
             if (item instanceof SoulJarItem) {
                 double souls = MobSoulUtils.getSouls(stack);
                 if (souls > 0) {

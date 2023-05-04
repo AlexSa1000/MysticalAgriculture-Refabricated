@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "mysticalagriculture:items/tertium_essence"
+    "layer0": "mysticalagriculture:item/tertium_essence"
   }
 }

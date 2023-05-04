@@ -1,8 +1,8 @@
 {
   "parent": "block/slab",
   "textures": {
-    "bottom": "mysticalagriculture:blocks/soulstone_cobble",
-    "top": "mysticalagriculture:blocks/soulstone_cobble",
-    "side": "mysticalagriculture:blocks/soulstone_cobble"
+    "bottom": "mysticalagriculture:block/soulstone_cobble",
+    "top": "mysticalagriculture:block/soulstone_cobble",
+    "side": "mysticalagriculture:block/soulstone_cobble"
   }
 }

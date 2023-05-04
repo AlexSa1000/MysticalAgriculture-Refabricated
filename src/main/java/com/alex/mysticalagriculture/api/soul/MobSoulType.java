@@ -2,22 +2,22 @@ package com.alex.mysticalagriculture.api.soul;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.Collections;
 import java.util.Set;
 
-public class MobSoulType {
+public class
+MobSoulType {
     private final Identifier id;
     private final Set<Identifier> entityIds;
     private final double soulRequirement;
     private final int color;
     private String entityDisplayNameKey = null;
     private Text entityDisplayName = null;
-    private final boolean enabled;
+    private boolean enabled;
 
     public MobSoulType(Identifier id, Identifier entityId, double soulRequirement, int color) {
         this.id = id;
@@ -40,27 +40,43 @@ public class MobSoulType {
         return this.id;
     }
 
-    public int getColor() {
-        return this.color;
+    public String getModId() {
+        return this.getId().getNamespace();
+    }
+
+    public Set<Identifier> getEntityIds() {
+        return this.entityIds;
     }
 
     public double getSoulRequirement() {
         return this.soulRequirement;
     }
 
+    public int getColor() {
+        return this.color;
+    }
+
+    public boolean isEntityApplicable(LivingEntity entity) {
+        return this.entityIds.contains(Registries.ENTITY_TYPE.getId(entity.getType()));
+    }
+
     public Text getEntityDisplayName() {
         if (this.entityDisplayName == null) {
             if (this.entityDisplayNameKey != null) {
-                this.entityDisplayName = new TranslatableText(this.entityDisplayNameKey);
+                this.entityDisplayName = Text.translatable(String.format("mobSoulType.%s.%s", this.getModId(), this.entityDisplayNameKey));
             } else {
-                Identifier entityId = this.entityIds.stream().findFirst().orElse(null);
+                var entityId = this.entityIds.stream().findFirst().orElse(null);
+
                 if (entityId != null) {
-                    EntityType<?> entity = Registry.ENTITY_TYPE.get(entityId);
-                    this.entityDisplayName = entity.getName();
-                    return this.entityDisplayName;
+                    var entity = Registries.ENTITY_TYPE.get(entityId);
+
+                    if (entity != null) {
+                        this.entityDisplayName = entity.getName();
+                        return this.entityDisplayName;
+                    }
                 }
 
-                this.entityDisplayName = new TranslatableText("tooltip.mysticalagriculture.invalid_entity");
+                this.entityDisplayName = Text.translatable("tooltip.mysticalagriculture.invalid_entity");
             }
 
         }
@@ -68,11 +84,11 @@ public class MobSoulType {
         return this.entityDisplayName;
     }
 
-    public boolean isEntityApplicable(LivingEntity entity) {
-        return this.entityIds.contains(Registry.ENTITY_TYPE.getId(entity.getType()));
-    }
-
     public boolean isEnabled() {
         return this.enabled;
+    }
+    public MobSoulType setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 }

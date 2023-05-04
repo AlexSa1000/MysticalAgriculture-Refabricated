@@ -1,19 +1,51 @@
 accessWidener v1 named
 
 extendable class net/minecraft/recipe/Ingredient
+#accessible class net/minecraft/recipe/Ingredient$TagEntry
+accessible method net/minecraft/recipe/Ingredient$TagEntry <init> (Lnet/minecraft/registry/tag/TagKey;)V
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible method net/minecraft/recipe/Ingredient <init> (Ljava/util/stream/Stream;)V
 accessible method net/minecraft/recipe/Ingredient$StackEntry <init> (Lnet/minecraft/item/ItemStack;)V
 accessible method net/minecraft/item/ItemStack isEqual (Lnet/minecraft/item/ItemStack;)Z
+accessible method net/minecraft/registry/tag/ItemTags of (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
+accessible method net/minecraft/registry/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
 accessible method net/minecraft/block/FarmlandBlock isWaterNearby (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;)Z
 
-accessible method net/minecraft/recipe/ShapedRecipe getComponents (Lcom/google/gson/JsonObject;)Ljava/util/Map;
+extendable method net/minecraft/item/Item getMaxDamage ()I
+
+#accessible field net/minecraft/recipe/ShapedRecipe output Lnet/minecraft/item/ItemStack;
+accessible method net/minecraft/recipe/ShapedRecipe readSymbols (Lcom/google/gson/JsonObject;)Ljava/util/Map;
 accessible method net/minecraft/recipe/ShapedRecipe getPattern (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
-accessible method net/minecraft/recipe/ShapedRecipe getIngredients ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
-accessible method net/minecraft/recipe/ShapedRecipe combinePattern ([Ljava/lang/String;)[Ljava/lang/String;
-accessible field net/minecraft/recipe/ShapedRecipe group Ljava/lang/String;
-accessible field net/minecraft/recipe/ShapelessRecipe group Ljava/lang/String;
+accessible method net/minecraft/recipe/ShapedRecipe createPatternMatrix ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
+accessible method net/minecraft/recipe/ShapedRecipe removePadding ([Ljava/lang/String;)[Ljava/lang/String;
+#accessible method net/minecraft/recipe/ShapedRecipe getIngredients ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
+#accessible method net/minecraft/recipe/ShapedRecipe combinePattern ([Ljava/lang/String;)[Ljava/lang/String;
+#accessible field net/minecraft/recipe/ShapedRecipe group Ljava/lang/String;
+#accessible field net/minecraft/recipe/ShapelessRecipe group Ljava/lang/String;
 
 accessible field net/minecraft/recipe/RecipeManager GSON Lcom/google/gson/Gson;
-accessible field net/minecraft/recipe/RecipeManager LOGGER Lorg/apache/logging/log4j/Logger;
+accessible field net/minecraft/recipe/RecipeManager LOGGER Lorg/slf4j/Logger;
 accessible method net/minecraft/recipe/RecipeManager apply (Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V
+
+accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
+accessible field net/minecraft/item/Item ATTACK_SPEED_MODIFIER_ID Ljava/util/UUID;
+
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime I
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime I
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTime I
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTimeTotal I
+accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity isBurning ()Z
+#mutable field net/minecraft/block/entity/AbstractFurnaceBlockEntity matchGetter Lnet/minecraft/recipe/RecipeManager$MatchGetter;
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity matchGetter Lnet/minecraft/recipe/RecipeManager$MatchGetter;
+
+accessible field net/minecraft/recipe/RecipeManager recipes Ljava/util/Map;
+accessible field net/minecraft/recipe/RecipeManager recipesById Ljava/util/Map;
+accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
+
+#accessible method net/minecraft/screen/ScreenHandlerType register (Ljava/lang/String;Lnet/minecraft/screen/ScreenHandlerType$Factory;)Lnet/minecraft/screen/ScreenHandlerType;
+
+accessible field net/minecraft/item/ArmorItem type Lnet/minecraft/item/ArmorItem$Type;
+accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;)F
+accessible method net/minecraft/item/CrossbowItem loadProjectiles (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)Z
+
+accessible field team/reborn/energy/api/base/SimpleEnergyStorage capacity J

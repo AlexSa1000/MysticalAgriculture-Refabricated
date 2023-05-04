@@ -1,10 +1,9 @@
 package com.alex.mysticalagriculture.augment;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
-import com.alex.mysticalagriculture.util.helper.ColorHelper;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.zucchini.helper.ColorHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
@@ -24,15 +23,15 @@ public class AttackAOEAugment extends Augment {
 
     @Override
     public boolean onHitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) attacker;
+        if (attacker instanceof PlayerEntity player) {
             if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 List<LivingEntity> entities = player.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, target.getBoundingBox().expand(1.5D * this.amplifier, 0.25D * this.amplifier, 1.5D * this.amplifier));
+                var level = player.world;
 
                 for (LivingEntity aoeEntity : entities) {
                     if (aoeEntity != player && aoeEntity != target && !player.isTeammate(target)) {
-                        aoeEntity.takeKnockback(0.4F, MathHelper.sin(player.yaw * 0.017453292F), -MathHelper.cos(player.yaw * 0.017453292F));
-                        aoeEntity.damage(DamageSource.player(player), 13.0F); // TODO: 1.16: should this damage value be hardcoded?
+                        aoeEntity.takeKnockback(0.4F, MathHelper.sin(player.getYaw() * 0.017453292F), -MathHelper.cos(player.getYaw() * 0.017453292F));
+                        aoeEntity.damage(level.getDamageSources().playerAttack(player), 5.0F + (5.0F * this.amplifier));
                     }
                 }
 

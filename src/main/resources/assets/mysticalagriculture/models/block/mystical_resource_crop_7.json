@@ -1,9 +1,9 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "stem": "mysticalagriculture:blocks/mystical_resource_crop_7",
-    "flower": "mysticalagriculture:blocks/mystical_resource_crop_7",
-    "particle": "mysticalagriculture:blocks/mystical_resource_crop_7"
+    "stem": "mysticalagriculture:block/mystical_resource_crop_7",
+    "flower": "mysticalagriculture:block/mystical_resource_crop_7",
+    "particle": "mysticalagriculture:block/mystical_resource_crop_7"
   },
   "elements": [
     {

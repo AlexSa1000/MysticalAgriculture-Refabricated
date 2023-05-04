@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "mysticalagriculture:soulstone_bricks"
-  },
-  "result": "mysticalagriculture:soulstone_bricks_column",
-  "count": 1
-}

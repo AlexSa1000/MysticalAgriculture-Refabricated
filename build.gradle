@@ -1,17 +1,27 @@
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name+"-"+project.minecraft_version
 version = project.mod_version
 group = project.maven_group
 
-minecraft {
-	accessWidener =  file("src/main/resources/mysticalagriculture.accesswidener")
+loom {
+	accessWidenerPath = file("src/main/resources/mysticalagriculture.accesswidener")
+	runs {
+		//
+		// This adds a new gradle task that runs the datagen API: "gradlew runDatagenClient"
+		//
+		datagenClient {
+			inherit client
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+			vmArg "-Dfabric-api.datagen.modid=${modid}"
+
+			runDir "build/datagen"
+		}
+	}
 }
 
 repositories {
@@ -25,11 +35,9 @@ repositories {
         url = "https://maven.shedaniel.me/"
     }
 
-	maven { url = 'https://jitpack.io' }
-
 	maven {
-		name = "Cotton"
-		url = "https://server.bbkr.space/artifactory/libs-release"
+		name = "Jitpack"
+		url = 'https://jitpack.io'
 	}
 
 	maven {
@@ -37,9 +45,19 @@ repositories {
 		url = "https://www.cursemaven.com"
 	}
 
+	maven {
+		name = "BlameJared Maven'"
+		url = "https://maven.blamejared.com"
+	}
+
+	mavenLocal()
+
 }
 
 dependencies {
+	//implementation 'com.electronwill.night-config:core:3.6.3'
+	//implementation 'com.electronwill.night-config:toml:3.6.3'
+
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -51,21 +69,29 @@ dependencies {
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 	
-	modCompile("me.shedaniel:RoughlyEnoughItems:${project.rei_version}")
+	modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 	
-	include modImplementation ("com.github.Draylar:magna:${project.magna_version}") {
+	include modImplementation ("draylar:magna:${project.magna_version}") {
         exclude group: "net.fabricmc"
         exclude group: "com.jamieswhiteshirt"
         exclude group: "me.shedaniel.cloth"
 		exclude group: "io.github.prospector", module: "modmenu"
 	}
 
-	modImplementation "io.github.cottonmc:LibCD:${project.libcd_version}"
-	include "io.github.cottonmc:LibCD:${project.libcd_version}"
+	//Almost Unified
+	modApi("com.almostreliable.mods:almostunified-fabric:1.19.4-0.4.1")
+
+	include modApi('teamreborn:energy:3.0.0') {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 
 	// Columns
-	modImplementation "curse.maven:columns-385230:3107117"
+	modCompileOnly("curse.maven:columns-385230:3836307")
 
+}
+
+base {
+	archivesName = project.archives_base_name
 }
 
 processResources {
@@ -77,19 +103,8 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
-	it.options.encoding = "UTF-8"
-
-	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
-	if (JavaVersion.current().isJava9Compatible()) {
-		 it.options.release = targetVersion
-	}
+	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+	it.options.release = 17
 }
 
 java {
@@ -97,11 +112,14 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${base.archivesName.get()}"}
 	}
 }
 
@@ -109,13 +127,7 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 
@@ -125,5 +137,15 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+					'src/generated/resources'
+			]
+		}
 	}
 }

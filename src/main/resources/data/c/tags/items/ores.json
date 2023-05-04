@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+     "#c:inferium_ores",
+     "#c:prosperity_ores",
+     "#c:soulium_ores"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mysticalagriculture:blocks/supremium_gemstone_block"
+    "all": "mysticalagriculture:block/supremium_gemstone_block"
   }
 }

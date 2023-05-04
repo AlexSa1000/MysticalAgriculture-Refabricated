@@ -1,24 +1,17 @@
 package com.alex.mysticalagriculture.items.tool;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
-import com.alex.mysticalagriculture.api.tinkerer.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.augment.MiningAOEAugment;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.util.item.tool.BaseAxeItem;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import com.alex.mysticalagriculture.zucchini.item.tool.BaseAxeItem;
 import draylar.magna.api.BlockProcessor;
 import draylar.magna.api.MagnaTool;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -34,24 +27,24 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.function.Function;
 
 public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.AXE);
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceAxeItem(ToolMaterial tier, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
-        super(tier, settings);
+    public EssenceAxeItem(ToolMaterial tier, int tinkerableTier, int slots) {
+        super(tier);
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        List<Augment> augments = AugmentUtils.getAugments(context.getStack());
-        boolean success = false;
-        for (Augment augment : augments) {
+        var augments = AugmentUtils.getAugments(context.getStack());
+        var success = false;
+
+        for (var augment : augments) {
             if (augment.onItemUse(context))
                 success = true;
         }
@@ -64,10 +57,11 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getStackInHand(hand);
-        List<Augment> augments = AugmentUtils.getAugments(stack);
-        boolean success = false;
-        for (Augment augment : augments) {
+        var stack = player.getStackInHand(hand);
+        var augments = AugmentUtils.getAugments(stack);
+        var success = false;
+
+        for (var augment : augments) {
             if (augment.onRightClick(stack, world, player, hand))
                 success = true;
         }
@@ -80,9 +74,10 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-        List<Augment> augments = AugmentUtils.getAugments(stack);
-        boolean success = false;
-        for (Augment augment : augments) {
+        var augments = AugmentUtils.getAugments(stack);
+        var success = false;
+
+        for (var augment : augments) {
             if (augment.onRightClickEntity(stack, player, target, hand))
                 success = true;
         }
@@ -92,9 +87,10 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        List<Augment> augments = AugmentUtils.getAugments(stack);
-        boolean success = false;
-        for (Augment augment : augments) {
+        var augments = AugmentUtils.getAugments(stack);
+        var success = false;
+
+        for (var augment : augments) {
             if (augment.onHitEntity(stack, target, attacker))
                 success = true;
         }
@@ -104,11 +100,10 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
 
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entity) {
-        super.postMine(stack, world, state, pos, entity);
+        var augments = AugmentUtils.getAugments(stack);
+        boolean success = super.postMine(stack, world, state, pos, entity);
 
-        List<Augment> augments = AugmentUtils.getAugments(stack);
-        boolean success = false;
-        for (Augment augment : augments) {
+        for (var augment : augments) {
             if (augment.onBlockDestroyed(stack, world, state, pos, entity))
                 success = true;
         }
@@ -118,8 +113,9 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
 
     @Override
     public int getRadius(ItemStack stack) {
-        List<Augment> augments = AugmentUtils.getAugments(stack);
-        for (Augment augment : augments) {
+        var augments = AugmentUtils.getAugments(stack);
+
+        for (var augment : augments) {
             if (augment instanceof MiningAOEAugment)
                 return ((MiningAOEAugment) augment).getRange();
         }
@@ -172,4 +168,5 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
     public int getTinkerableTier() {
         return this.tinkerableTier;
     }
+
 }

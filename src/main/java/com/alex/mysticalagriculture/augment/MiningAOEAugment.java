@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.augment;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
-import com.alex.mysticalagriculture.util.helper.ColorHelper;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.zucchini.helper.ColorHelper;
 import net.minecraft.util.Identifier;
 
 import java.util.EnumSet;

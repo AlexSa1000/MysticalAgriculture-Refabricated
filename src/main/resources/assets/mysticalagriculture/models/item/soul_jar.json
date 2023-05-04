@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "mysticalagriculture:items/soul_jar"
+    "layer0": "mysticalagriculture:item/soul_jar"
   },
   "overrides": [
     {

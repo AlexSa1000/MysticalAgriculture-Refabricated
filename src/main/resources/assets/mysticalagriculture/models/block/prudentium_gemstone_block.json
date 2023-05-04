@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mysticalagriculture:blocks/prudentium_gemstone_block"
+    "all": "mysticalagriculture:block/prudentium_gemstone_block"
   }
 }

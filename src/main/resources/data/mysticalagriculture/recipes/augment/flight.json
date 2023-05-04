@@ -1,5 +1,11 @@
 {
   "type": "mysticalagriculture:infusion",
+  "conditions": [
+    {
+      "type": "mysticalagriculture:augment_enabled",
+      "augment": "mysticalagriculture:flight"
+    }
+  ],
   "input": {
     "item": "mysticalagriculture:unattuned_augment"
   },

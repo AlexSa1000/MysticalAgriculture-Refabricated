@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:spider"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:spider_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:spider_essence"
+  }
+}

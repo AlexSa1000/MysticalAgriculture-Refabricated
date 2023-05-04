@@ -1,18 +1,17 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.util.item.BaseItem;
-import com.alex.mysticalagriculture.util.util.Localizable;
+import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.zucchini.item.BaseItem;
+import com.alex.mysticalagriculture.zucchini.util.Localizable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-import java.util.function.Function;
-
-public class MysticalEssenceItem extends BaseItem {
+public class MysticalEssenceItem extends BaseItem implements CropProvider {
     private final Crop crop;
 
-    public MysticalEssenceItem(Crop crop, Function<Settings, Settings> settings) {
-        super(settings);
+    public MysticalEssenceItem(Crop crop) {
+        super();
         this.crop = crop;
     }
 

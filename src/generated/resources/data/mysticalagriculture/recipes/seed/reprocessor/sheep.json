@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:sheep"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:sheep_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:sheep_essence"
+  }
+}

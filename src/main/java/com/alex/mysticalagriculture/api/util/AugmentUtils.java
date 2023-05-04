@@ -1,14 +1,14 @@
 package com.alex.mysticalagriculture.api.util;
 
+import com.alex.mysticalagriculture.api.MysticalAgricultureAPI;
 import com.alex.mysticalagriculture.api.crop.CropTier;
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.lib.ModAugments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.LiteralText;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -24,10 +24,10 @@ public class AugmentUtils {
         if (item instanceof Tinkerable) {
             Tinkerable tinkerable = (Tinkerable) item;
             if (slot < tinkerable.getAugmentSlots() && tinkerable.getTinkerableTier() >= augment.getTier()) {
-                CompoundTag nbt = stack.getTag();
+                NbtCompound nbt = stack.getNbt();
                 if (nbt == null) {
-                    nbt = new CompoundTag();
-                    stack.setTag(nbt);
+                    nbt = new NbtCompound();
+                    stack.setNbt(nbt);
                 }
 
                 nbt.putString("Augment-" + slot, augment.getId().toString());
@@ -36,7 +36,7 @@ public class AugmentUtils {
     }
 
     public static void removeAugment(ItemStack stack, int slot) {
-        CompoundTag nbt = stack.getTag();
+        NbtCompound nbt = stack.getNbt();
         if (nbt == null)
             return;
 
@@ -50,7 +50,7 @@ public class AugmentUtils {
     }
 
     public static Augment getAugment(ItemStack stack, int slot) {
-        CompoundTag nbt = stack.getTag();
+        NbtCompound nbt = stack.getNbt();
         if (nbt == null)
             return null;
 
@@ -59,7 +59,7 @@ public class AugmentUtils {
             Tinkerable tinkerable = (Tinkerable) item;
             if (slot < tinkerable.getAugmentSlots() && nbt.contains("Augment-" + slot)) {
                 String name = nbt.getString("Augment-" + slot);
-                return ModAugments.getAugmentById(new Identifier(name));
+                return MysticalAgricultureAPI.getAugmentRegistry().getAugmentById(new Identifier(name));
             }
         }
 
@@ -67,7 +67,7 @@ public class AugmentUtils {
     }
 
     public static List<Augment> getAugments(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
+        NbtCompound nbt = stack.getNbt();
         List<Augment> augments = new ArrayList<>();
         if (nbt == null)
             return augments;
@@ -87,7 +87,7 @@ public class AugmentUtils {
     }
 
     public static List<Augment> getArmorAugments(PlayerEntity player) {
-        DefaultedList<ItemStack> armor = player.inventory.armor;
+        DefaultedList<ItemStack> armor = player.getInventory().armor;
         List<Augment> augments = new ArrayList<>();
         for (ItemStack stack : armor) {
             augments.addAll(getAugments(stack));
@@ -97,17 +97,17 @@ public class AugmentUtils {
     }
 
     public static Formatting getColorForTier(int tier) {
-        switch (tier) {
-            case 1: return CropTier.ONE.getTextColor();
-            case 2: return CropTier.TWO.getTextColor();
-            case 3: return CropTier.THREE.getTextColor();
-            case 4: return CropTier.FOUR.getTextColor();
-            case 5: return CropTier.FIVE.getTextColor();
-            default: return Formatting.GRAY;
-        }
+        return switch (tier) {
+            case 1 -> CropTier.ONE.getTextColor();
+            case 2 -> CropTier.TWO.getTextColor();
+            case 3 -> CropTier.THREE.getTextColor();
+            case 4 -> CropTier.FOUR.getTextColor();
+            case 5 -> CropTier.FIVE.getTextColor();
+            default -> Formatting.GRAY;
+        };
     }
 
     public static Text getTooltipForTier(int tier) {
-        return new LiteralText(String.valueOf(tier)).formatted(getColorForTier(tier));
+        return Text.literal(String.valueOf(tier)).formatted(getColorForTier(tier));
     }
 }

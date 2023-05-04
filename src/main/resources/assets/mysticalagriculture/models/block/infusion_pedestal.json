@@ -1,8 +1,8 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "3": "mysticalagriculture:blocks/infusion_pedestal_side",
-    "4": "mysticalagriculture:blocks/infusion_pedestal_top",
+    "3": "mysticalagriculture:block/infusion_pedestal_side",
+    "4": "mysticalagriculture:block/infusion_pedestal_top",
     "particle": "block/stone"
   },
   "elements": [

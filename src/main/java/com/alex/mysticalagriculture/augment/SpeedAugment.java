@@ -1,9 +1,9 @@
 package com.alex.mysticalagriculture.augment;
 
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
-import com.alex.mysticalagriculture.util.helper.ColorHelper;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.zucchini.helper.ColorHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -21,13 +21,13 @@ public class SpeedAugment extends Augment {
 
     @Override
     public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {
-        boolean flying = player.abilities.flying;
-        boolean swimming = player.isSwimming();
-        boolean inWater = player.isTouchingWater();
+        var flying = player.getAbilities().flying;
+        var swimming = player.isSwimming();
+        var inWater = player.isTouchingWater();
 
         if (player.isOnGround() || flying || swimming || inWater) {
-            boolean sneaking = player.isInSneakingPose();
-            boolean sprinting = player.isSprinting();
+            var sneaking = player.isInSneakingPose();
+            var sprinting = player.isSprinting();
 
             float speed = 0.1F
                     * (flying ? 0.6F : 1.0F)

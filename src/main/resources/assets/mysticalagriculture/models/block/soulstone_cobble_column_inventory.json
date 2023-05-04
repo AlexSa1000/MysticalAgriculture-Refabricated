@@ -1,6 +1,0 @@
-{
-  "parent": "columns:block/column_inventory",
-  "textures": {
-    "all": "mysticalagriculture:blocks/soulstone_cobble"
-  }
-}

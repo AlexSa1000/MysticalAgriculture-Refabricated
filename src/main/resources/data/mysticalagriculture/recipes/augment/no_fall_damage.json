@@ -11,7 +11,7 @@
   },
   "ingredients": [
     {
-      "tag": "c:diamonds"
+      "tag": "forge:gems/diamond"
     },
     {
       "item": "mysticalagriculture:tertium_essence"
@@ -23,7 +23,7 @@
       "item": "mysticalagriculture:tertium_essence"
     },
     {
-      "tag": "c:diamonds"
+      "tag": "forge:gems/diamond"
     },
     {
       "item": "mysticalagriculture:tertium_essence"

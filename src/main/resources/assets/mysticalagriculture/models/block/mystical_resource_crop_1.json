@@ -1,6 +1,6 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "mysticalagriculture:blocks/mystical_resource_crop_1"
+    "cross": "mysticalagriculture:block/mystical_resource_crop_1"
   }
 }

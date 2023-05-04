@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:blaze"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:blaze_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:blaze_essence"
+  }
+}

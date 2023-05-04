@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:emerald"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:emerald_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:emerald_essence"
+  }
+}

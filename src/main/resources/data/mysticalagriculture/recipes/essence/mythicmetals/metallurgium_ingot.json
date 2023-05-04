@@ -1,0 +1,23 @@
+{
+  "type": "mysticalagriculture:shaped_no_mirror",
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:metallurgium"
+    }
+  ],
+  "pattern": [
+    "EEE",
+    "E E",
+    "EEE"
+  ],
+  "key": {
+    "E": {
+      "item": "mysticalagriculture:metallurgium_essence"
+    }
+  },
+  "result": {
+    "item": "mythicmetals:metallurgium_ingot",
+    "count": 4
+  }
+}

@@ -3,7 +3,7 @@
   "group": "mysticalagriculture:farmland_till",
   "ingredients": [
     {
-      "tag": "fabric:hoes"
+      "tag": "minecraft:hoes"
     },
     {
       "item": "mysticalagriculture:imperium_essence"

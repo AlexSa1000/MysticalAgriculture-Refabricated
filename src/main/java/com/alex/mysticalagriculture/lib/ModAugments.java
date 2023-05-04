@@ -1,22 +1,22 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
+import com.alex.mysticalagriculture.api.registry.AugmentRegistry;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.augment.*;
 import com.alex.mysticalagriculture.items.AugmentItem;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.alex.mysticalagriculture.MysticalAgriculture.ITEM_GROUP;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class ModAugments {
     private static final List<Augment> augments = new ArrayList<>();
-
 
     public static final Augment ABSORPTION_I = new AbsorptionAugment(new Identifier(MOD_ID, "absorption_i"), 1, 0);
     public static final Augment HEALTH_BOOST_I = new HealthBoostAugment(new Identifier(MOD_ID, "health_boost_i"), 1, 1);
@@ -66,7 +66,57 @@ public class ModAugments {
     public static final Augment ATTACK_AOE_III = new AttackAOEAugment(new Identifier(MOD_ID, "attack_aoe_iii"), 5, 3);
     public static final Augment TILLING_AOE_IV = new TillingAOEAugment(new Identifier(MOD_ID, "tilling_aoe_iv"), 5, 4);
 
-    public static void register() {
+    public static void onRegisterAugments(AugmentRegistry registry) {
+        registry.register(ABSORPTION_I);
+        registry.register(HEALTH_BOOST_I);
+        registry.register(PATHING_AOE_I);
+
+        registry.register(NIGHT_VISION);
+        registry.register(WATER_BREATHING);
+        registry.register(ABSORPTION_II);
+        registry.register(JUMP_BOOST_I);
+        registry.register(HEALTH_BOOST_II);
+        registry.register(SPEED_I);
+        registry.register(MINING_AOE_I);
+        registry.register(TILLING_AOE_I);
+        registry.register(PATHING_AOE_II);
+
+        registry.register(ABSORPTION_III);
+        registry.register(FIRE_RESISTANCE);
+        registry.register(JUMP_BOOST_II);
+        registry.register(STEP_ASSIST);
+        registry.register(HEALTH_BOOST_III);
+        registry.register(STRENGTH_I);
+        registry.register(SPEED_II);
+        registry.register(NO_FALL_DAMAGE);
+        registry.register(MINING_AOE_II);
+        registry.register(ATTACK_AOE_I);
+        registry.register(TILLING_AOE_II);
+        registry.register(PATHING_AOE_III);
+
+        registry.register(ABSORPTION_IV);
+        registry.register(POISON_RESISTANCE);
+        registry.register(JUMP_BOOST_III);
+        registry.register(HEALTH_BOOST_IV);
+        registry.register(STRENGTH_II);
+        registry.register(SPEED_III);
+        registry.register(MINING_AOE_III);
+        registry.register(ATTACK_AOE_II);
+        registry.register(TILLING_AOE_III);
+        registry.register(PATHING_AOE_IV);
+        registry.register(MINING_FATIGUE_RESISTANCE);
+
+        registry.register(ABSORPTION_V);
+        registry.register(WITHER_RESISTANCE);
+        registry.register(HEALTH_BOOST_V);
+        registry.register(STRENGTH_III);
+        registry.register(FLIGHT);
+        registry.register(MINING_AOE_IV);
+        registry.register(ATTACK_AOE_III);
+        registry.register(TILLING_AOE_IV);
+    }
+
+    /*public static void register() {
         augments.add(ATTACK_AOE_I);
         augments.add(ATTACK_AOE_II);
         augments.add(ATTACK_AOE_III);
@@ -112,16 +162,20 @@ public class ModAugments {
         augments.add(MINING_AOE_IV);
     }
 
+    public static List<Augment> getAugments() {
+        return augments;
+    }
+
     public static Augment getAugmentById(Identifier id) {
         return augments.stream().filter(c -> id.equals(c.getId())).findFirst().orElse(null);
     }
 
     public static void registerItems() {
         augments.forEach(a -> {
-            Item item = new AugmentItem(a, p -> p.group(ITEM_GROUP));
-            Registry.register(Registry.ITEM, new Identifier(MOD_ID, a.getNameWithSuffix("augment")), item);
+            Item item = new AugmentItem(a);
+            Registry.register(Registries.ITEM, new Identifier(MOD_ID, a.getNameWithSuffix("augment")), item);
         });
-    }
+    }*/
 
     public static void onColors() {
         augments.forEach(augment -> {

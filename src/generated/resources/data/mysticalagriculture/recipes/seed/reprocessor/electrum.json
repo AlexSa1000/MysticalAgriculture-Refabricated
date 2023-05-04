@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:electrum"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:electrum_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:electrum_essence"
+  }
+}

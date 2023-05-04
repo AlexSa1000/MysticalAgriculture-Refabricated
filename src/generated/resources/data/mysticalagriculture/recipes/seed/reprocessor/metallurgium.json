@@ -1,0 +1,16 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:metallurgium"
+    }
+  ],
+  "type": "mysticalagriculture:reprocessor",
+  "input": {
+    "item": "mysticalagriculture:metallurgium_seeds"
+  },
+  "result": {
+    "count": 2,
+    "item": "mysticalagriculture:metallurgium_essence"
+  }
+}

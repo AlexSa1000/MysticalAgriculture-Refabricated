@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_wall_side_tall",
   "textures": {
-    "wall": "mysticalagriculture:blocks/soulstone_bricks"
+    "wall": "mysticalagriculture:block/soulstone_bricks"
   }
 }

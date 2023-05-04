@@ -2,53 +2,37 @@ package com.alex.mysticalagriculture.client.blockentity;
 
 import com.alex.mysticalagriculture.blockentities.TinkeringTableBlockEntity;
 import com.alex.mysticalagriculture.blocks.TinkeringTableBlock;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.state.State;
+import net.minecraft.util.math.RotationAxis;
 
-public class TinkeringTableRenderer extends BlockEntityRenderer<TinkeringTableBlockEntity> {
-    public TinkeringTableRenderer(BlockEntityRenderDispatcher dispatcher) {
-        super(dispatcher);
-    }
+public class TinkeringTableRenderer implements BlockEntityRenderer<TinkeringTableBlockEntity> {
+    public TinkeringTableRenderer(BlockEntityRendererFactory.Context context) { }
 
     @Override
     public void render(TinkeringTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        World world = entity.getWorld();
+        var world = entity.getWorld();
         if (world == null)
             return;
 
-        BlockPos pos = entity.getPos();
-        BlockState state = world.getBlockState(pos);
-        ItemStack stack = entity.getStack(0);
+        var pos = entity.getPos();
+        var state = world.getBlockState(pos);
+        var stack = entity.getInventory().getStack(0);
 
-        if (!stack.isEmpty()) {
+        if(!stack.isEmpty() && state.contains(TinkeringTableBlock.FACING)) {
             matrices.push();
             matrices.translate(0.5D, 0.9D, 0.5D);
             float scale = 0.7F;
             matrices.scale(scale, scale, scale);
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
             int index = state.get(TinkeringTableBlock.FACING).getHorizontal();
-            if (index == 0) {
-                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(270));
-                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
-            } else if (index == 1) {
-                matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(90));
-            } else if (index == 2) {
-                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(90));
-                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(270));
-            } else if (index == 3) {
-                matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(270));
-            }
-
-            MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrices, vertexConsumers);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90 * index));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+            MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, world, 0);
             matrices.pop();
         }
     }

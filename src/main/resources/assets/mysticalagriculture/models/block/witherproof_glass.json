@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mysticalagriculture:blocks/witherproof_glass"
+    "all": "mysticalagriculture:block/witherproof_glass"
   }
 }

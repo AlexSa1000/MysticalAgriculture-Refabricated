@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.api.lib;
 
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;

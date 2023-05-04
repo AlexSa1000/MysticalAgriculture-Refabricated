@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "mysticalagriculture:blocks/prudentium_growth_accelerator_static"
+    "all": "mysticalagriculture:block/prudentium_growth_accelerator_static"
   }
 }

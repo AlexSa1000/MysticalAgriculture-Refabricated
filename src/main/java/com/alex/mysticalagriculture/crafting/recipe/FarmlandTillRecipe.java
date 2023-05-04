@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.util.Utils;
+import com.alex.mysticalagriculture.zucchini.util.Utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -13,22 +13,29 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.ShapelessRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 
 public class FarmlandTillRecipe extends ShapelessRecipe {
-    public FarmlandTillRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> inputs) {
-        super(id, group, output, inputs);
+    private final ItemStack result;
+
+    public FarmlandTillRecipe(Identifier id, String group, ItemStack result, DefaultedList<Ingredient> inputs) {
+        super(id, group, CraftingRecipeCategory.MISC, result, inputs);
+        this.result = result;
     }
 
     @Override
-    public DefaultedList<ItemStack> getRemainingStacks(CraftingInventory inv) {
-        DefaultedList<ItemStack> remaining = super.getRemainingStacks(inv);
+    public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
+        var remaining = super.getRemainder(inv);
+
         for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+            var stack = inv.getStack(i);
+
             if (stack.getItem() instanceof HoeItem) {
-                ItemStack hoe = stack.copy();
+                var hoe = stack.copy();
+
                 if (!hoe.damage(1, Utils.RANDOM, null)) {
                     remaining.set(i, hoe);
                 }
@@ -45,13 +52,14 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
     public static class Serializer  implements RecipeSerializer<FarmlandTillRecipe> {
         @Override
         public FarmlandTillRecipe read(Identifier recipeId, JsonObject json) {
-            String s = JsonHelper.getString(json, "group", "");
-            DefaultedList<Ingredient> ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
+            var group = JsonHelper.getString(json, "group", "");
+            var ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
+
             if (ingredients.isEmpty()) {
                 throw new JsonParseException("No ingredients for shapeless recipe");
             } else {
-                ItemStack itemstack = ShapedRecipe.getItemStack(JsonHelper.getObject(json, "result"));
-                return new FarmlandTillRecipe(recipeId, s, itemstack, ingredients);
+                ItemStack itemstack = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
+                return new FarmlandTillRecipe(recipeId, group, itemstack, ingredients);
             }
         }
 
@@ -70,28 +78,28 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
 
         @Override
         public FarmlandTillRecipe read(Identifier recipeId, PacketByteBuf buffer) {
-            String s = buffer.readString(32767);
-            int i = buffer.readVarInt();
-            DefaultedList<Ingredient> inputs = DefaultedList.ofSize(i, Ingredient.EMPTY);
+            var group = buffer.readString(32767);
+            int size = buffer.readVarInt();
+            var inputs = DefaultedList.ofSize(size, Ingredient.EMPTY);
 
             for (int j = 0; j < inputs.size(); ++j) {
                 inputs.set(j, Ingredient.fromPacket(buffer));
             }
 
             ItemStack itemstack = buffer.readItemStack();
-            return new FarmlandTillRecipe(recipeId, s, itemstack, inputs);
+            return new FarmlandTillRecipe(recipeId, group, itemstack, inputs);
         }
 
         @Override
         public void write(PacketByteBuf buffer, FarmlandTillRecipe recipe) {
-            buffer.writeString(recipe.group);
-            buffer.writeVarInt(recipe.getPreviewInputs().size());
+            buffer.writeString(recipe.getGroup());
+            buffer.writeVarInt(recipe.getIngredients().size());
 
-            for (Ingredient ingredient : recipe.getPreviewInputs()) {
+            for (Ingredient ingredient : recipe.getIngredients()) {
                 ingredient.write(buffer);
             }
 
-            buffer.writeItemStack(recipe.getOutput());
+            buffer.writeItemStack(recipe.result);
         }
     }
 }

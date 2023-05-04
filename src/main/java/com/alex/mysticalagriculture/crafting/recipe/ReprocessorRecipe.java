@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.zucchini.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.google.gson.JsonObject;
@@ -11,10 +11,11 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
-public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagriculture.crafting.ReprocessorRecipe {
+public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.ReprocessorRecipe {
     private final Identifier recipeId;
     private final DefaultedList<Ingredient> inputs;
     private final ItemStack output;
@@ -26,7 +27,7 @@ public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagricu
     }
 
     @Override
-    public ItemStack craft(Inventory inv) {
+    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
         return this.output.copy();
     }
 
@@ -36,12 +37,12 @@ public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagricu
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getOutput(DynamicRegistryManager registryManager) {
         return this.output;
     }
 
     @Override
-    public DefaultedList<Ingredient> getPreviewInputs() {
+    public DefaultedList<Ingredient> getIngredients() {
         return this.inputs;
     }
 
@@ -70,17 +71,17 @@ public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagricu
 
         @Override
         public ReprocessorRecipe read(Identifier id, JsonObject json) {
-            JsonObject ingredient = json.getAsJsonObject("input");
-            Ingredient input = Ingredient.fromJson(ingredient);
-            ItemStack output = ShapedRecipe.getItemStack(json.getAsJsonObject("result"));
+            var ingredient = json.getAsJsonObject("input");
+            var input = Ingredient.fromJson(ingredient);
+            var output = ShapedRecipe.outputFromJson(json.getAsJsonObject("result"));
 
             return new ReprocessorRecipe(id, input, output);
         }
 
         @Override
         public ReprocessorRecipe read(Identifier id, PacketByteBuf buf) {
-            Ingredient input = Ingredient.fromPacket(buf);
-            ItemStack output = buf.readItemStack();
+            var input = Ingredient.fromPacket(buf);
+            var output = buf.readItemStack();
 
             return new ReprocessorRecipe(id, input, output);
         }

@@ -28,14 +28,13 @@ public class InferiumCropBlock extends MysticalCropBlock {
         if (age == this.getMaxAge()) {
             crop = 1;
 
-            Vec3d vec = builder.get(LootContextParameters.ORIGIN);
+            var vec = builder.get(LootContextParameters.ORIGIN);
             if (vec != null) {
-                ServerWorld world = builder.getWorld();
-                BlockPos pos = new BlockPos(vec);
-                Block below = world.getBlockState(pos.down()).getBlock();
+                var world = builder.getWorld();
+                var pos = new BlockPos((int) Math.floor(vec.x), (int) Math.floor(vec.y), (int) Math.floor(vec.z));
+                var below = world.getBlockState(pos.down()).getBlock();
 
-                if (below instanceof InfusedFarmlandBlock) {
-                    InfusedFarmlandBlock farmland = (InfusedFarmlandBlock) below;
+                if (below instanceof InfusedFarmlandBlock farmland) {
                     int tier = farmland.getTier().getValue();
                     crop = (int) ((0.5D * tier) + 0.5D);
                     if (tier > 1 && tier % 2 == 0 && Math.random() < 0.5D)
@@ -43,7 +42,7 @@ public class InferiumCropBlock extends MysticalCropBlock {
                 }
 
                 double chance = this.getCrop().getSecondaryChance(below);
-                if (Math.random() < chance)
+                if (/*ModConfigs.SECONDARY_SEED_DROPS.get() &&*/ Math.random() < chance)
                     seed = 2;
 
             }

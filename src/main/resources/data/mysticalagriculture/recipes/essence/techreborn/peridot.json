@@ -1,0 +1,23 @@
+{
+  "type": "mysticalagriculture:shaped_no_mirror",
+  "fabric:load_conditions": [
+    {
+      "condition": "mysticalagriculture:crop_enabled",
+      "crop": "mysticalagriculture:peridot"
+    }
+  ],
+  "pattern": [
+    "EEE",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "E": {
+      "item": "mysticalagriculture:peridot_essence"
+    }
+  },
+  "result": {
+    "item": "techreborn:peridot_gem",
+    "count": 6
+  }
+}

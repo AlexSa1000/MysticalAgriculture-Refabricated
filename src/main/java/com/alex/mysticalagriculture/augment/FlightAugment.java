@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.augment;
 
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
-import com.alex.mysticalagriculture.api.tinkerer.Augment;
-import com.alex.mysticalagriculture.api.tinkerer.AugmentType;
+import com.alex.mysticalagriculture.api.tinkering.Augment;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -16,13 +16,15 @@ public class FlightAugment extends Augment {
 
     @Override
     public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {
-        if (!player.abilities.allowFlying || !cache.isCached(this, player)) {
-            player.abilities.allowFlying = true;
+        var abilities = player.getAbilities();
+
+        if (!abilities.allowFlying || !cache.isCached(this, player)) {
+            abilities.allowFlying = true;
 
             cache.add(this, player, () -> {
-                if (!player.abilities.creativeMode && !player.isSpectator()) {
-                    player.abilities.allowFlying = false;
-                    player.abilities.flying = false;
+                if (!abilities.creativeMode && !player.isSpectator()) {
+                    abilities.allowFlying = false;
+                    abilities.flying = false;
                 }
             });
         }
