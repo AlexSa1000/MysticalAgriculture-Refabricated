@@ -2,18 +2,18 @@ package com.alex.mysticalagriculture.screenhandler.slot;
 
 import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
-import com.alex.mysticalagriculture.zucchini.iface.ToggleableSlot;
+import com.alex.mysticalagriculture.cucumber.iface.ToggleableSlot;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.forge.items.SlotItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
 
-public class AugmentSlot extends Slot implements ToggleableSlot {
+public class AugmentSlot extends SlotItemHandler implements ToggleableSlot {
     private final ScreenHandler screenHandler;
     private final int augmentSlot;
 
-    public AugmentSlot(ScreenHandler screenHandler, Inventory inventory, int index, int x, int y, int augmentSlot) {
+    public AugmentSlot(ScreenHandler screenHandler, BaseItemStackHandler inventory, int index, int x, int y, int augmentSlot) {
         super(inventory, index, x, y);
         this.screenHandler = screenHandler;
         this.augmentSlot = augmentSlot;
@@ -41,7 +41,7 @@ public class AugmentSlot extends Slot implements ToggleableSlot {
         if (!super.canInsert(stack))
             return false;
 
-        var stackInSlot = this.inventory.getStack(0);
+        var stackInSlot = this.getItemHandler().getStack(0);
         var tinkerableItem = stackInSlot.getItem();
         var augmentItem = stack.getItem();
 
@@ -56,7 +56,7 @@ public class AugmentSlot extends Slot implements ToggleableSlot {
 
     @Override
     public boolean isEnabled() {
-        var stack = this.inventory.getStack(0);
+        var stack = this.getItemHandler().getStack(0);
         var item = stack.getItem();
 
         if (item instanceof Tinkerable tinkerable) {

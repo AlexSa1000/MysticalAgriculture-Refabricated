@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,7 @@ public class InferiumCropBlock extends MysticalCropBlock {
                 }
 
                 double chance = this.getCrop().getSecondaryChance(below);
-                if (/*ModConfigs.SECONDARY_SEED_DROPS.get() &&*/ Math.random() < chance)
+                if (ModConfigs.SECONDARY_SEED_DROPS.get() && Math.random() < chance)
                     seed = 2;
 
             }

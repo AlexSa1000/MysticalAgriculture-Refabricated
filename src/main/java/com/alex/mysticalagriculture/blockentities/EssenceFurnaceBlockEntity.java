@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.blockentities;
 
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.util.FurnaceTier;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

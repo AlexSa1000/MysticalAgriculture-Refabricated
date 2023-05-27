@@ -1,7 +1,8 @@
 package com.alex.mysticalagriculture.blocks;
 
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.block.BaseBlock;
+import com.alex.mysticalagriculture.cucumber.block.BaseBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
 import net.minecraft.block.Material;
@@ -53,6 +54,6 @@ public class GrowthAcceleratorBlock extends BaseBlock {
 
     private static int getTickRate() {
         double variance = Math.random() * (1.1 - 0.9) + 0.9;
-        return (int) (/*ModConfigs.GROWTH_ACCELERATOR_COOLDOWN.get()*/ 10 * variance) * 20;
+        return (int) (ModConfigs.GROWTH_ACCELERATOR_COOLDOWN.get() * variance) * 20;
     }
 }

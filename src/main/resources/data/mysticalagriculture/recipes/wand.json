@@ -7,10 +7,10 @@
   ],
   "key": {
     "S": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:stick"
     },
     "R": {
-      "tag": "forge:stone"
+      "item": "minecraft:stone"
     },
     "E": {
       "item": "mysticalagriculture:inferium_essence"

@@ -4,8 +4,8 @@ import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
-import com.alex.mysticalagriculture.zucchini.helper.NBTHelper;
-import com.alex.mysticalagriculture.zucchini.util.FeatureFlagDisplayItemGenerator;
+import com.alex.mysticalagriculture.cucumber.helper.NBTHelper;
+import com.alex.mysticalagriculture.cucumber.util.FeatureFlagDisplayItemGenerator;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -93,7 +93,7 @@ public class CreativeModeTabs {
         output.add(Blocks.SUPREMIUM_REPROCESSOR);
         output.add(Blocks.AWAKENED_SUPREMIUM_REPROCESSOR);
         output.add(Blocks.SOUL_EXTRACTOR);
-        //output.add(Blocks.HARVESTER);
+        output.add(Blocks.HARVESTER);
 
         output.add(Items.PROSPERITY_SHARD);
         output.add(Items.INFERIUM_ESSENCE);
@@ -155,7 +155,7 @@ public class CreativeModeTabs {
         }*/
 
         output.add(Items.EXPERIENCE_DROPLET);
-        //output.add(Items.WAND);
+        output.add(Items.WAND);
         output.add(Items.BLANK_SKULL);
         output.add(Items.BLANK_RECORD);
         output.add(Items.UNATTUNED_AUGMENT);
@@ -204,8 +204,8 @@ public class CreativeModeTabs {
         NBTHelper.setBoolean(stack, "Water", false);
         NBTHelper.setBoolean(stack, "Active", false);
         output.add(stack);
-//        output.add(Items.INFERIUM_BOW);
-//        output.add(Items.INFERIUM_CROSSBOW);
+        output.add(Items.INFERIUM_BOW);
+        output.add(Items.INFERIUM_CROSSBOW);
 //        output.add(Items.INFERIUM_SHEARS);
 //        output.add(Items.INFERIUM_FISHING_ROD);
 //        output.add(Items.INFERIUM_SICKLE);
@@ -222,9 +222,9 @@ public class CreativeModeTabs {
         NBTHelper.setBoolean(stack, "Active", false);
         output.add(stack);
 
-        /*output.add(Items.PRUDENTIUM_BOW);
+        output.add(Items.PRUDENTIUM_BOW);
         output.add(Items.PRUDENTIUM_CROSSBOW);
-        output.add(Items.PRUDENTIUM_SHEARS);
+        /*output.add(Items.PRUDENTIUM_SHEARS);
         output.add(Items.PRUDENTIUM_FISHING_ROD);
         output.add(Items.PRUDENTIUM_SICKLE);
         output.add(Items.PRUDENTIUM_SCYTHE);*/
@@ -240,9 +240,9 @@ public class CreativeModeTabs {
         NBTHelper.setBoolean(stack, "Active", false);
         output.add(stack);
 
-        /*output.add(Items.TERTIUM_BOW);
+        output.add(Items.TERTIUM_BOW);
         output.add(Items.TERTIUM_CROSSBOW);
-        output.add(Items.TERTIUM_SHEARS);
+        /*output.add(Items.TERTIUM_SHEARS);
         output.add(Items.TERTIUM_FISHING_ROD);
         output.add(Items.TERTIUM_SICKLE);
         output.add(Items.TERTIUM_SCYTHE);*/
@@ -258,9 +258,9 @@ public class CreativeModeTabs {
         NBTHelper.setBoolean(stack, "Active", false);
         output.add(stack);
 
-        /*output.add(Items.IMPERIUM_BOW);
+        output.add(Items.IMPERIUM_BOW);
         output.add(Items.IMPERIUM_CROSSBOW);
-        output.add(Items.IMPERIUM_SHEARS);
+        /*output.add(Items.IMPERIUM_SHEARS);
         output.add(Items.IMPERIUM_FISHING_ROD);
         output.add(Items.IMPERIUM_SICKLE);
         output.add(Items.IMPERIUM_SCYTHE);*/
@@ -276,27 +276,27 @@ public class CreativeModeTabs {
         NBTHelper.setBoolean(stack, "Active", false);
         output.add(stack);
 
-        /*output.add(Items.SUPREMIUM_BOW);
+        output.add(Items.SUPREMIUM_BOW);
         output.add(Items.SUPREMIUM_CROSSBOW);
-        output.add(Items.SUPREMIUM_SHEARS);
-        output.add(Items.SUPREMIUM_FISHING_ROD);
-        output.add(Items.SUPREMIUM_SICKLE);
-        output.add(Items.SUPREMIUM_SCYTHE);
+        //output.add(Items.SUPREMIUM_SHEARS);
+        //output.add(Items.SUPREMIUM_FISHING_ROD);
+        //output.add(Items.SUPREMIUM_SICKLE);
+        //output.add(Items.SUPREMIUM_SCYTHE);
         output.add(Items.AWAKENED_SUPREMIUM_SWORD);
         output.add(Items.AWAKENED_SUPREMIUM_PICKAXE);
         output.add(Items.AWAKENED_SUPREMIUM_SHOVEL);
         output.add(Items.AWAKENED_SUPREMIUM_AXE);
-        output.add(Items.AWAKENED_SUPREMIUM_HOE);*/
+        output.add(Items.AWAKENED_SUPREMIUM_HOE);
 //                output.add(Items.AWAKENED_SUPREMIUM_STAFF);
 
-        /*stack = new ItemStack(Items.AWAKENED_SUPREMIUM_WATERING_CAN.get());
+        stack = new ItemStack(Items.AWAKENED_SUPREMIUM_WATERING_CAN);
         NBTHelper.setBoolean(stack, "Water", false);
         NBTHelper.setBoolean(stack, "Active", false);
-        output.add(stack);*/
+        output.add(stack);
 
-        /*output.add(Items.AWAKENED_SUPREMIUM_BOW);
+        output.add(Items.AWAKENED_SUPREMIUM_BOW);
         output.add(Items.AWAKENED_SUPREMIUM_CROSSBOW);
-        output.add(Items.AWAKENED_SUPREMIUM_SHEARS);
+        /*output.add(Items.AWAKENED_SUPREMIUM_SHEARS);
         output.add(Items.AWAKENED_SUPREMIUM_FISHING_ROD);
         output.add(Items.AWAKENED_SUPREMIUM_SICKLE);
         output.add(Items.AWAKENED_SUPREMIUM_SCYTHE);*/
@@ -321,10 +321,10 @@ public class CreativeModeTabs {
         output.add(Items.SUPREMIUM_CHESTPLATE);
         output.add(Items.SUPREMIUM_LEGGINGS);
         output.add(Items.SUPREMIUM_BOOTS);
-        /*output.add(Items.AWAKENED_SUPREMIUM_HELMET);
+        output.add(Items.AWAKENED_SUPREMIUM_HELMET);
         output.add(Items.AWAKENED_SUPREMIUM_CHESTPLATE);
         output.add(Items.AWAKENED_SUPREMIUM_LEGGINGS);
-        output.add(Items.AWAKENED_SUPREMIUM_BOOTS);*/
+        output.add(Items.AWAKENED_SUPREMIUM_BOOTS);
 
         for (var augment : AugmentRegistry.getInstance().getAugments()) {
             if (augment.isEnabled()) {

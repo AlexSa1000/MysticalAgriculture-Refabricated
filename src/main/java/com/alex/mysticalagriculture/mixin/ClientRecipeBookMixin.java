@@ -14,7 +14,7 @@ public class ClientRecipeBookMixin {
 
     @Inject(method = "getGroupForRecipe", at = @At(value = "HEAD"), cancellable = true)
     private static void addRecipeGroups(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookGroup> cir) {
-        if (recipe.getType() == RecipeTypes.INFUSION || recipe.getType() == RecipeTypes.REPROCESSOR || recipe.getType() == RecipeTypes.INFUSION_CRYSTAL) {
+        if (recipe.getType() == RecipeTypes.INFUSION || recipe.getType() == RecipeTypes.AWAKENING || recipe.getType() == RecipeTypes.REPROCESSOR || recipe.getType() == RecipeTypes.SOUL_EXTRACTION || recipe.getType() == RecipeTypes.INFUSION_CRYSTAL) {
             cir.setReturnValue(RecipeBookGroup.UNKNOWN);
         }
     }

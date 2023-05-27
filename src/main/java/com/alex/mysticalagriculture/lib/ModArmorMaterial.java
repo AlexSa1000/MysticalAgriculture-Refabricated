@@ -26,6 +26,9 @@ public enum ModArmorMaterial implements ArmorMaterial {
     }),
     SUPREMIUM("supremium", 280, new int[]{5, 8, 10, 6}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 3.0F, 0.0F, () -> {
         return Ingredient.ofItems(Items.SUPREMIUM_INGOT);
+    }),
+    AWAKENED_SUPREMIUM("mysticalagriculture:awakened_supremium", 320, new int[] { 6, 12, 10, 8 }, 22, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 3.5F, 0.1F, () -> {
+        return Ingredient.ofItems(Items.AWAKENED_SUPREMIUM_INGOT);
     });
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};

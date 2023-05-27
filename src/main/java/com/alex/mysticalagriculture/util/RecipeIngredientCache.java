@@ -2,8 +2,9 @@ package com.alex.mysticalagriculture.util;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.zucchini.helper.RecipeHelper;
+import com.alex.mysticalagriculture.cucumber.helper.RecipeHelper;
 import com.google.common.base.Stopwatch;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,12 +12,12 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.SynchronousResourceReloader;
+import net.minecraft.util.Identifier;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class RecipeIngredientCache implements SynchronousResourceReloader {
+public class RecipeIngredientCache implements SimpleSynchronousResourceReloadListener {
     public static final RecipeIngredientCache INSTANCE = new RecipeIngredientCache();
 
     private final Map<RecipeType<?>, Map<Item, List<Ingredient>>> caches;
@@ -29,6 +30,7 @@ public class RecipeIngredientCache implements SynchronousResourceReloader {
         this.caches.clear();
         this.caches.putAll(caches);
     }
+
     @Override
     public void reload(ResourceManager manager) {
         var stopwatch = Stopwatch.createStarted();
@@ -36,7 +38,7 @@ public class RecipeIngredientCache implements SynchronousResourceReloader {
         this.caches.clear();
 
         cache(RecipeTypes.REPROCESSOR);
-        //cache(RecipeTypes.SOUL_EXTRACTION);
+        cache(RecipeTypes.SOUL_EXTRACTION);
 
         MysticalAgriculture.LOGGER.info("Recipe ingredient caching done in {} ms", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
     }
@@ -64,5 +66,10 @@ public class RecipeIngredientCache implements SynchronousResourceReloader {
                 }
             }
         }
+    }
+
+    @Override
+    public Identifier getFabricId() {
+        return new Identifier("mysticalagriculture", "recipe_cache");
     }
 }

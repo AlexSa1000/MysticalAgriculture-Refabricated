@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.item.BaseItem;
+import com.alex.mysticalagriculture.cucumber.item.BaseItem;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.world.ClientWorld;

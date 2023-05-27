@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.zucchini.item.BaseReusableItem;
+import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.mysticalagriculture.cucumber.item.BaseReusableItem;
 import net.minecraft.item.ItemStack;
 
 public class InfusionCrystalItem extends BaseReusableItem {
@@ -11,7 +12,7 @@ public class InfusionCrystalItem extends BaseReusableItem {
 
     @Override
     public int getMaxDamage() {
-        return /*ModConfigs.INFUSION_CRYSTAL_USES.get()*/1000 - 1;
+        return ModConfigs.INFUSION_CRYSTAL_USES.get() - 1;
     }
 
     @Override

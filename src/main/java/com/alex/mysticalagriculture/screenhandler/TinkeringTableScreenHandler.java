@@ -3,11 +3,12 @@ package com.alex.mysticalagriculture.screenhandler;
 import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.blockentities.TinkeringTableBlockEntity;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.screenhandler.slot.AugmentSlot;
 import com.alex.mysticalagriculture.screenhandler.slot.ElementSlot;
 import com.alex.mysticalagriculture.screenhandler.slot.TinkerableSlot;
 import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
-import com.alex.mysticalagriculture.zucchini.screenhandler.BaseScreenHandler;
+import com.alex.mysticalagriculture.cucumber.screenhandler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -18,13 +19,13 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class TinkeringTableScreenHandler extends BaseScreenHandler {
-    private final Inventory inventory;
+    private final BaseItemStackHandler inventory;
 
     private TinkeringTableScreenHandler(ScreenHandlerType<?> type, int id, PlayerInventory playerInventory, PacketByteBuf buffer) {
         this(type, id, playerInventory, TinkeringTableBlockEntity.createInventoryHandler(), buffer.readBlockPos());
     }
 
-    private TinkeringTableScreenHandler(ScreenHandlerType<?> type, int id, PlayerInventory playerInventory, Inventory inventory, BlockPos pos) {
+    private TinkeringTableScreenHandler(ScreenHandlerType<?> type, int id, PlayerInventory playerInventory, BaseItemStackHandler inventory, BlockPos pos) {
         super(type, id, pos);
         this.inventory = inventory;
 
@@ -114,7 +115,7 @@ public class TinkeringTableScreenHandler extends BaseScreenHandler {
         return new TinkeringTableScreenHandler(ScreenHandlerTypes.TINKERING_TABLE, windowId, playerInventory, buffer);
     }
 
-    public static TinkeringTableScreenHandler create(int windowId, PlayerInventory playerInventory, Inventory inventory, BlockPos pos) {
+    public static TinkeringTableScreenHandler create(int windowId, PlayerInventory playerInventory, BaseItemStackHandler inventory, BlockPos pos) {
         return new TinkeringTableScreenHandler(ScreenHandlerTypes.TINKERING_TABLE, windowId, playerInventory, inventory, pos);
     }
 }

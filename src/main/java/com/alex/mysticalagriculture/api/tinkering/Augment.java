@@ -1,8 +1,9 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
+import com.alex.mysticalagriculture.forge.common.ForgeHooks;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.zucchini.util.Utils;
+import com.alex.mysticalagriculture.cucumber.util.Utils;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -119,6 +120,9 @@ public class Augment {
 
     public void onPlayerFall(World world, PlayerEntity player) {
     }
+
+    public void onPlayerFall(World world, PlayerEntity player, ForgeHooks.LivingFallEvent event) { }
+
 
     public String getModId() {
         return this.getId().getNamespace();

@@ -3,18 +3,16 @@ package com.alex.mysticalagriculture.init;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.crafting.condition.CraftingConditionsImpl;
 import com.alex.mysticalagriculture.crafting.ingredient.CropComponentIngredient;
+import com.alex.mysticalagriculture.crafting.ingredient.StrictNBTIngredient;
 import com.alex.mysticalagriculture.crafting.recipe.*;
-import com.alex.mysticalagriculture.zucchini.crafting.recipe.ShapedNoMirrorRecipe;
-import com.alex.mysticalagriculture.zucchini.crafting.recipe.ShapedTagRecipe;
-import com.alex.mysticalagriculture.zucchini.crafting.recipe.ShapedTransferDamageRecipe;
-import com.alex.mysticalagriculture.zucchini.crafting.recipe.ShapelessTagRecipe;
-import com.google.gson.JsonObject;
+import com.alex.mysticalagriculture.cucumber.crafting.recipe.ShapedNoMirrorRecipe;
+import com.alex.mysticalagriculture.cucumber.crafting.recipe.ShapedTagRecipe;
+import com.alex.mysticalagriculture.cucumber.crafting.recipe.ShapedTransferDamageRecipe;
+import com.alex.mysticalagriculture.cucumber.crafting.recipe.ShapelessTagRecipe;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
-import net.fabricmc.fabric.impl.resource.conditions.ResourceConditionsImpl;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -36,6 +34,7 @@ public class RecipeSerializers {
     public static final RecipeSerializer<?> CRAFTING_SHAPELESS_TAG = new ShapelessTagRecipe.Serializer();
 
     public static final CustomIngredientSerializer<CropComponentIngredient> CROP_COMPONENT_INGREDIENT = new CropComponentIngredient.Serializer();
+    public static final CustomIngredientSerializer<StrictNBTIngredient> STRICT_NBT_INGREDIENT = new StrictNBTIngredient.Serializer();
 
 
     public static final Identifier CROP_ENABLED = new Identifier(MysticalAgriculture.MOD_ID, "crop_enabled");
@@ -59,6 +58,7 @@ public class RecipeSerializers {
         Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shapeless_tag"), CRAFTING_SHAPELESS_TAG);
 
         CustomIngredientSerializer.register(CROP_COMPONENT_INGREDIENT);
+        CustomIngredientSerializer.register(STRICT_NBT_INGREDIENT);
 
         ResourceConditions.register(CROP_ENABLED, CraftingConditionsImpl::cropEnabledMatch);
         ResourceConditions.register(CROP_HAS_MATERIAL, CraftingConditionsImpl::cropHasMaterialMatch);

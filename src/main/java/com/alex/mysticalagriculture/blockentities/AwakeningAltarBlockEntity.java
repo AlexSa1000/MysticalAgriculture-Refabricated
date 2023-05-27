@@ -2,18 +2,15 @@ package com.alex.mysticalagriculture.blockentities;
 
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.crafting.recipe.AwakeningRecipe;
-import com.alex.mysticalagriculture.crafting.recipe.InfusionRecipe;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.zucchini.helper.StackHelper;
-import com.alex.mysticalagriculture.zucchini.util.MultiblockPositions;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.util.Activatable;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
+import com.alex.mysticalagriculture.cucumber.util.MultiblockPositions;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -21,15 +18,13 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity /*implements SidedInventory*/ {
+public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implements Activatable/*implements SidedInventory*/ {
     private final MultiblockPositions PEDESTAL_LOCATIONS = new MultiblockPositions.Builder()
             .pos(3, 0, 0).pos(2, 0, 2).pos(-3, 0, 0).pos(-2, 0, -2)
             .pos(0, 0, 3).pos(2, 0, -2).pos(0, 0, -3).pos(-2, 0, 2).build();
@@ -70,12 +65,18 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity /*implem
         nbt.putBoolean("Active", this.active);
     }
 
+    @Override
     public boolean isActive() {
         if (!this.active) {
             World world = this.getWorld();
             this.active = world != null && world.isReceivingRedstonePower(this.getPos());
         }
         return this.active;
+    }
+
+    @Override
+    public void activate() {
+        this.active = true;
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, AwakeningAltarBlockEntity block) {

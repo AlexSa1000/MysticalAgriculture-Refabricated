@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.zucchini.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

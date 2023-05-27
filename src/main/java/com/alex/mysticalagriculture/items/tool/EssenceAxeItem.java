@@ -4,8 +4,9 @@ import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.augment.MiningAOEAugment;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.item.tool.BaseAxeItem;
+import com.alex.mysticalagriculture.cucumber.item.tool.BaseAxeItem;
 import draylar.magna.api.BlockProcessor;
 import draylar.magna.api.MagnaTool;
 import net.minecraft.block.BlockState;
@@ -151,7 +152,7 @@ public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return /*ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get()*/false || super.isEnchantable(stack);
+        return ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get() || super.isEnchantable(stack);
     }
 
     @Override

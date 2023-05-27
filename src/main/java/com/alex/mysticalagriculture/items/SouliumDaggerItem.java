@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.lib.ModToolMaterial;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.item.tool.BaseSwordItem;
+import com.alex.mysticalagriculture.cucumber.item.tool.BaseSwordItem;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;

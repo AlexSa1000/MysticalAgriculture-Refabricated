@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.TinkeringTableBlockEntity;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.zucchini.util.VoxelShapeBuilder;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
+import com.alex.mysticalagriculture.cucumber.util.VoxelShapeBuilder;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

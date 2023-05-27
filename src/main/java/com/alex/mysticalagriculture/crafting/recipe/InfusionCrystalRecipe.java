@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.zucchini.util.FabricRecipeRemainder;
+import com.alex.mysticalagriculture.cucumber.util.FabricRecipeRemainder;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;

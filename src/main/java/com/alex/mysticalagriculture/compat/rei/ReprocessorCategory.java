@@ -1,9 +1,8 @@
 package com.alex.mysticalagriculture.compat.rei;
 
-import com.alex.mysticalagriculture.crafting.recipe.InfusionRecipe;
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
 import com.alex.mysticalagriculture.init.Blocks;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -11,10 +10,7 @@ import me.shedaniel.rei.api.client.gui.widgets.Arrow;
 import me.shedaniel.rei.api.client.gui.widgets.Slot;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
-import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;

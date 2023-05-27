@@ -1,8 +1,7 @@
 package com.alex.mysticalagriculture.lib;
 
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
-import com.alex.mysticalagriculture.zucchini.util.Tooltip;
+import com.alex.mysticalagriculture.cucumber.util.Tooltip;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;

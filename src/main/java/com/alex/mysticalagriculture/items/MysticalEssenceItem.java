@@ -2,8 +2,8 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
-import com.alex.mysticalagriculture.zucchini.item.BaseItem;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.item.BaseItem;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 

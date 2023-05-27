@@ -3,15 +3,23 @@ package com.alex.mysticalagriculture.items.armor;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
+import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.item.BaseArmorItem;
+import com.alex.mysticalagriculture.cucumber.item.BaseArmorItem;
+import com.alex.mysticalagriculture.cucumber.util.Utils;
+import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,14 +41,22 @@ public class EssenceChestplateItem extends BaseArmorItem implements Tinkerable {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof PlayerEntity && slot == 2) {
+        if (entity instanceof PlayerEntity player && slot == 2) {
             AugmentUtils.getAugments(stack).forEach(a -> a.onArmorTick(stack, world, (PlayerEntity) entity));
+
+            if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && !world.isClient() && world.getTime() % 20L == 0 && hasAwakenedSupremiumSet(player)) {
+                handleGrowthTicks(world, player);
+            }
         }
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
+
+        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.isOf(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
+            tooltip.add(ModTooltips.SET_BONUS.args(ModTooltips.AWAKENED_SUPREMIUM_SET_BONUS.build()).build());
+        }
 
         AugmentUtils.getAugments(stack).forEach(a -> tooltip.add(a.getDisplayName().formatted(Formatting.GRAY)));
     }
@@ -58,5 +74,38 @@ public class EssenceChestplateItem extends BaseArmorItem implements Tinkerable {
     @Override
     public int getTinkerableTier() {
         return this.tinkerableTier;
+    }
+
+    private static boolean hasAwakenedSupremiumSet(PlayerEntity player) {
+        var helmet = player.getEquippedStack(EquipmentSlot.HEAD).isOf(Items.AWAKENED_SUPREMIUM_HELMET);
+        var chestplate = player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.AWAKENED_SUPREMIUM_CHESTPLATE);
+        var leggings = player.getEquippedStack(EquipmentSlot.LEGS).isOf(Items.AWAKENED_SUPREMIUM_LEGGINGS);
+        var boots = player.getEquippedStack(EquipmentSlot.FEET).isOf(Items.AWAKENED_SUPREMIUM_BOOTS);
+
+        return helmet && chestplate && leggings && boots;
+    }
+
+    private static void handleGrowthTicks(World world, PlayerEntity player) {
+        var pos = player.getBlockPos();
+        int range = 5;
+
+        BlockPos.stream(pos.add(-range, -range, -range), pos.add(range, range, range)).forEach(aoePos -> {
+            if (Math.random() < 0.5)
+                return;
+
+            var state = world.getBlockState(aoePos);
+            var plantBlock = state.getBlock();
+
+            if (plantBlock instanceof StemBlock || plantBlock instanceof SugarCaneBlock) {
+
+                state.randomTick((ServerWorld) world, aoePos, Utils.RANDOM);
+
+                double d0 = aoePos.getX() + world.getRandom().nextFloat();
+                double d1 = aoePos.getY();
+                double d2 = aoePos.getZ() + world.getRandom().nextFloat();
+
+                ((ServerWorld) world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 1, 0, 0, 0, 0.1D);
+            }
+        });
     }
 }

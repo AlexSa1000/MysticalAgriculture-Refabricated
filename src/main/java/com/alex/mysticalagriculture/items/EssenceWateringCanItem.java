@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.helper.NBTHelper;
+import com.alex.mysticalagriculture.cucumber.helper.NBTHelper;
 import net.minecraft.block.Material;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;

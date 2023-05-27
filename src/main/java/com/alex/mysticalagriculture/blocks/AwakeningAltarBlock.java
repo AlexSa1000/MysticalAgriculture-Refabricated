@@ -1,12 +1,11 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.AwakeningAltarBlockEntity;
-import com.alex.mysticalagriculture.blockentities.InfusionAltarBlockEntity;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.zucchini.helper.StackHelper;
-import com.alex.mysticalagriculture.zucchini.util.VoxelShapeBuilder;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
+import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
+import com.alex.mysticalagriculture.cucumber.util.VoxelShapeBuilder;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;

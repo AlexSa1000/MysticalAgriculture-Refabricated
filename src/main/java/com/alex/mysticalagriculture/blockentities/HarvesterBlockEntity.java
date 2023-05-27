@@ -4,16 +4,15 @@ import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.blocks.HarvesterBlock;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.mixin.CropBlockInvoker;
-import com.alex.mysticalagriculture.mixin.CropBlockMixin;
 import com.alex.mysticalagriculture.screenhandler.HarvesterScreenHandler;
 import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.UpgradeableMachine;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.zucchini.energy.DynamicEnergyStorage;
-import com.alex.mysticalagriculture.zucchini.helper.StackHelper;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.energy.DynamicEnergyStorage;
+import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.Block;
@@ -35,12 +34,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, UpgradeableMachine {
-    //private static final Method GET_SEED;
     private static final int FUEL_TICK_MULTIPLIER = 20;
     public static final int OPERATION_TIME = 100;
     public static final int FUEL_USAGE = 40;
@@ -51,7 +48,6 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     private final BaseItemStackHandler inventory;
     private final UpgradeItemStackHandler upgradeInventory;
     private final DynamicEnergyStorage energy;
-    //private final LazyOptional<IEnergyStorage> energyCapability = LazyOptional.of(this::getEnergy);
     private int progress;
     private int fuelLeft;
     private int fuelItemValue;
@@ -61,9 +57,6 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     private MachineUpgradeTier tier;
     private Direction direction;
 
-    /*static {
-        GET_SEED = ObfuscationReflectionHelper.findMethod(CropBlock.class, "m_6404_");
-    }*/
 
     public HarvesterBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.HARVESTER, pos, state);

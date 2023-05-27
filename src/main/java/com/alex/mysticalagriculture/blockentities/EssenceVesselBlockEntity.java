@@ -3,10 +3,9 @@ package com.alex.mysticalagriculture.blockentities;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.util.EssenceVesselType;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 

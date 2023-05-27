@@ -6,12 +6,17 @@
   "mixins": [
     "CropBlockInvoker",
     "CropBlockMixin",
+    "DataPackContentsMixin",
     "ExperienceOrbEntityMixin",
     "ItemStackMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PlayerManagerMixin"
   ],
   "client": [
-    "ClientRecipeBookMixin"
+    "AbstractClientPlayerEntityMixin",
+    "ClientRecipeBookMixin",
+    "HeldItemRendererMixin",
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

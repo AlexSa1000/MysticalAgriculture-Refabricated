@@ -3,12 +3,11 @@ package com.alex.mysticalagriculture.blockentities;
 import com.alex.mysticalagriculture.crafting.recipe.InfusionRecipe;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.zucchini.util.MultiblockPositions;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.util.Activatable;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.util.MultiblockPositions;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -16,14 +15,12 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity {
+public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Activatable {
     private final BaseItemStackHandler inventory;
     private final BaseItemStackHandler recipeInventory;
     private final MultiblockPositions pedestalLocations = new MultiblockPositions.Builder()
@@ -55,12 +52,18 @@ public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity {
         nbt.putBoolean("Active", this.active);
     }
 
+    @Override
     public boolean isActive() {
         if (!this.active) {
             World world = this.getWorld();
             this.active = world != null && world.isReceivingRedstonePower(this.getPos());
         }
         return this.active;
+    }
+
+    @Override
+    public void activate() {
+        this.active = true;
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, InfusionAltarBlockEntity block) {

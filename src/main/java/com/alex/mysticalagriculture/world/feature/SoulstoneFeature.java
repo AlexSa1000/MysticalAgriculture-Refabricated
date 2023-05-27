@@ -1,5 +1,6 @@
 package com.alex.mysticalagriculture.world.feature;
 
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
@@ -120,7 +121,7 @@ public class SoulstoneFeature extends Feature<OreFeatureConfig> {
                                             blockpos$mutableblockpos.set(l1, i2, j2);
                                             var target = config.targets.stream().filter(s -> s.target.test(world.getBlockState(blockpos$mutableblockpos), random)).findFirst().orElse(null);
                                             if (target != null) {
-                                                if (random.nextDouble() < /*ModConfigs.SOULIUM_ORE_CHANCE.get()*/0.05) {
+                                                if (random.nextDouble() < ModConfigs.SOULIUM_ORE_CHANCE.get()) {
                                                     world.setBlockState(blockpos$mutableblockpos, Blocks.SOULIUM_ORE.getDefaultState(), 2);
                                                 } else {
                                                     world.setBlockState(blockpos$mutableblockpos, target.state, 2);

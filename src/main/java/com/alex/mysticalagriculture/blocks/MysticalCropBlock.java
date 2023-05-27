@@ -2,8 +2,9 @@ package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -67,10 +68,10 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
                 if (Math.random() < chance)
                     crop = 2;
 
-                if ((/*ModConfigs.SECONDARY_SEED_DROPS.get() &&*/ Math.random() < chance))
+                if ((ModConfigs.SECONDARY_SEED_DROPS.get() && Math.random() < chance))
                     seed = 2;
 
-                double fertilizerChance =  /*ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get()*/ 0.1;
+                double fertilizerChance = ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get();
                 if (Math.random() < fertilizerChance)
                     fertilizer = 1;
             }

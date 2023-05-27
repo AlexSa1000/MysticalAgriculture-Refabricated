@@ -1,17 +1,19 @@
 package com.alex.mysticalagriculture.screenhandler.slot;
 
 import com.alex.mysticalagriculture.api.tinkering.ElementalItem;
-import com.alex.mysticalagriculture.zucchini.iface.ToggleableSlot;
+import com.alex.mysticalagriculture.cucumber.iface.ToggleableSlot;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.forge.items.SlotItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-public class ElementSlot extends Slot implements ToggleableSlot {
+public class ElementSlot extends SlotItemHandler implements ToggleableSlot {
     private final ScreenHandler screenHandler;
 
-    public ElementSlot(ScreenHandler screenHandler, Inventory inventory, int index, int x, int y) {
+    public ElementSlot(ScreenHandler screenHandler, BaseItemStackHandler inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.screenHandler = screenHandler;
     }
@@ -30,7 +32,7 @@ public class ElementSlot extends Slot implements ToggleableSlot {
 
     @Override
     public boolean isEnabled() {
-        var stack = this.inventory.getStack(0);
+        var stack = this.getItemHandler().getStack(0);
         var item = stack.getItem();
 
         return item instanceof ElementalItem;

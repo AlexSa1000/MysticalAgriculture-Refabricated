@@ -10,12 +10,13 @@ import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHand
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import com.alex.mysticalagriculture.util.UpgradeableMachine;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.zucchini.energy.BaseEnergyStorage;
-import com.alex.mysticalagriculture.zucchini.energy.DynamicEnergyStorage;
-import com.alex.mysticalagriculture.zucchini.helper.StackHelper;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.energy.DynamicEnergyStorage;
+import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
+import com.alex.mysticalagriculture.cucumber.inventory.SidedItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.forge.common.util.LazyOptional;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
@@ -23,12 +24,10 @@ import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -46,6 +45,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
     private final BaseItemStackHandler inventory;
     private final UpgradeItemStackHandler upgradeInventory;
     private final DynamicEnergyStorage energy;
+    public final LazyOptional<SidedItemStackHandler>[] inventoryCapabilities;
     private int progress;
     private int fuelLeft;
     private int fuelItemValue;
@@ -54,45 +54,10 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
 
     public SoulExtractorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.SOUL_EXTRACTOR, pos, state);
-        //this.inventory = createInventoryHandler(this::markDirty);
-        this.inventory = new BaseItemStackHandler(3, this::markDirty){
-            @Override
-            public int[] getAvailableSlots(Direction side) {
-                if (side == Direction.UP) {
-                    return new int[]{0};
-                } else if (side == Direction.DOWN) {
-                    return new int[]{2};
-                } else {
-                    return new int[]{1, 2};
-                }
-            }
-
-            @Override
-            public boolean canInsert(int slot, ItemStack stack, @Nullable Direction direction) {
-                if (direction == null)
-                    return true;
-                if (slot == 0 && direction == Direction.UP)
-                    return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.SOUL_EXTRACTION);
-                if (slot == 1 && direction == Direction.NORTH)
-                    return AbstractFurnaceBlockEntity.canUseAsFuel(stack);
-                if (slot == 2 && direction == Direction.NORTH)
-                    return stack.getItem() instanceof SoulJarItem;
-
-                return false;
-            }
-
-            @Override
-            public boolean canExtract(int slot, ItemStack stack, Direction direction) {
-                if (slot == 2 && direction == Direction.DOWN) {
-                    //var stack = this.inventory.getStack(2);
-                    return stack.getItem() instanceof SoulJarItem && MobSoulUtils.isJarFull(stack);
-                }
-
-                return false;
-            }
-        };
+        this.inventory = createInventoryHandler(this::markDirty);
         this.upgradeInventory = new UpgradeItemStackHandler();
         this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirty);
+        this.inventoryCapabilities = SidedItemStackHandler.create(this.inventory, new Direction[] { Direction.UP, Direction.DOWN, Direction.NORTH }, this::canInsertStackSided, this::canExtractStackSided);
     }
 
     public BaseItemStackHandler getInventory() {
@@ -267,6 +232,28 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
             return FUEL_USAGE;
 
         return (int) (FUEL_USAGE * this.tier.getFuelUsageMultiplier());
+    }
+
+    private boolean canInsertStackSided(int slot, ItemStack stack, Direction direction) {
+        if (direction == null)
+            return true;
+        if (slot == 0 && direction == Direction.UP)
+            return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.SOUL_EXTRACTION);
+        if (slot == 1 && direction == Direction.NORTH)
+            return AbstractFurnaceBlockEntity.canUseAsFuel(stack);
+        if (slot == 2 && direction == Direction.NORTH)
+            return stack.getItem() instanceof SoulJarItem;
+
+        return false;
+    }
+
+    private boolean canExtractStackSided(int slot, Direction direction) {
+        if (slot == 2 && direction == Direction.DOWN) {
+            var stack = this.inventory.getStack(2);
+            return stack.getItem() instanceof SoulJarItem && MobSoulUtils.isJarFull(stack);
+        }
+
+        return false;
     }
 
     @Override

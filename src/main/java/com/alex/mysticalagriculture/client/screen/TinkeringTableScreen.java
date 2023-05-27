@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.client.screen;
 
 import com.alex.mysticalagriculture.screenhandler.TinkeringTableScreenHandler;
-import com.alex.mysticalagriculture.zucchini.client.screen.BaseHandledScreen;
-import com.alex.mysticalagriculture.zucchini.iface.ToggleableSlot;
+import com.alex.mysticalagriculture.cucumber.client.screen.BaseHandledScreen;
+import com.alex.mysticalagriculture.cucumber.iface.ToggleableSlot;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
@@ -33,7 +33,7 @@ public class TinkeringTableScreen extends BaseHandledScreen<TinkeringTableScreen
         int x = this.x;
         int y = this.y;
 
-        for (Slot slot : this.handler.slots) {
+        for (var slot : this.handler.slots) {
             if (slot.isEnabled() && slot instanceof ToggleableSlot) {
                 this.drawTexture(matrices, x + slot.x, y + slot.y, 8, 115, 16, 16);
             }

@@ -8,8 +8,10 @@
       "item": "mysticalagriculture:soulium_ingot"
     },
     {
-      "type": "forge:partial_nbt",
-      "item": "mysticalagriculture:soul_jar",
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "mysticalagriculture:soul_jar"
+      },
       "nbt": {
         "Type": "mysticalagriculture:pig",
         "Souls": 8.0
@@ -19,8 +21,10 @@
       "item": "mysticalagriculture:soulium_gemstone"
     },
     {
-      "type": "forge:partial_nbt",
-      "item": "mysticalagriculture:soul_jar",
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "mysticalagriculture:soul_jar"
+      },
       "nbt": {
         "Type": "mysticalagriculture:chicken",
         "Souls": 8.0
@@ -30,8 +34,10 @@
       "item": "mysticalagriculture:soulium_ingot"
     },
     {
-      "type": "forge:partial_nbt",
-      "item": "mysticalagriculture:soul_jar",
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "mysticalagriculture:soul_jar"
+      },
       "nbt": {
         "Type": "mysticalagriculture:cow",
         "Souls": 8.0
@@ -41,8 +47,10 @@
       "item": "mysticalagriculture:soulium_gemstone"
     },
     {
-      "type": "forge:partial_nbt",
-      "item": "mysticalagriculture:soul_jar",
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "mysticalagriculture:soul_jar"
+      },
       "nbt": {
         "Type": "mysticalagriculture:sheep",
         "Souls": 8.0

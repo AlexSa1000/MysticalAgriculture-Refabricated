@@ -50,6 +50,7 @@ repositories {
 		url = "https://maven.blamejared.com"
 	}
 
+	mavenCentral()
 	mavenLocal()
 
 }
@@ -85,8 +86,8 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 
-	// Columns
-	modCompileOnly("curse.maven:columns-385230:3836307")
+	implementation 'com.electronwill.night-config:toml:3.6.6'
+
 
 }
 

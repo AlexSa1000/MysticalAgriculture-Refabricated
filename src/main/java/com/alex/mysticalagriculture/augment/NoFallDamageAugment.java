@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture.augment;
 
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.forge.common.ForgeHooks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -16,5 +17,10 @@ public class NoFallDamageAugment extends Augment {
     @Override
     public void onPlayerFall(World world, PlayerEntity player) {
         player.fallDistance = 0;
+    }
+
+    @Override
+    public void onPlayerFall(World world, PlayerEntity player, ForgeHooks.LivingFallEvent event) {
+        event.setDamageMultiplier(0);
     }
 }

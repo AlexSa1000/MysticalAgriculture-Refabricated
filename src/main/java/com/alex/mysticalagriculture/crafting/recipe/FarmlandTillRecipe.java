@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.zucchini.util.Utils;
+import com.alex.mysticalagriculture.cucumber.util.Utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;

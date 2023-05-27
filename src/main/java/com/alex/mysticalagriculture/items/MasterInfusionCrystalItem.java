@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.zucchini.item.BaseReusableItem;
+import com.alex.mysticalagriculture.cucumber.item.BaseReusableItem;
 import net.minecraft.item.ItemStack;
 
 public class MasterInfusionCrystalItem extends BaseReusableItem {

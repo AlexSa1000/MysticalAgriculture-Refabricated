@@ -3,8 +3,9 @@ package com.alex.mysticalagriculture.items.tool;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.item.tool.BaseSwordItem;
+import com.alex.mysticalagriculture.cucumber.item.tool.BaseSwordItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -126,7 +127,7 @@ public class EssenceSwordItem extends BaseSwordItem implements Tinkerable {
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return /*ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get()*/false || super.isEnchantable(stack);
+        return ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get() || super.isEnchantable(stack);
     }
 
     @Override

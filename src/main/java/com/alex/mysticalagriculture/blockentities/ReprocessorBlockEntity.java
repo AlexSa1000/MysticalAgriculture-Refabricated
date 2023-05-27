@@ -4,29 +4,27 @@ import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.screenhandler.ReprocessorScreenHandler;
+import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import com.alex.mysticalagriculture.util.ReprocessorTier;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.zucchini.energy.BaseEnergyStorage;
-import com.alex.mysticalagriculture.zucchini.helper.StackHelper;
-import com.alex.mysticalagriculture.zucchini.util.Localizable;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.energy.BaseEnergyStorage;
+import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
+import com.alex.mysticalagriculture.cucumber.inventory.SidedItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.util.Localizable;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.forge.common.util.LazyOptional;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -41,6 +39,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
     private static final int FUEL_TICK_MULTIPLIER = 20;
     private final BaseItemStackHandler inventory;
     private final BaseEnergyStorage energy;
+    public final LazyOptional<SidedItemStackHandler>[] inventoryCapabilities;
     private final ReprocessorTier tier;
     private ReprocessorRecipe recipe;
     private int progress;
@@ -51,6 +50,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         super(type, pos, state);
         this.inventory = createInventoryHandler(this::markDirty);
         this.energy = new BaseEnergyStorage(tier.getFuelCapacity(), this::markDirty);
+        this.inventoryCapabilities = SidedItemStackHandler.create(this.inventory, new Direction[] { Direction.UP, Direction.DOWN, Direction.NORTH }, this::canInsertStackSided, null);
         this.tier = tier;
     }
 
@@ -205,35 +205,16 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         return this.fuelItemValue;
     }
 
-    /*@Override
-    public boolean isValid(int slot, ItemStack stack) {
-        if (slot == 2) {
-            return false;
-        } else if (slot != 1) {
+    private boolean canInsertStackSided(int slot, ItemStack stack, Direction direction) {
+        if (direction == null)
             return true;
-        } else {
+        if (slot == 0 && direction == Direction.UP)
+            return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.REPROCESSOR);
+        if (slot == 1 && direction == Direction.NORTH)
             return FurnaceBlockEntity.canUseAsFuel(stack);
-        }
-    }
 
-    @Override
-    public int[] getAvailableSlots(Direction side) {
-        if (side == Direction.DOWN) {
-            return new int[]{2};
-        } else {
-            return side == Direction.UP ? new int[]{0} : new int[]{1};
-        }
+        return false;
     }
-
-    @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return this.isValid(slot, stack);
-    }
-
-    @Override
-    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return slot == 2;
-    }*/
 
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {

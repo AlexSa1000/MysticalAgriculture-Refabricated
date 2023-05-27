@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.zucchini.item.BaseItem;
-import com.alex.mysticalagriculture.zucchini.util.Utils;
+import com.alex.mysticalagriculture.cucumber.item.BaseItem;
+import com.alex.mysticalagriculture.cucumber.util.Utils;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

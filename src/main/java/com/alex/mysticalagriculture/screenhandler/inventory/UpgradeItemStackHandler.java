@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.screenhandler.inventory;
 
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeItemStackHandler extends BaseItemStackHandler {

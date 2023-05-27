@@ -3,8 +3,8 @@ package com.alex.mysticalagriculture.blocks;
 import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.ReprocessorTier;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.zucchini.util.Formatting;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
+import com.alex.mysticalagriculture.cucumber.util.Formatting;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -27,7 +27,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 public class ReprocessorBlock extends BaseBlockEntity /*implements BlockEntityProvider*/ {

@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -78,8 +79,7 @@ public class FertilizedEssenceItem extends BoneMealItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        //int chance = (int) (ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get() * 100);
-        int chance = (int) (0.1 * 100);
+        int chance = (int) (ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get() * 100);
         tooltip.add(ModTooltips.FERTILIZED_ESSENCE_CHANCE.args(chance + "%").build());
     }
 

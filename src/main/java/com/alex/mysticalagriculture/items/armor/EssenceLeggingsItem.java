@@ -3,8 +3,10 @@ package com.alex.mysticalagriculture.items.armor;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
+import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.item.BaseArmorItem;
+import com.alex.mysticalagriculture.cucumber.item.BaseArmorItem;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,6 +43,10 @@ public class EssenceLeggingsItem extends BaseArmorItem implements Tinkerable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
+
+        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.isOf(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
+            tooltip.add(ModTooltips.SET_BONUS.args(ModTooltips.AWAKENED_SUPREMIUM_SET_BONUS.build()).build());
+        }
 
         AugmentUtils.getAugments(stack).forEach(a -> tooltip.add(a.getDisplayName().formatted(Formatting.GRAY)));
     }

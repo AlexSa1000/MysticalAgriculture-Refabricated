@@ -23,6 +23,11 @@ public class AbilityCache {
         this.cache.getOrDefault(augment, EMPTY_MAP).remove(key).run();
     }
 
+    public void removeQuietly(String augment, PlayerEntity player) {
+        String key = getPlayerKey(player);
+        this.cache.getOrDefault(augment, EMPTY_MAP).remove(key);
+    }
+
     public boolean isCached(Augment augment, PlayerEntity player) {
         String key = getPlayerKey(player);
         return this.cache.getOrDefault(augment.getId().toString(), EMPTY_MAP).containsKey(key);

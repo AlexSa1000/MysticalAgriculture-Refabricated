@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.iface.Colored;
+import com.alex.mysticalagriculture.cucumber.iface.Colored;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FarmlandBlock;

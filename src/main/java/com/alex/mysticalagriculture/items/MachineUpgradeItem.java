@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.items;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.UpgradeableMachine;
-import com.alex.mysticalagriculture.zucchini.item.BaseItem;
+import com.alex.mysticalagriculture.cucumber.item.BaseItem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.ItemEntity;

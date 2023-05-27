@@ -1,10 +1,9 @@
 package com.alex.mysticalagriculture.mixin;
 
-import com.alex.mysticalagriculture.api.lib.AbilityCache;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
-import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
+import com.alex.mysticalagriculture.forge.common.ForgeHooks;
 import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.alex.mysticalagriculture.items.SouliumDaggerItem;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
@@ -13,29 +12,30 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.alex.mysticalagriculture.handler.AugmentHandler.ABILITY_CACHE;
+
 @SuppressWarnings("ConstantConditions")
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
-    private static final AbilityCache ABILITY_CACHE = new AbilityCache();
 
-    @Inject(method = "baseTick" , at = @At(value = "HEAD"))
-    private void injected(CallbackInfo ci) {
-        if (((Object) this) instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) ((Object) this);
-            World world = player.getEntityWorld();
-            List<Augment> augments = AugmentUtils.getArmorAugments(player);
+    @Inject(method = "tick", at = @At(value = "HEAD"))
+    private void onPlayerUpdate(CallbackInfo ci) {
+        if (((Object) this) instanceof PlayerEntity player) {
+            var world = player.getEntityWorld();
+            var augments = AugmentUtils.getArmorAugments(player);
+
             augments.forEach(a -> {
                 a.onPlayerTick(world, player, ABILITY_CACHE);
-                a.onPlayerFall(world, player);
             });
 
             ABILITY_CACHE.getCachedAbilities(player).forEach(c -> {
@@ -46,8 +46,26 @@ public class LivingEntityMixin {
         }
     }
 
-    @Inject(method = "onDeath", at = @At(value = "HEAD"), cancellable = true)
-    private void injected(DamageSource source, CallbackInfo ci) {
+    public float[] ret;
+
+    @Inject(method = "handleFallDamage", at = @At(value = "HEAD"), cancellable = true)
+    private void onLivingFall(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+        ret = ForgeHooks.onLivingFall((LivingEntity) ((Object) this), fallDistance, damageMultiplier);
+        if (ret == null) cir.setReturnValue(false);
+    }
+
+    @ModifyVariable(method = "handleFallDamage", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
+    private float onLivingFall1(float value) {
+        return ret[0];
+    }
+
+    @ModifyVariable(method = "handleFallDamage", at = @At(value = "HEAD"), ordinal = 1, argsOnly = true)
+    private float onLivingFall2(float value) {
+        return ret[1];
+    }
+
+    @Inject(method = "onDeath", at = @At(value = "HEAD"))
+    private void onLivingDrops(DamageSource source, CallbackInfo ci) {
         var entity = source.getAttacker();
 
         if (entity instanceof PlayerEntity player) {

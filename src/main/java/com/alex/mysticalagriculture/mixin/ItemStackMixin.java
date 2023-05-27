@@ -6,7 +6,7 @@ import com.alex.mysticalagriculture.items.armor.EssenceChestplateItem;
 import com.alex.mysticalagriculture.items.armor.EssenceHelmetItem;
 import com.alex.mysticalagriculture.items.armor.EssenceLeggingsItem;
 import com.alex.mysticalagriculture.items.tool.*;
-import com.alex.mysticalagriculture.zucchini.item.tool.*;
+import com.alex.mysticalagriculture.cucumber.item.tool.*;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.EquipmentSlot;

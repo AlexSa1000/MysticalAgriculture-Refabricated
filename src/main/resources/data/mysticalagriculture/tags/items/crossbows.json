@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "mysticalagriculture:awakened_supremium_bow",
+    "mysticalagriculture:inferium_crossbow",
+    "mysticalagriculture:prudentium_crossbow",
+    "mysticalagriculture:tertium_crossbow",
+    "mysticalagriculture:imperium_crossbow",
+    "mysticalagriculture:supremium_crossbow",
+    "mysticalagriculture:awakened_supremium_crossbow"
+  ]
+}

@@ -1,7 +1,6 @@
 package com.alex.mysticalagriculture.api.lib;
 
-import com.alex.mysticalagriculture.crafting.ingredient.NBTIngredient;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.NbtIngredient;
+import com.alex.mysticalagriculture.crafting.ingredient.StrictNBTIngredient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -107,7 +106,7 @@ public class LazyIngredient {
                         stack.setNbt(this.nbt);
 
                         //this.ingredient = StrictNBTIngredient.of(stack);
-                        this.ingredient = new NBTIngredient(stack);
+                        this.ingredient = StrictNBTIngredient.of(stack).getBase();
                     }
                 }
             }

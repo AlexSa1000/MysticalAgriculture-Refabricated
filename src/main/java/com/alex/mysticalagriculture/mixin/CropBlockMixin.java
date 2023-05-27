@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CropBlock.class)
 public class CropBlockMixin {
-
     @Inject(method = "canPlantOnTop", at = @At("RETURN"), cancellable = true)
     private void injected(BlockState floor, BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(cir.getReturnValue() || floor.getBlock() instanceof FarmlandBlock);

@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.zucchini.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.google.gson.JsonObject;

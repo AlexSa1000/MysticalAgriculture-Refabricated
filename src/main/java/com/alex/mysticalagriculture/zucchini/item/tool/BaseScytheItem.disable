@@ -1,8 +1,0 @@
-package com.alex.mysticalagriculture.zucchini.item.tool;
-
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
-
-public class BaseScytheItem extends SwordItem {
-   
-}

@@ -1,13 +1,12 @@
 package com.alex.mysticalagriculture.screenhandler;
 
 import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
-import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
 import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
-import com.alex.mysticalagriculture.zucchini.screenhandler.BaseScreenHandler;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandler;
-import com.alex.mysticalagriculture.zzz.BaseItemStackHandlerSlot;
+import com.alex.mysticalagriculture.cucumber.screenhandler.BaseScreenHandler;
+import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.cucumber.inventory.slot.BaseItemStackHandlerSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

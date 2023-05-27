@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.blocks;
 
-import com.alex.mysticalagriculture.zucchini.block.BaseGlassBlock;
+import com.alex.mysticalagriculture.cucumber.block.BaseGlassBlock;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.math.BlockPos;

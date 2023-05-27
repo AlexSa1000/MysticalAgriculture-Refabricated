@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.blockentities.EssenceFurnaceBlockEntity;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.FurnaceTier;
-import com.alex.mysticalagriculture.zucchini.util.Formatting;
+import com.alex.mysticalagriculture.cucumber.util.Formatting;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

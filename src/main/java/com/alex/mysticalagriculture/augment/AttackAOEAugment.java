@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.augment;
 
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.zucchini.helper.ColorHelper;
+import com.alex.mysticalagriculture.cucumber.helper.ColorHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

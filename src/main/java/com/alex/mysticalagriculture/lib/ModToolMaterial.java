@@ -24,6 +24,9 @@ public enum ModToolMaterial implements ToolMaterial {
     SUPREMIUM(5, -1, 25.0F, 20.0F, 20, () -> {
         return Ingredient.ofItems(Items.SUPREMIUM_INGOT);
     }),
+    AWAKENED_SUPREMIUM(5, -1, 30.0F, 25.0F, 22, () -> {
+        return Ingredient.ofItems(Items.AWAKENED_SUPREMIUM_INGOT);
+    }),
     SOULIUM(0, 400, 5.0F, 3.0F, 15, () -> {
         return Ingredient.ofItems(Items.SOULIUM_INGOT);
     });

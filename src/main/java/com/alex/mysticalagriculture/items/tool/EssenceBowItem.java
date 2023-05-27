@@ -3,15 +3,14 @@ package com.alex.mysticalagriculture.items.tool;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.iface.CustomBow;
-import com.alex.mysticalagriculture.zucchini.item.tool.BaseBowItem;
+import com.alex.mysticalagriculture.cucumber.item.tool.BaseBowItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolMaterial;
@@ -26,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.function.Function;
 
 public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.WEAPON, AugmentType.BOW);
@@ -71,7 +69,7 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
         if (success)
             return new TypedActionResult<>(ActionResult.SUCCESS, stack);
 
-        return new TypedActionResult<>(ActionResult.PASS, stack);
+        return super.use(world, player, hand);
     }
 
     @Override
@@ -121,6 +119,7 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
+
         AugmentUtils.getAugments(stack).forEach(a -> {
             tooltip.add(a.getDisplayName().formatted(Formatting.GRAY));
         });
@@ -128,7 +127,7 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return /*ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get()*/true || super.isEnchantable(stack);
+        return ModConfigs.ENCHANTABLE_SUPREMIUM_TOOLS.get() || super.isEnchantable(stack);
     }
 
     @Override

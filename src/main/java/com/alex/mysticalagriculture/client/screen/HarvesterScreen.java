@@ -2,12 +2,10 @@ package com.alex.mysticalagriculture.client.screen;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
-import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.mysticalagriculture.screenhandler.HarvesterScreenHandler;
-import com.alex.mysticalagriculture.screenhandler.SoulExtractorScreenHandler;
-import com.alex.mysticalagriculture.zucchini.client.screen.BaseHandledScreen;
-import com.alex.mysticalagriculture.zucchini.client.screen.widget.EnergyBarWidget;
-import com.alex.mysticalagriculture.zucchini.util.Formatting;
+import com.alex.mysticalagriculture.cucumber.client.screen.BaseHandledScreen;
+import com.alex.mysticalagriculture.cucumber.client.screen.widget.EnergyBarWidget;
+import com.alex.mysticalagriculture.cucumber.util.Formatting;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;

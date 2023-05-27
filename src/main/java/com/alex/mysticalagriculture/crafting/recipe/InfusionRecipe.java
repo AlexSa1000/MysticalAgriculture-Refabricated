@@ -1,12 +1,8 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.zucchini.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.lib.ModCrops;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -19,8 +15,6 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-
-import java.util.Arrays;
 
 public class InfusionRecipe implements SpecialRecipe {
     public static final int RECIPE_SIZE = 9;

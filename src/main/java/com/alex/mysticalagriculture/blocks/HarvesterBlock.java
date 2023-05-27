@@ -3,8 +3,8 @@ package com.alex.mysticalagriculture.blocks;
 import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.zucchini.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.zucchini.util.Formatting;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
+import com.alex.mysticalagriculture.cucumber.util.Formatting;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -90,8 +90,8 @@ public class HarvesterBlock extends BaseBlockEntity {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(ModTooltips.MACHINE_SPEED.args(com.alex.mysticalagriculture.zucchini.util.Formatting.number(HarvesterBlockEntity.OPERATION_TIME)).build());
-            tooltip.add(ModTooltips.MACHINE_FUEL_RATE.args(com.alex.mysticalagriculture.zucchini.util.Formatting.number(HarvesterBlockEntity.FUEL_USAGE)).build());
+            tooltip.add(ModTooltips.MACHINE_SPEED.args(com.alex.mysticalagriculture.cucumber.util.Formatting.number(HarvesterBlockEntity.OPERATION_TIME)).build());
+            tooltip.add(ModTooltips.MACHINE_FUEL_RATE.args(com.alex.mysticalagriculture.cucumber.util.Formatting.number(HarvesterBlockEntity.FUEL_USAGE)).build());
             tooltip.add(ModTooltips.MACHINE_FUEL_CAPACITY.args(Formatting.number(HarvesterBlockEntity.FUEL_CAPACITY)).build());
         } else {
             tooltip.add(ModTooltips.HOLD_SHIFT_FOR_INFO.build());
