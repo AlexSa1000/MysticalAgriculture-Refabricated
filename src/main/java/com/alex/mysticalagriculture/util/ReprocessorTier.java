@@ -71,9 +71,12 @@ public enum ReprocessorTier {
             return BlockEntities.TERTIUM_REPROCESSOR;
         } else if (Objects.equals(this.name, "imperium")) {
             return BlockEntities.IMPERIUM_REPROCESSOR;
-        } else {
+        } else if (Objects.equals(this.name, "supremium")) {
             return BlockEntities.SUPREMIUM_REPROCESSOR;
+        } else {
+            return BlockEntities.AWAKENED_SUPREMIUM_REPROCESSOR;
         }
+
     }
 
     public ReprocessorBlockEntity createTileEntity(BlockPos pos, BlockState state) {
