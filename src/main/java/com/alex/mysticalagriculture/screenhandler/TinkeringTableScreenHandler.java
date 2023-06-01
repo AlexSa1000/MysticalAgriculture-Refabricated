@@ -73,7 +73,7 @@ public class TinkeringTableScreenHandler extends BaseScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int slotNumber) {
+    public ItemStack transferSlot(PlayerEntity player, int slotNumber) {
         var itemstack = ItemStack.EMPTY;
         var slot = this.slots.get(slotNumber);
 

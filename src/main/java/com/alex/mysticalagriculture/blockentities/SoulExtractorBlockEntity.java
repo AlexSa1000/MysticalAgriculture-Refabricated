@@ -167,7 +167,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
                 }
                 if (block.progress >= block.getOperationTime()) {
                     block.inventory.setStackInSlot(0, StackHelper.shrink(block.inventory.getStack(0), 1, false));
-                    block.inventory.setStackInSlot(2, block.recipe.craft(block.inventory, world.getRegistryManager()));
+                    block.inventory.setStackInSlot(2, block.recipe.craft(block.inventory));
 
                     block.progress = 0;
                 }

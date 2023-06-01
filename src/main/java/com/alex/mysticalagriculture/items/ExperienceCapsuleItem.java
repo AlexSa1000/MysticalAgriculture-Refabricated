@@ -1,10 +1,10 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
-import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import net.minecraft.client.item.ClampedModelPredicateProvider;
+import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -13,10 +13,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class ExperienceCapsuleItem extends BaseItem {
-    public ExperienceCapsuleItem() {
-        super(p -> p.maxCount(1));
+    public ExperienceCapsuleItem(Function<Settings, Settings> settings) {
+        super(settings.compose(p -> p.maxCount(1)));
     }
 
     @Override
@@ -25,8 +26,8 @@ public class ExperienceCapsuleItem extends BaseItem {
         tooltip.add(ModTooltips.EXPERIENCE_CAPSULE.args(experience, ExperienceCapsuleUtils.MAX_XP_POINTS).build());
     }
 
-    public static ClampedModelPredicateProvider getFillPropertyGetter() {
-        return new ClampedModelPredicateProvider() {
+    public static UnclampedModelPredicateProvider getFillPropertyGetter() {
+        return new UnclampedModelPredicateProvider() {
             @Override
             public float call(ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity livingEntity, int i) {
                 return this.unclampedCall(itemStack, clientWorld, livingEntity, i);

@@ -25,14 +25,15 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class WateringCanItem extends BaseItem {
     //private static final Map<String, Long> THROTTLES = new HashMap<>();
     protected final int range;
     protected final double chance;
 
-    public WateringCanItem(int range, double chance) {
-        super(p -> p.maxCount(1));
+    public WateringCanItem(int range, double chance, Function<Settings, Settings> settings) {
+        super(settings.compose(p -> p.maxCount(1)));
         this.range = range;
         this.chance = chance;
     }

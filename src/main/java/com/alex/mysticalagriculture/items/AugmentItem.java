@@ -8,6 +8,7 @@ import com.alex.mysticalagriculture.cucumber.iface.Enableable;
 import com.alex.mysticalagriculture.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.cucumber.lib.Colors;
 import com.alex.mysticalagriculture.cucumber.util.Localizable;
+import com.google.common.base.Function;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 public class AugmentItem extends BaseItem implements AugmentProvider, Enableable {
     private final Augment augment;
 
-    public AugmentItem(Augment augment) {
-        super();
+    public AugmentItem(Augment augment, Function<Settings, Settings> settings) {
+        super(settings);
         this.augment = augment;
     }
 

@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.cucumber.util.Utils;
+import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -13,17 +13,13 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.ShapelessRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 
 public class FarmlandTillRecipe extends ShapelessRecipe {
-    private final ItemStack result;
-
-    public FarmlandTillRecipe(Identifier id, String group, ItemStack result, DefaultedList<Ingredient> inputs) {
-        super(id, group, CraftingRecipeCategory.MISC, result, inputs);
-        this.result = result;
+    public FarmlandTillRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> inputs) {
+        super(id, group, output, inputs);
     }
 
     @Override
@@ -99,7 +95,7 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
                 ingredient.write(buffer);
             }
 
-            buffer.writeItemStack(recipe.result);
+            buffer.writeItemStack(recipe.getOutput());
         }
     }
 }

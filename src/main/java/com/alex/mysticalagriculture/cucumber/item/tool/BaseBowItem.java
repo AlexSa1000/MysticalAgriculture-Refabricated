@@ -1,8 +1,7 @@
 package com.alex.mysticalagriculture.cucumber.item.tool;
 
 import com.alex.mysticalagriculture.cucumber.iface.CustomBow;
-import net.minecraft.client.item.ClampedModelPredicateProvider;
-import net.minecraft.client.item.ModelPredicateProvider;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -34,7 +33,7 @@ public class BaseBowItem extends BowItem implements CustomBow {
         }
         PlayerEntity playerEntity = (PlayerEntity)user;
         boolean bl = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-        ItemStack itemStack = playerEntity.getProjectileType(stack);
+        ItemStack itemStack = playerEntity.getArrowType(stack);
         if (itemStack.isEmpty() && !bl) {
             return;
         }
@@ -84,7 +83,7 @@ public class BaseBowItem extends BowItem implements CustomBow {
         return true;
     }
 
-    public static ClampedModelPredicateProvider getPullPropertyGetter() {
+    public static UnclampedModelPredicateProvider getPullPropertyGetter() {
         return (stack, level, entity, _unused) -> {
             if (entity == null) {
                 return 0.0F;
@@ -94,7 +93,7 @@ public class BaseBowItem extends BowItem implements CustomBow {
         };
     }
 
-    public static ClampedModelPredicateProvider getPullingPropertyGetter() {
+    public static UnclampedModelPredicateProvider getPullingPropertyGetter() {
         return (stack, level, entity, _unused) -> {
             return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
         };

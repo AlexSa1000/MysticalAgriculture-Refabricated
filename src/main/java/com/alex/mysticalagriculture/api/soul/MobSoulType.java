@@ -1,10 +1,9 @@
 package com.alex.mysticalagriculture.api.soul;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.Collections;
 import java.util.Set;
@@ -57,7 +56,7 @@ MobSoulType {
     }
 
     public boolean isEntityApplicable(LivingEntity entity) {
-        return this.entityIds.contains(Registries.ENTITY_TYPE.getId(entity.getType()));
+        return this.entityIds.contains(Registry.ENTITY_TYPE.getId(entity.getType()));
     }
 
     public Text getEntityDisplayName() {
@@ -68,7 +67,7 @@ MobSoulType {
                 var entityId = this.entityIds.stream().findFirst().orElse(null);
 
                 if (entityId != null) {
-                    var entity = Registries.ENTITY_TYPE.get(entityId);
+                    var entity = Registry.ENTITY_TYPE.get(entityId);
 
                     if (entity != null) {
                         this.entityDisplayName = entity.getName();

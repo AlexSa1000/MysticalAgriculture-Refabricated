@@ -22,10 +22,8 @@ public class BaseReusableItem extends BaseItem implements FabricRecipeRemainder 
     private final boolean damage;
     private final boolean tooltip;
 
-    public BaseReusableItem(int uses) {
-        this(uses, (p) -> {
-            return p;
-        });
+    public BaseReusableItem(Function<Settings, Settings> settings) {
+        this(true, settings);
     }
 
     public BaseReusableItem(boolean tooltip, Function<Item.Settings, Item.Settings> properties) {

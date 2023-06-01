@@ -2,24 +2,24 @@ package com.alex.mysticalagriculture.init;
 
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.blocks.*;
-import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.registry.CropRegistry;
-import com.alex.mysticalagriculture.util.ReprocessorTier;
 import com.alex.mysticalagriculture.cucumber.block.*;
 import com.alex.mysticalagriculture.cucumber.iface.Colored;
 import com.alex.mysticalagriculture.cucumber.item.BaseBlockItem;
+import com.alex.mysticalagriculture.lib.ModCrops;
+import com.alex.mysticalagriculture.registry.CropRegistry;
+import com.alex.mysticalagriculture.util.ReprocessorTier;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.alex.mysticalagriculture.MysticalAgriculture.ITEM_GROUP;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class Blocks {
@@ -111,11 +111,11 @@ public class Blocks {
 
     public static void registerBlocks() {
         BLOCKS.forEach((id, block) -> {
-            Registry.register(Registries.BLOCK, id, block);
+            Registry.register(Registry.BLOCK, id, block);
         });
 
         BLOCK_ITEMS.forEach((id, block_item) -> {
-            Registry.register(Registries.ITEM, id, block_item);
+            Registry.register(Registry.ITEM, id, block_item);
         });
 
         CropRegistry.getInstance().setAllowRegistration(true);
@@ -126,7 +126,7 @@ public class Blocks {
     private static Block register(Block block, String name) {
         Identifier id = new Identifier(MOD_ID, name);
         BLOCKS.put(id, block);
-        BLOCK_ITEMS.put(id, new BaseBlockItem(block));
+        BLOCK_ITEMS.put(id, new BaseBlockItem(block, p -> p.group(ITEM_GROUP)));
         return block;
     }
 
@@ -134,10 +134,5 @@ public class Blocks {
         var id = new Identifier(MOD_ID, name);
         BLOCKS.put(id, block);
         return block;
-    }
-
-    public static void onColors() {
-        ColorProviderRegistry.BLOCK.register(new Colored.BlockColors(), InfusedFarmlandBlock.FARMLANDS.toArray(new InfusedFarmlandBlock[0]));
-        ColorProviderRegistry.ITEM.register(new Colored.ItemBlockColors(), InfusedFarmlandBlock.FARMLANDS.toArray(new InfusedFarmlandBlock[0]));
     }
 }

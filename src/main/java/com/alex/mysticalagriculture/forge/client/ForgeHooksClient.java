@@ -1,8 +1,12 @@
 package com.alex.mysticalagriculture.forge.client;
 
+import com.alex.mysticalagriculture.cucumber.helper.RecipeHelper;
 import com.alex.mysticalagriculture.cucumber.iface.CustomBow;
 import com.alex.mysticalagriculture.forge.client.event.ComputeFovModifierEvent;
+import com.alex.mysticalagriculture.forge.client.event.RecipesUpdatedEvent;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.util.math.MathHelper;
 
 public class ForgeHooksClient {
@@ -24,5 +28,9 @@ public class ForgeHooksClient {
         return fovModifierEvent.getNewFovModifier();
     }
 
-
+    public static void onRecipesUpdated(RecipeManager mgr)
+    {
+        RecipesUpdatedEvent event = new RecipesUpdatedEvent(mgr);
+        RecipeHelper.recipeManager = event.getRecipeManager();
+    }
 }

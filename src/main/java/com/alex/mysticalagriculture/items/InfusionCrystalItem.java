@@ -4,10 +4,12 @@ import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.cucumber.item.BaseReusableItem;
 import net.minecraft.item.ItemStack;
 
+import java.util.function.Function;
+
 public class InfusionCrystalItem extends BaseReusableItem {
 
-    public InfusionCrystalItem() {
-        super(1000);
+    public InfusionCrystalItem(Function<Settings, Settings> settings) {
+        super(1000, settings);
     }
 
     @Override

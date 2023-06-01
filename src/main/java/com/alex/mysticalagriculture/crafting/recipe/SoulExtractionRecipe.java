@@ -2,12 +2,12 @@ package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
+import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
 import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
-import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.inventory.Inventory;
@@ -16,7 +16,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -37,7 +36,7 @@ public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagr
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(Inventory inventory) {
         var stack = inventory.getStack(2);
         var jar = StackHelper.withSize(stack, 1, false);
 
@@ -52,7 +51,7 @@ public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagr
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getOutput() {
         return this.output;
     }
 

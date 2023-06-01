@@ -7,11 +7,13 @@ import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
+import java.util.function.Function;
+
 public class MysticalEssenceItem extends BaseItem implements CropProvider {
     private final Crop crop;
 
-    public MysticalEssenceItem(Crop crop) {
-        super();
+    public MysticalEssenceItem(Crop crop, Function<Settings, Settings> settings) {
+        super(settings);
         this.crop = crop;
     }
 

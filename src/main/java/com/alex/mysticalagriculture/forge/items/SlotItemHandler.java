@@ -32,6 +32,12 @@ public class SlotItemHandler extends Slot {
     }
 
     @Override
+    public void setStack(ItemStack stack) {
+        this.getItemHandler().setStackInSlot(index, stack);
+        this.markDirty();
+    }
+
+    @Override
     public void setStackNoCallbacks(ItemStack stack) {
         this.getItemHandler().setStackInSlot(index, stack);
         this.markDirty();
@@ -39,7 +45,6 @@ public class SlotItemHandler extends Slot {
 
     @Override
     public void onQuickTransfer(ItemStack newItem, ItemStack original) {
-
     }
 
     @Override

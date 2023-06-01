@@ -8,20 +8,18 @@ import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapelessRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class SoulJarEmptyRecipe extends ShapelessRecipe {
     public SoulJarEmptyRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> inputs) {
-        super(id, group, CraftingRecipeCategory.MISC, output, inputs);
+        super(id, group, output, inputs);
     }
 
     @Override

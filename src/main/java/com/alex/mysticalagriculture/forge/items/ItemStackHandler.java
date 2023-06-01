@@ -97,11 +97,11 @@ public abstract class ItemStackHandler implements SidedInventory {
         else
         {
             if (!this.simulate) {
-                this.stacks.set(slot, existing.copyWithCount(existing.getCount() - toExtract));
+                this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
                 markDirty();
             }
             this.simulate = false;
-            return existing.copyWithCount(toExtract);
+            return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
         }
     }
 
@@ -147,7 +147,7 @@ public abstract class ItemStackHandler implements SidedInventory {
         if (!this.simulate) {
             if (existing.isEmpty())
             {
-                this.setStack(slot, reachedLimit ? stack.copyWithCount(limit) : stack);
+                this.setStack(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
             }
             else
             {
@@ -157,7 +157,7 @@ public abstract class ItemStackHandler implements SidedInventory {
         }
 
         this.simulate = false;
-        return reachedLimit ? stack.copyWithCount(stack.getCount()- limit) : ItemStack.EMPTY;
+        return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount()- limit) : ItemStack.EMPTY;
     }
 
     public int getSlotLimit(int slot)

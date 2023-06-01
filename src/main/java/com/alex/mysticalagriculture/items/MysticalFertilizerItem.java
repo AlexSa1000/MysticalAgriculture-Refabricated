@@ -17,42 +17,20 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static net.minecraft.block.SaplingBlock.STAGE;
 
 public class MysticalFertilizerItem extends BaseItem {
-
-    public MysticalFertilizerItem() {
-        super();
+    public MysticalFertilizerItem(Function<Settings, Settings> settings) {
+        super(settings);
 
         DispenserBlock.registerBehavior(this, new DispenserBehavior());
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        /*World world = context.getWorld();
-        BlockPos blockPos = context.getBlockPos();
-        BlockPos blockPos2 = blockPos.offset(context.getSide());
-        if (applyFertilizer(context.getStack(), world, blockPos)) {
-            if (!world.isClient) {
-                world.syncWorldEvent(2005, blockPos, 0);
-            }
-
-            return ActionResult.success(world.isClient);
-        } else {
-            BlockState blockState = world.getBlockState(blockPos);
-            boolean bl = blockState.isSideSolidFullSquare(world, blockPos, context.getSide());
-            if (bl && useOnGround(context.getStack(), world, blockPos2, context.getSide())) {
-                if (!world.isClient) {
-                    world.syncWorldEvent(2005, blockPos2, 0);
-                }
-
-                return ActionResult.success(world.isClient);
-            } else {
-                return ActionResult.PASS;
-            }
-        }*/
-        var stack = context.getStack();
+     var stack = context.getStack();
         var pos = context.getBlockPos();
         var player = context.getPlayer();
         var world = context.getWorld();

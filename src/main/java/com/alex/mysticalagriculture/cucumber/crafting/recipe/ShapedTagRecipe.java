@@ -8,8 +8,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -18,18 +16,18 @@ public class ShapedTagRecipe extends ShapedNoMirrorRecipe {
     private final OutputResolver outputResolver;
     private ItemStack output;
 
-    public ShapedTagRecipe(Identifier id, String group, CraftingRecipeCategory category, int width, int height, DefaultedList<Ingredient> inputs, OutputResolver.Item outputResolver, boolean showNotification) {
-        super(id, group, category, width, height, inputs, ItemStack.EMPTY, showNotification);
+    public ShapedTagRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> inputs, OutputResolver.Item outputResolver) {
+        super(id, group, width, height, inputs, ItemStack.EMPTY);
         this.outputResolver = outputResolver;
     }
 
-    public ShapedTagRecipe(Identifier id, String group, CraftingRecipeCategory category, int width, int height, DefaultedList<Ingredient> inputs, String tag, int count, boolean showNotification) {
-        super(id, group, category, width, height, inputs, ItemStack.EMPTY, showNotification);
+    public ShapedTagRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> inputs, String tag, int count) {
+        super(id, group, width, height, inputs, ItemStack.EMPTY);
         this.outputResolver = new OutputResolver.Tag(tag, count);
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getOutput() {
         if (this.output == null) {
             this.output = this.outputResolver.resolve();
         }
@@ -55,7 +53,6 @@ public class ShapedTagRecipe extends ShapedNoMirrorRecipe {
         @Override
         public ShapedTagRecipe read(Identifier recipeId, JsonObject json) {
             var group = JsonHelper.getString(json, "group", "");
-            var category = CraftingRecipeCategory.CODEC.byId(JsonHelper.getString(json, "category", null), CraftingRecipeCategory.MISC);
             var key = ShapedRecipe.readSymbols(JsonHelper.getObject(json, "key"));
             var pattern = ShapedRecipe.getPattern(JsonHelper.getArray(json, "pattern"));
             var width = pattern[0].length();
@@ -64,15 +61,13 @@ public class ShapedTagRecipe extends ShapedNoMirrorRecipe {
             var result = JsonHelper.getObject(json, "result");
             var tag = JsonHelper.getString(result, "tag");
             var count = JsonHelper.getInt(result, "count", 1);
-            var showNotification = JsonHelper.getBoolean(json, "show_notification", true);
 
-            return new ShapedTagRecipe(recipeId, group, category, width, height, ingredients, tag, count, showNotification);
+            return new ShapedTagRecipe(recipeId, group, width, height, ingredients, tag, count);
         }
 
         @Override
         public ShapedTagRecipe read(Identifier recipeId, PacketByteBuf buffer) {
             var group = buffer.readString(32767);
-            var category = buffer.readEnumConstant(CraftingRecipeCategory.class);
             var width = buffer.readVarInt();
             var height = buffer.readVarInt();
             var ingredients = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
@@ -81,17 +76,14 @@ public class ShapedTagRecipe extends ShapedNoMirrorRecipe {
                 ingredients.set(k, Ingredient.fromPacket(buffer));
             }
 
-            //ItemStack output = buffer.readItemStack();
             var output = OutputResolver.create(buffer);
-            var showNotification = buffer.readBoolean();
 
-            return new ShapedTagRecipe(recipeId, group, category, width, height, ingredients, output, showNotification);
+            return new ShapedTagRecipe(recipeId, group, width, height, ingredients, output);
         }
 
         @Override
         public void write(PacketByteBuf buffer, ShapedTagRecipe recipe) {
             buffer.writeString(recipe.getGroup());
-            buffer.writeEnumConstant(recipe.getCategory());
             buffer.writeVarInt(recipe.getWidth());
             buffer.writeVarInt(recipe.getHeight());
 
@@ -100,7 +92,6 @@ public class ShapedTagRecipe extends ShapedNoMirrorRecipe {
             }
 
             buffer.writeItemStack(recipe.outputResolver.resolve());
-            buffer.writeBoolean(recipe.showNotification());
         }
     }
 }

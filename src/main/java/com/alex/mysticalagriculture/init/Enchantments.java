@@ -3,8 +3,7 @@ package com.alex.mysticalagriculture.init;
 import com.alex.mysticalagriculture.enchantment.MysticalEnlightenmentEnchantment;
 import com.alex.mysticalagriculture.enchantment.SoulSiphonerEnchant;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.util.registry.Registry;
 
 public class Enchantments {
     public static final Enchantment MYSTICAL_ENLIGHTENMENT = new MysticalEnlightenmentEnchantment();
@@ -12,7 +11,7 @@ public class Enchantments {
 
 
     public static void registerEnchantments() {
-        Registry.register(Registries.ENCHANTMENT, "mysticalagriculture:mystical_enlightenment", MYSTICAL_ENLIGHTENMENT);
-        Registry.register(Registries.ENCHANTMENT, "mysticalagriculture:soul_siphoner", SOUL_SIPHONER);
+        Registry.register(Registry.ENCHANTMENT, "mysticalagriculture:mystical_enlightenment", MYSTICAL_ENLIGHTENMENT);
+        Registry.register(Registry.ENCHANTMENT, "mysticalagriculture:soul_siphoner", SOUL_SIPHONER);
     }
 }

@@ -7,8 +7,8 @@ import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +76,7 @@ public class StrictNBTIngredient implements CustomIngredient {
 
         @Override
         public void write(JsonObject json, StrictNBTIngredient ingredient) {
-            json.addProperty("item", Registries.ITEM.getId(ingredient.stack.getItem()).toString());
+            json.addProperty("item", Registry.ITEM.getId(ingredient.stack.getItem()).toString());
             json.addProperty("count", ingredient.stack.getCount());
             if (ingredient.stack.hasNbt())
                 json.addProperty("nbt", ingredient.stack.getNbt().toString());

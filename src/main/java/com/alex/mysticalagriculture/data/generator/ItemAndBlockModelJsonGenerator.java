@@ -1,23 +1,20 @@
 package com.alex.mysticalagriculture.data.generator;
 
-import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.*;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class ItemAndBlockModelJsonGenerator extends FabricModelProvider {
-    public ItemAndBlockModelJsonGenerator(FabricDataOutput output) {
-        super(output);
+    public ItemAndBlockModelJsonGenerator(FabricDataGenerator dataGenerator) {
+        super(dataGenerator);
     }
 
     @Override

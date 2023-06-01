@@ -25,14 +25,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Function;
 
 public class EssenceHoeItem extends BaseHoeItem implements Tinkerable {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.HOE);
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceHoeItem(ToolMaterial tier, int tinkerableTier, int slots) {
-        super(tier, 0, tinkerableTier - 1.0F, p -> p);
+    public EssenceHoeItem(ToolMaterial tier, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
+        super(tier, 0, tinkerableTier - 1.0F, settings);
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
     }

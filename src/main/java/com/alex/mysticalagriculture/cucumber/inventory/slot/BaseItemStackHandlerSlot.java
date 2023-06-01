@@ -34,6 +34,4 @@ public class BaseItemStackHandlerSlot extends SlotItemHandler {
         this.inventory.setSimulate(false);
         return this.inventory.extractItem(this.index, amount, true);
     }
-
-
 }

@@ -12,7 +12,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3f;
 
 public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselBlockEntity> {
     private static final Identifier VESSEL_CONTENT_TEXTURE = new Identifier(MysticalAgriculture.MOD_ID, "block/essence_vessel_contents");
@@ -47,7 +47,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
 
             matrices.push();
             matrices.translate(0, 1, 1);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
 
             // bottom
             addVertex(builder, matrices, 0.2f, 0.25f, 0.8f, sprite.getMinU(), sprite.getMaxV(), color, light);
@@ -60,7 +60,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
             matrices.push();
 
             matrices.translate(1.2, 0.55, 0);
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
 
             // west
             addVertex(builder, matrices, 0.2f, 1, 0.8f, sprite.getMinU(), sprite.getMaxV(), color, light);
@@ -72,8 +72,8 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
             matrices.push();
 
             matrices.translate(-0.2, 0.55, 1);
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(270));
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(270));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 
             // east
             addVertex(builder, matrices, 0.2f, 1, 0.8f, sprite.getMinU(), sprite.getMaxV(), color, light);
@@ -85,8 +85,8 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
             matrices.push();
 
             matrices.translate(1, 0.55, -0.2);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 
             // south
             addVertex(builder, matrices, 0.2f, 1, 0.2f + filledAmount, sprite.getMinU(), sprite.getMaxV(), color, light);
@@ -98,7 +98,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
             matrices.push();
 
             matrices.translate(0, 0.55, 1.2);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(270));
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(270));
 
             // north
             addVertex(builder, matrices, 0.2f, 1, 0.2f + filledAmount, sprite.getMinU(), sprite.getMaxV(), color, light);
@@ -110,7 +110,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
 
             matrices.pop();
 
-            sprite.getContents().close();
+            sprite.close();
         }
     }
 

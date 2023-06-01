@@ -26,7 +26,7 @@ public class EnergyBarWidget extends ClickableWidget {
 
     @Override
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, WIDGETS_TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
@@ -35,9 +35,10 @@ public class EnergyBarWidget extends ClickableWidget {
 
         int offset = this.getEnergyBarOffset();
 
-        drawTexture(matrices, this.getX(), this.getY(), 0, 0, this.width, this.height);
-        drawTexture(matrices, this.getX(), this.getY() + this.height - offset, 14, this.height - offset, this.width, offset + 1);
-        if (mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height) {
+        drawTexture(matrices, this.x, this.y, 0, 0, this.width, this.height);
+        drawTexture(matrices, this.x, this.y + this.height - offset, 14, this.height - offset, this.width, offset + 1);
+
+        if (mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height) {
             var text = Text.literal(Formatting.number(this.energy.getAmount()).getString() + " / " + Formatting.energy(this.energy.getCapacity()).getString());
 
             this.screen.renderTooltip(matrices, text, mouseX, mouseY);
@@ -45,12 +46,12 @@ public class EnergyBarWidget extends ClickableWidget {
     }
 
     @Override
-    protected void appendClickableNarrations(NarrationMessageBuilder builder) {
+    public void appendNarrations(NarrationMessageBuilder builder) {
     }
 
     private int getEnergyBarOffset() {
         long i = this.energy.getAmount();
         long j = this.energy.getCapacity();
-        return (int)(j != 0 && i != 0 ? (long)i * (long)this.height / (long)j : 0L);
+        return (int)(j != 0 && i != 0 ? i * (long)this.height / (long)j : 0L);
     }
 }

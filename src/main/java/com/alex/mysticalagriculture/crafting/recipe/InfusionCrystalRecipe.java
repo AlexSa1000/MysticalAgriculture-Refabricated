@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.cucumber.util.FabricRecipeRemainder;
+import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -9,7 +9,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -19,8 +18,8 @@ import java.util.Map;
 public class InfusionCrystalRecipe extends ShapedRecipe {
     private final ItemStack output;
 
-    public InfusionCrystalRecipe(Identifier id, String group, CraftingRecipeCategory category, int width, int height, DefaultedList<Ingredient> inputs, ItemStack output, boolean showNotification) {
-        super(id, group, category, width, height, inputs, output, showNotification);
+    public InfusionCrystalRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> inputs, ItemStack output) {
+        super(id, group, width, height, inputs, output);
         this.output = output;
     }
 
@@ -67,15 +66,13 @@ public class InfusionCrystalRecipe extends ShapedRecipe {
         @Override
         public InfusionCrystalRecipe read(Identifier identifier, JsonObject jsonObject) {
             String string = JsonHelper.getString(jsonObject, "group", "");
-            CraftingRecipeCategory craftingRecipeCategory = CraftingRecipeCategory.CODEC.byId(JsonHelper.getString(jsonObject, "category", null), CraftingRecipeCategory.MISC);
             Map<String, Ingredient> map = ShapedRecipe.readSymbols(JsonHelper.getObject(jsonObject, "key"));
             String[] strings = ShapedRecipe.removePadding(ShapedRecipe.getPattern(JsonHelper.getArray(jsonObject, "pattern")));
             int i = strings[0].length();
             int j = strings.length;
             DefaultedList<Ingredient> defaultedList = ShapedRecipe.createPatternMatrix(strings, map, i, j);
             ItemStack itemStack = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
-            boolean bl = JsonHelper.getBoolean(jsonObject, "show_notification", true);
-            return new InfusionCrystalRecipe(identifier, string, craftingRecipeCategory, i, j, defaultedList, itemStack, bl);
+            return new InfusionCrystalRecipe(identifier, string, i, j, defaultedList, itemStack);
         }
 
         @Override
@@ -83,14 +80,12 @@ public class InfusionCrystalRecipe extends ShapedRecipe {
             int i = packetByteBuf.readVarInt();
             int j = packetByteBuf.readVarInt();
             String string = packetByteBuf.readString();
-            CraftingRecipeCategory craftingRecipeCategory = packetByteBuf.readEnumConstant(CraftingRecipeCategory.class);
             DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(i * j, Ingredient.EMPTY);
             for (int k = 0; k < defaultedList.size(); ++k) {
                 defaultedList.set(k, Ingredient.fromPacket(packetByteBuf));
             }
             ItemStack itemStack = packetByteBuf.readItemStack();
-            boolean bl = packetByteBuf.readBoolean();
-            return new InfusionCrystalRecipe(identifier, string, craftingRecipeCategory, i, j, defaultedList, itemStack, bl);
+            return new InfusionCrystalRecipe(identifier, string, i, j, defaultedList, itemStack);
         }
 
         @Override
@@ -98,12 +93,10 @@ public class InfusionCrystalRecipe extends ShapedRecipe {
             packetByteBuf.writeVarInt(shapedRecipe.getWidth());
             packetByteBuf.writeVarInt(shapedRecipe.getHeight());
             packetByteBuf.writeString(shapedRecipe.getGroup());
-            packetByteBuf.writeEnumConstant(shapedRecipe.getCategory());
             for (Ingredient ingredient : shapedRecipe.getIngredients()) {
                 ingredient.write(packetByteBuf);
             }
-            packetByteBuf.writeItemStack(shapedRecipe.output);
-            packetByteBuf.writeBoolean(shapedRecipe.showNotification());
+            packetByteBuf.writeItemStack(shapedRecipe.getOutput());
         }
     }
 

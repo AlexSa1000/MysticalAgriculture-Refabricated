@@ -5,9 +5,9 @@ import com.alex.mysticalagriculture.api.registry.CropRegistry;
 import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.tag.TagKey;
 
 public class MysticalAgricultureAPI {
     public static final String MOD_ID = "mysticalagriculture";

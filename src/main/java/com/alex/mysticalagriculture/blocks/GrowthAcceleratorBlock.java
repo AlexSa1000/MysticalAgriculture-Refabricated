@@ -31,7 +31,7 @@ public class GrowthAcceleratorBlock extends BaseBlock {
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        world.scheduleBlockTick(pos, this, getTickRate());
+        world.createAndScheduleBlockTick(pos, this, getTickRate());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class GrowthAcceleratorBlock extends BaseBlock {
                 .findFirst()
                 .ifPresent(aoePos -> world.getBlockState(aoePos).randomTick(world, aoePos, random));
 
-        world.scheduleBlockTick(pos, this, getTickRate());
+        world.createAndScheduleBlockTick(pos, this, getTickRate());
     }
 
     @Override

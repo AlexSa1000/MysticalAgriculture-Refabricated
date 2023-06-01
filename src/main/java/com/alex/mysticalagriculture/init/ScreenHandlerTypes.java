@@ -5,9 +5,7 @@ import com.alex.mysticalagriculture.screenhandler.ReprocessorScreenHandler;
 import com.alex.mysticalagriculture.screenhandler.SoulExtractorScreenHandler;
 import com.alex.mysticalagriculture.screenhandler.TinkeringTableScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.registry.Registry;
 
 public class ScreenHandlerTypes {
 
@@ -17,10 +15,10 @@ public class ScreenHandlerTypes {
     public static final ExtendedScreenHandlerType<HarvesterScreenHandler> HARVESTER = new ExtendedScreenHandlerType<>(HarvesterScreenHandler::create);
 
     public static void registerScreenHandlerTypes() {
-        Registry.register(Registries.SCREEN_HANDLER, "reprocessor", REPROCESSOR);
-        Registry.register(Registries.SCREEN_HANDLER, "tinkering_table", TINKERING_TABLE);
-        Registry.register(Registries.SCREEN_HANDLER, "soul_extractor", SOUL_EXTRACTOR);
-        Registry.register(Registries.SCREEN_HANDLER, "harvester", HARVESTER);
+        Registry.register(Registry.SCREEN_HANDLER, "reprocessor", REPROCESSOR);
+        Registry.register(Registry.SCREEN_HANDLER, "tinkering_table", TINKERING_TABLE);
+        Registry.register(Registry.SCREEN_HANDLER, "soul_extractor", SOUL_EXTRACTOR);
+        Registry.register(Registry.SCREEN_HANDLER, "harvester", HARVESTER);
     }
 
 }

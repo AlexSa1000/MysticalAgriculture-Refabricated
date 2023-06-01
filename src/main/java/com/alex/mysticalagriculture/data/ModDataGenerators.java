@@ -11,9 +11,9 @@ public class ModDataGenerators implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 
-        fabricDataGenerator.createPack().addProvider(RecipeJsonGenerator::new);
-        fabricDataGenerator.createPack().addProvider(ItemAndBlockModelJsonGenerator::new);
-        fabricDataGenerator.createPack().addProvider(BlockTagsJsonGenerator::new);
-        fabricDataGenerator.createPack().addProvider(ItemTagsJsonGenerator::new);
+        fabricDataGenerator.addProvider(RecipeJsonGenerator::new);
+        fabricDataGenerator.addProvider(ItemAndBlockModelJsonGenerator::new);
+        fabricDataGenerator.addProvider(BlockTagsJsonGenerator::new);
+        fabricDataGenerator.addProvider(ItemTagsJsonGenerator::new);
     }
 }

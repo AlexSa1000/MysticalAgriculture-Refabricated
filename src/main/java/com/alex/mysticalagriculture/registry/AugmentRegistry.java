@@ -3,13 +3,14 @@ package com.alex.mysticalagriculture.registry;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.items.AugmentItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.alex.mysticalagriculture.MysticalAgriculture.ITEM_GROUP;
 
 public class AugmentRegistry implements com.alex.mysticalagriculture.api.registry.AugmentRegistry {
     private static final AugmentRegistry INSTANCE = new AugmentRegistry();
@@ -43,9 +44,9 @@ public class AugmentRegistry implements com.alex.mysticalagriculture.api.registr
         PluginRegistry.getInstance().forEach((plugin, config) -> plugin.onRegisterAugments(this));
 
         this.augments.forEach((id, a) -> {
-            var item = new AugmentItem(a);
+            var item = new AugmentItem(a, p -> p.group(ITEM_GROUP));
 
-            Registry.register(Registries.ITEM, new Identifier(MysticalAgriculture.MOD_ID, a.getNameWithSuffix("augment")), item);
+            Registry.register(Registry.ITEM, new Identifier(MysticalAgriculture.MOD_ID, a.getNameWithSuffix("augment")), item);
         });
 
         PluginRegistry.getInstance().forEach((plugin, config) -> plugin.onPostRegisterAugments(this));

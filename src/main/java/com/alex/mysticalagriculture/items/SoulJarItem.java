@@ -1,40 +1,44 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import net.minecraft.client.item.ClampedModelPredicateProvider;
+import com.alex.mysticalagriculture.cucumber.item.BaseItem;
+import com.alex.mysticalagriculture.lib.ModTooltips;
+import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.function.Function;
 
 public class SoulJarItem extends BaseItem {
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
-    public SoulJarItem() {
-        super(p -> p.maxCount(1));
+    public SoulJarItem(Function<Settings, Settings> settings) {
+        super(settings.compose(p -> p.maxCount(1)));
     }
 
-    /*@Override
-    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> items) {
+    @Override
+    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {
-            items.add(new ItemStack(this));
+            stacks.add(new ItemStack(this));
 
-            ModMobSoulTypes.getMobSoulTypes().forEach(type -> {
+            MobSoulTypeRegistry.getInstance().getMobSoulTypes().forEach(type -> {
                 if (type.isEnabled()) {
-                    items.add(MobSoulUtils.getFilledSoulJar(type, this));
+                    stacks.add(MobSoulUtils.getFilledSoulJar(type, this));
                 }
             });
         }
-    }*/
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -53,8 +57,8 @@ public class SoulJarItem extends BaseItem {
         }
     }
 
-    public static ClampedModelPredicateProvider getFillPropertyGetter() {
-        return new ClampedModelPredicateProvider() {
+    public static UnclampedModelPredicateProvider getFillPropertyGetter() {
+        return new UnclampedModelPredicateProvider() {
             @Override
             public float call(ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity livingEntity, int i) {
                 return this.unclampedCall(itemStack, clientWorld, livingEntity, i);

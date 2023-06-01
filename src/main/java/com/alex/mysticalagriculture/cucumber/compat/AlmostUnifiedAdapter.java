@@ -3,9 +3,9 @@ package com.alex.mysticalagriculture.cucumber.compat;
 import com.almostreliable.unified.api.AlmostUnifiedLookup;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class AlmostUnifiedAdapter {
     public static boolean isLoaded() {
@@ -14,7 +14,7 @@ public class AlmostUnifiedAdapter {
 
     public static Item getPreferredItemForTag(String tagId) {
         if (isLoaded()) {
-            TagKey<Item> tagKey = TagKey.of(Registries.ITEM.getKey(), new Identifier(tagId));
+            TagKey<Item> tagKey = TagKey.of(Registry.ITEM.getKey(), new Identifier(tagId));
             return AlmostUnifiedAdapter.Adapter.getPreferredItemForTag(tagKey);
         } else {
             return null;

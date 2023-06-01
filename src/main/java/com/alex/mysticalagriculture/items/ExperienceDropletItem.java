@@ -10,9 +10,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.function.Function;
+
 public class ExperienceDropletItem extends BaseItem {
-    public ExperienceDropletItem() {
-        super();
+    public ExperienceDropletItem(Function<Settings, Settings> settings) {
+        super(settings);
     }
 
     @Override

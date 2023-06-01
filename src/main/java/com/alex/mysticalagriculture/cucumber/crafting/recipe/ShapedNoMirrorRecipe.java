@@ -8,20 +8,18 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class ShapedNoMirrorRecipe extends ShapedRecipe {
     private final ItemStack output;
 
-    public ShapedNoMirrorRecipe(Identifier id, String group, CraftingRecipeCategory category, int width, int height, DefaultedList<Ingredient> inputs, ItemStack output, boolean showNotification) {
-        super(id, group, category, width, height, inputs, output, showNotification);
+    public ShapedNoMirrorRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> inputs, ItemStack output) {
+        super(id, group, width, height, inputs, output);
         this.output = output;
     }
 
@@ -67,21 +65,19 @@ public class ShapedNoMirrorRecipe extends ShapedRecipe {
         @Override
         public ShapedNoMirrorRecipe read(Identifier identifier, JsonObject jsonObject) {
             String group = JsonHelper.getString(jsonObject, "group", "");
-            CraftingRecipeCategory category = (CraftingRecipeCategory)CraftingRecipeCategory.CODEC.byId(JsonHelper.getString(jsonObject, "category", (String)null), CraftingRecipeCategory.MISC);
             Map<String, Ingredient> key = ShapedRecipe.readSymbols(JsonHelper.getObject(jsonObject, "key"));
             String[] pattern = ShapedRecipe.getPattern(JsonHelper.getArray(jsonObject, "pattern"));
             int width = pattern[0].length();
             int height = pattern.length;
             DefaultedList<Ingredient> ingredients = ShapedRecipe.createPatternMatrix(pattern, key, width, height);
             ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
-            boolean showNotification = JsonHelper.getBoolean(jsonObject, "show_notification", true);
-            return new ShapedNoMirrorRecipe(identifier, group, category, width, height, ingredients, output, showNotification);
+
+            return new ShapedNoMirrorRecipe(identifier, group, width, height, ingredients, output);
         }
 
         @Override
         public ShapedNoMirrorRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
             String group = packetByteBuf.readString(32767);
-            CraftingRecipeCategory category = (CraftingRecipeCategory)packetByteBuf.readEnumConstant(CraftingRecipeCategory.class);
             int width = packetByteBuf.readVarInt();
             int height = packetByteBuf.readVarInt();
             DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
@@ -91,25 +87,21 @@ public class ShapedNoMirrorRecipe extends ShapedRecipe {
             }
 
             ItemStack output = packetByteBuf.readItemStack();
-            boolean showNotification = packetByteBuf.readBoolean();
-            return new ShapedNoMirrorRecipe(identifier, group, category, width, height, ingredients, output, showNotification);
+
+            return new ShapedNoMirrorRecipe(identifier, group, width, height, ingredients, output);
         }
 
         @Override
         public void write(PacketByteBuf packetByteBuf, ShapedNoMirrorRecipe shapedRecipe) {
             packetByteBuf.writeString(shapedRecipe.getGroup());
-            packetByteBuf.writeEnumConstant(shapedRecipe.getCategory());
             packetByteBuf.writeVarInt(shapedRecipe.getWidth());
             packetByteBuf.writeVarInt(shapedRecipe.getHeight());
-            Iterator var3 = shapedRecipe.getIngredients().iterator();
 
-            while(var3.hasNext()) {
-                Ingredient ingredient = (Ingredient)var3.next();
+            for (var ingredient : shapedRecipe.getIngredients()) {
                 ingredient.write(packetByteBuf);
             }
 
-            packetByteBuf.writeItemStack(shapedRecipe.output);
-            packetByteBuf.writeBoolean(shapedRecipe.showNotification());
+            packetByteBuf.writeItemStack(shapedRecipe.getOutput());
         }
     }
 }

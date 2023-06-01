@@ -61,7 +61,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     protected boolean canAcceptRecipeOutput(Recipe<?> recipe, DefaultedList<ItemStack> items, int maxStackSize) {
         if (!items.get(0).isEmpty() && recipe != null) {
-            ItemStack itemstack = ((Recipe<SidedInventory>) recipe).craft(this, this.world.getRegistryManager());
+            ItemStack itemstack = ((Recipe<SidedInventory>) recipe).craft(this);
             if (itemstack.isEmpty()) {
                 return false;
             } else {
@@ -84,7 +84,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
     protected boolean craftRecipe(Recipe<?> recipe, DefaultedList<ItemStack> items, int maxStackSize) {
         if (recipe != null && this.canAcceptRecipeOutput(recipe, items, maxStackSize)) {
             ItemStack itemstack = items.get(0);
-            ItemStack itemstack1 = ((Recipe<SidedInventory>) recipe).craft(this, this.world.getRegistryManager());
+            ItemStack itemstack1 = ((Recipe<SidedInventory>) recipe).craft(this);
             ItemStack itemstack2 = items.get(2);
             if (itemstack2.isEmpty()) {
                 items.set(2, itemstack1.copy());

@@ -111,7 +111,7 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implemen
                         block.spawnParticles(ParticleTypes.SMOKE, pedestal.getPos(), 1.2D, 20);
                     }
 
-                    var result = recipe.craft(block.recipeInventory, world.getRegistryManager());
+                    var result = recipe.craft(block.recipeInventory);
 
                     block.setOutput(result);
                     block.reset();

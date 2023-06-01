@@ -6,14 +6,10 @@ import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.crop.CropType;
 import com.alex.mysticalagriculture.api.lib.PluginConfig;
 import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
-import com.alex.mysticalagriculture.init.Blocks;
-import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.items.MysticalEssenceItem;
 import com.alex.mysticalagriculture.items.MysticalSeedItem;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -123,7 +119,7 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
 
             var id = new Identifier(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("crop"));
 
-            Registry.register(Registries.BLOCK, id, crop);
+            Registry.register(Registry.BLOCK, id, crop);
         });
         /*this.crops.forEach(c -> {
             CropBlock defaultCrop;
@@ -184,27 +180,27 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
         crops.stream().filter(Crop::shouldRegisterEssenceItem).forEach(c -> {
             var essence = c.getEssenceItem();
             if (essence == null) {
-                var defaultEssence = new MysticalEssenceItem(c);
+                var defaultEssence = new MysticalEssenceItem(c, p -> p.group(MysticalAgriculture.ITEM_GROUP));
                 essence = defaultEssence;
                 c.setEssenceItem(() -> defaultEssence, true);
             }
 
             var id = new Identifier(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("essence"));
 
-            Registry.register(Registries.ITEM, id, essence);
+            Registry.register(Registry.ITEM, id, essence);
         });
 
         crops.stream().filter(Crop::shouldRegisterSeedsItem).forEach(c -> {
             var seeds = c.getSeedsItem();
             if (seeds == null) {
-                var defaultSeeds = new MysticalSeedItem(c);
+                var defaultSeeds = new MysticalSeedItem(c, p -> p.group(MysticalAgriculture.ITEM_GROUP));
                 seeds = defaultSeeds;
                 c.setSeedsItem(() -> defaultSeeds, true);
             }
 
             var id = new Identifier(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("seeds"));
 
-            Registry.register(Registries.ITEM, id, seeds.asItem());
+            Registry.register(Registry.ITEM, id, seeds.asItem());
         });
 
         PluginRegistry.getInstance().forEach((plugin, config) -> plugin.onPostRegisterCrops(this));

@@ -8,22 +8,13 @@ import com.alex.mysticalagriculture.api.lib.LazyIngredient;
 import com.alex.mysticalagriculture.api.registry.CropRegistry;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import com.alex.mysticalagriculture.blocks.InferiumCropBlock;
-import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.items.MysticalEssenceItem;
-import com.alex.mysticalagriculture.items.MysticalSeedItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.CropBlock;
-import net.minecraft.block.FarmlandBlock;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.AliasedBlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -31,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
-import static com.alex.mysticalagriculture.init.Items.ITEMS;
 
 public class ModCrops {
     private static final List<Crop> crops = new ArrayList<>();
@@ -121,9 +111,9 @@ public class ModCrops {
     public static final Crop ANTIMONY = new Crop(new Identifier(MOD_ID, "antimony"), CropTier.THREE, CropType.RESOURCE, CropTextures.INGOT_CROP_TEXTURES, 0x81A9A1, LazyIngredient.item("modern_industrialization:antimony_ingot"));
 
     //AE2
-    public static final Crop SKY_STONE = new Crop(new Identifier(MOD_ID, "sky_stone"), CropTier.THREE, CropType.RESOURCE, LazyIngredient.item("appliedenergistics2:sky_stone_block"));
-    public static final Crop CERTUS_QUARTZ = new Crop(new Identifier(MOD_ID, "certus_quartz"), CropTier.THREE, CropType.RESOURCE, LazyIngredient.tag("appliedenergistics2:crystals/certus_quartz"));
-    public static final Crop FLUIX = new Crop(new Identifier(MOD_ID, "fluix"), CropTier.FOUR, CropType.RESOURCE, LazyIngredient.tag("appliedenergistics2:crystals/fluix"));
+    public static final Crop SKY_STONE = new Crop(new Identifier(MOD_ID, "sky_stone"), CropTier.THREE, CropType.RESOURCE, LazyIngredient.item("ae2:sky_stone_block"));
+    public static final Crop CERTUS_QUARTZ = new Crop(new Identifier(MOD_ID, "certus_quartz"), CropTier.THREE, CropType.RESOURCE, LazyIngredient.tag("ae2:all_certus_quartz"));
+    public static final Crop FLUIX = new Crop(new Identifier(MOD_ID, "fluix"), CropTier.FOUR, CropType.RESOURCE, LazyIngredient.tag("ae2:all_fluix"));
 
     //Tech Reborn
     public static final Crop RUBBER = new Crop(new Identifier(MOD_ID, "rubber"), CropTier.TWO, CropType.RESOURCE, LazyIngredient.item("techreborn:rubber"));
@@ -287,9 +277,9 @@ public class ModCrops {
         registry.register(withRequiredMods(PLATINUM, "mythicmetals", "techreborn"));
         registry.register(withRequiredMods(NIKOLITE, "indrev"));
         registry.register(withRequiredMods(ANTIMONY, "modern_industrialization"));
-        registry.register(withRequiredMods(SKY_STONE, "appliedenergistics2"));
-        registry.register(withRequiredMods(CERTUS_QUARTZ, "appliedenergistics2"));
-        registry.register(withRequiredMods(FLUIX, "appliedenergistics2"));
+        registry.register(withRequiredMods(SKY_STONE, "ae2"));
+        registry.register(withRequiredMods(CERTUS_QUARTZ, "ae2"));
+        registry.register(withRequiredMods(FLUIX, "ae2"));
         registry.register(withRequiredMods(RUBBER, "techreborn"));
         registry.register(withRequiredMods(RUBY, "techreborn"));
         registry.register(withRequiredMods(SAPPHIRE, "techreborn"));

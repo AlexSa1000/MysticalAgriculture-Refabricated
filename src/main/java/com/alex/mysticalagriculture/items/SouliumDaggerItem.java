@@ -14,12 +14,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class SouliumDaggerItem extends BaseSwordItem {
     private final DaggerType type;
 
-    public SouliumDaggerItem(ToolMaterial tier, DaggerType type) {
-        super(tier, type.getDamage(), -2.4F, p -> p.maxDamageIfAbsent(type.getDurability()));
+    public SouliumDaggerItem(ToolMaterial tier, DaggerType type, Function<Settings, Settings> settings) {
+        super(tier, type.getDamage(), -2.4F, settings.compose(p -> p.maxDamageIfAbsent(type.getDurability())));
         this.type = type;
     }
 

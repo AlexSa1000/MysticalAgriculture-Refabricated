@@ -123,7 +123,7 @@ public class InfusionCategory implements DisplayCategory<InfusionCategory.Recipe
 
         @Override
         public List<EntryIngredient> getOutputEntries() {
-            return Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess())));
+            return Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
         }
 
         @Override

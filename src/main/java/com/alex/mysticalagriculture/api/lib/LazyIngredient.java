@@ -5,9 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class LazyIngredient {
     public static final LazyIngredient EMPTY = new LazyIngredient(null, null, null) {
@@ -74,7 +74,7 @@ public class LazyIngredient {
             var tag = ItemTags.of(name);
             return new Ingredient.TagEntry(tag);
         } else if (this.isItem()) {
-            Item item = Registries.ITEM.get(new Identifier(this.name));
+            Item item = Registry.ITEM.get(new Identifier(this.name));
             if (item != null) {
                 ItemStack stack = new ItemStack(item);
 
@@ -95,7 +95,7 @@ public class LazyIngredient {
                 var tag = ItemTags.of(name);
                 this.ingredient = Ingredient.fromTag(tag);
             } else if (this.isItem()) {
-                var item = Registries.ITEM.get(new Identifier(this.name));
+                var item = Registry.ITEM.get(new Identifier(this.name));
 
                 if (item != null) {
                     if (this.nbt == null || this.nbt.isEmpty()) {

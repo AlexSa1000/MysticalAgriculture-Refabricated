@@ -20,6 +20,8 @@ public class SidedItemStackHandler extends BaseItemStackHandler {
         this.direction = direction;
         this.canInsert = canInsert;
         this.canExtract = canExtract;
+
+        this.outputSlots = inventory.getOutputSlots();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Function;
 
 public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.WEAPON, AugmentType.BOW);
@@ -32,8 +33,8 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     private final int slots;
     private final float drawSpeedMulti;
 
-    public EssenceBowItem(ToolMaterial tier, int tinkerableTier, int slots, float drawSpeedMulti) {
-        super(p -> p.maxDamage(tier.getDurability()));
+    public EssenceBowItem(ToolMaterial tier, int tinkerableTier, int slots, float drawSpeedMulti, Function<Settings, Settings> settings) {
+        super(settings.compose(p -> p.maxDamage(tier.getDurability())));
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
         this.drawSpeedMulti = drawSpeedMulti;

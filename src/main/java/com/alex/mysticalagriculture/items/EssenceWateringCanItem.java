@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.cucumber.helper.NBTHelper;
+import com.google.common.base.Function;
 import net.minecraft.block.Material;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -25,8 +26,8 @@ import java.util.UUID;
 public class EssenceWateringCanItem extends WateringCanItem {
     private final Formatting textColor;
 
-    public EssenceWateringCanItem(int range, double chance, Formatting textColor) {
-        super(range, chance);
+    public EssenceWateringCanItem(int range, double chance, Formatting textColor, Function<Settings, Settings> settings) {
+        super(range, chance, settings.compose(p -> p.maxCount(1)));
         this.textColor = textColor;
     }
 

@@ -13,9 +13,8 @@ import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class RecipeSerializers {
 
@@ -45,17 +44,17 @@ public class RecipeSerializers {
 
     }
     public static void registerRecipeSerializers() {
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:farmland_till"), CRAFTING_FARMLAND_TILL);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:infusion"), INFUSION);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:awakening"), AWAKENING);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:reprocessor"), REPROCESSOR);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:soul_extraction"), SOUL_EXTRACTION);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:soul_jar_empty"), CRAFTING_SOUL_JAR_EMPTY);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:infusion_crystal"), INFUSION_CRYSTAL);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shaped_no_mirror"), CRAFTING_SHAPED_NO_MIRROR);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shaped_transfer_damage"), CRAFTING_SHAPED_TRANSFER_DAMAGE);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shaped_tag"), CRAFTING_SHAPED_TAG);
-        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shapeless_tag"), CRAFTING_SHAPELESS_TAG);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:farmland_till"), CRAFTING_FARMLAND_TILL);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:infusion"), INFUSION);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:awakening"), AWAKENING);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:reprocessor"), REPROCESSOR);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:soul_extraction"), SOUL_EXTRACTION);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:soul_jar_empty"), CRAFTING_SOUL_JAR_EMPTY);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:infusion_crystal"), INFUSION_CRYSTAL);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shaped_no_mirror"), CRAFTING_SHAPED_NO_MIRROR);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shaped_transfer_damage"), CRAFTING_SHAPED_TRANSFER_DAMAGE);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shaped_tag"), CRAFTING_SHAPED_TAG);
+        Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("mysticalagriculture:shapeless_tag"), CRAFTING_SHAPELESS_TAG);
 
         CustomIngredientSerializer.register(CROP_COMPONENT_INGREDIENT);
         CustomIngredientSerializer.register(STRICT_NBT_INGREDIENT);

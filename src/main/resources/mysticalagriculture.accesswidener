@@ -1,13 +1,14 @@
 accessWidener v1 named
 
 extendable class net/minecraft/recipe/Ingredient
-accessible method net/minecraft/recipe/Ingredient$TagEntry <init> (Lnet/minecraft/registry/tag/TagKey;)V
+accessible method net/minecraft/recipe/Ingredient$TagEntry <init> (Lnet/minecraft/tag/TagKey;)V
 accessible class net/minecraft/recipe/Ingredient$Entry
 accessible method net/minecraft/recipe/Ingredient <init> (Ljava/util/stream/Stream;)V
 accessible method net/minecraft/recipe/Ingredient$StackEntry <init> (Lnet/minecraft/item/ItemStack;)V
 accessible method net/minecraft/item/ItemStack isEqual (Lnet/minecraft/item/ItemStack;)Z
-accessible method net/minecraft/registry/tag/ItemTags of (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
-accessible method net/minecraft/registry/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
+accessible method net/minecraft/tag/ItemTags of (Ljava/lang/String;)Lnet/minecraft/tag/TagKey;
+#accessible method net/minecraft/registry/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
+accessible method net/minecraft/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/tag/TagKey;
 accessible method net/minecraft/block/FarmlandBlock isWaterNearby (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;)Z
 
 extendable method net/minecraft/item/Item getMaxDamage ()I
@@ -35,6 +36,9 @@ accessible field net/minecraft/recipe/RecipeManager recipes Ljava/util/Map;
 accessible field net/minecraft/recipe/RecipeManager recipesById Ljava/util/Map;
 accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
 
-accessible field net/minecraft/item/ArmorItem type Lnet/minecraft/item/ArmorItem$Type;
+#accessible field net/minecraft/item/ArmorItem type Lnet/minecraft/item/ArmorItem$Type;
 accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;)F
 accessible method net/minecraft/item/CrossbowItem loadProjectiles (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)Z
+
+accessible method net/minecraft/entity/mob/PiglinBrain angerNearbyPiglins (Lnet/minecraft/entity/mob/AbstractPiglinEntity;)V
+accessible method net/minecraft/block/Block dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;I)V

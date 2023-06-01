@@ -133,7 +133,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
                 }
 
                 if (block.recipe != null) {
-                    var recipeOutput = block.recipe.craft(block.inventory, world.getRegistryManager());
+                    var recipeOutput = block.recipe.craft(block.inventory);
                     if (!recipeOutput.isEmpty() && (output.isEmpty() || StackHelper.canCombineStacks(output, recipeOutput))) {
                         block.progress++;
                         try (Transaction transaction = Transaction.openOuter()) {

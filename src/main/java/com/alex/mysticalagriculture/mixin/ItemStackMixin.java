@@ -14,6 +14,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,11 +40,10 @@ public abstract class ItemStackMixin {
 
         if (((ItemStack) ((Object) this)).getItem() instanceof EssenceHelmetItem || ((ItemStack) ((Object) this)).getItem() instanceof EssenceChestplateItem || ((ItemStack) ((Object) this)).getItem() instanceof EssenceLeggingsItem || ((ItemStack) ((Object) this)).getItem() instanceof EssenceBootsItem) {
             Multimap<EntityAttribute, EntityAttributeModifier> modifiers = HashMultimap.create();
-            var item = (ArmorItem) this.getItem();
-            if (slot == item.type.getEquipmentSlot()) {
-                var material = item.getMaterial();
+            if (slot == ((ArmorItem) this.getItem()).getSlotType()) {
+                ArmorMaterial material = ((ArmorItem) this.getItem()).getMaterial();
 
-                modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor modifier", material.getProtection(item.type), EntityAttributeModifier.Operation.ADDITION));
+                modifiers.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor modifier", material.getProtectionAmount(slot), EntityAttributeModifier.Operation.ADDITION));
                 modifiers.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(ARMOR_MODIFIERS[slot.getEntitySlotId()], "Armor toughness", material.getToughness(), EntityAttributeModifier.Operation.ADDITION));
 
                 if (material.getKnockbackResistance() > 0) {

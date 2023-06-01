@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture.cucumber.crafting;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.cucumber.compat.AlmostUnifiedAdapter;
+import com.alex.mysticalagriculture.cucumber.config.ModConfigs;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -12,11 +13,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -60,7 +60,7 @@ public class TagMapper {
                         // if they are still present. if not we just refresh the entry
                         if (/*ModConfigs.AUTO_REFRESH_TAG_ENTRIES.get()*/true) {
                             if (!itemId.isEmpty() && !"null".equalsIgnoreCase(itemId)) {
-                                var item = Registries.ITEM.get(new Identifier(itemId));
+                                var item = Registry.ITEM.get(new Identifier(itemId));
                                 if (item == null || item == Items.AIR) {
                                     addTagToFile(tagId, json, file, false);
                                 }
@@ -98,13 +98,12 @@ public class TagMapper {
 
     public static Item getItemForTag(String tagId) {
         var preferredItem = AlmostUnifiedAdapter.getPreferredItemForTag(tagId);
-
         if (preferredItem != null) {
             return preferredItem;
 
         } else if (TAG_TO_ITEM_MAP.containsKey(tagId)) {
             var id = TAG_TO_ITEM_MAP.get(tagId);
-            return Registries.ITEM.get(new Identifier(id));
+            return Registry.ITEM.get(new Identifier(id));
         } else {
             //File file = FMLPaths.CONFIGDIR.get().resolve("cucumber-tags.json").toFile();
             var file = FabricLoader.getInstance().getConfigDir().resolve("mysticalagriculture-tags.json").toFile();
@@ -117,7 +116,7 @@ public class TagMapper {
                 FileReader reader = null;
 
                 try {
-                    JsonParser parser = new JsonParser();
+                    var parser = new JsonParser();
                     reader = new FileReader(file);
                     json = parser.parse(reader).getAsJsonObject();
                 } catch (Exception e) {
@@ -128,13 +127,13 @@ public class TagMapper {
 
                 if (json != null) {
                     if (json.has(tagId)) {
-                        String itemId = json.get(tagId).getAsString();
-                        if (!itemId.isEmpty() && !"null".equalsIgnoreCase(itemId)) {
-                            TAG_TO_ITEM_MAP.put(tagId, itemId);
-                            return Registries.ITEM.get(new Identifier(itemId));
-                        }
+                        var itemId = json.get(tagId).getAsString();
+                        if (!itemId.isEmpty() && !"null".equalsIgnoreCase(itemId))
+                            return addTagToFile(tagId, json, file);
 
-                        return addTagToFile(tagId, json, file);
+                        TAG_TO_ITEM_MAP.put(tagId, itemId);
+
+                        return Registry.ITEM.get(new Identifier(itemId));
                     }
 
                     return addTagToFile(tagId, json, file);
@@ -155,11 +154,11 @@ public class TagMapper {
     }
 
     private static Item addTagToFile(String tagId, JsonObject json, File file, boolean save) {
-        var mods = Lists.newArrayList("techreborn", "appliedenergistics2");
+        var mods = ModConfigs.MOD_TAG_PRIORITIES.get();
         var key = ItemTags.of(tagId);
-        var tags = Registries.ITEM.streamEntries().filter(entry -> entry.isIn(key));
+        var tags = Registry.ITEM.streamEntries().filter(entry -> entry.isIn(key));
 
-        //assert tags != null;
+        assert tags != null;
 
         var item = tags.min((item1, item2) -> {
             var id1 = item1.getKey().orElse(null);
@@ -171,7 +170,7 @@ public class TagMapper {
             return index1 > index2 ? 1 : index1 == -1 ? 0 : -1;
         }).orElse(Items.AIR.getRegistryEntry());
 
-        var itemId = item.value().equals(Items.AIR) ? "null" : item.getKey().orElse(RegistryKey.of(RegistryKeys.ITEM, new Identifier("air"))).getValue().toString();
+        var itemId = item.value().equals(Items.AIR) ? "null" : item.getKey().orElse(RegistryKey.of(Registry.ITEM_KEY, new Identifier("air"))).getValue().toString();
 
         json.addProperty(tagId, itemId);
         TAG_TO_ITEM_MAP.put(tagId, itemId);

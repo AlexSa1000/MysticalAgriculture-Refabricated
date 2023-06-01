@@ -89,7 +89,7 @@ public class ReprocessorCategory implements DisplayCategory<ReprocessorCategory.
 
         @Override
         public List<EntryIngredient> getOutputEntries() {
-            return Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess())));
+            return Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
         }
 
         @Override

@@ -44,7 +44,7 @@ public class SoulExtractorScreenHandler extends BaseScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack transferSlot(PlayerEntity player, int index) {
         var itemstack = ItemStack.EMPTY;
         var slot = this.slots.get(index);
 

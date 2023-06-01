@@ -1,0 +1,17 @@
+{
+  "name": "book.mysticalagriculture.entry.soul_extractor",
+  "category": "mysticalagriculture:machines",
+  "icon": "mysticalagriculture:soul_extractor",
+  "sortnum": 203,
+  "pages": [
+    {
+      "type": "text",
+      "text": "book.mysticalagriculture.entry.soul_extractor.page.1"
+    },
+    {
+      "type": "crafting",
+      "title": "book.mysticalagriculture.crafting",
+      "recipe": "mysticalagriculture:soul_extractor"
+    }
+  ]
+}

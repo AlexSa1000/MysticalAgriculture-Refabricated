@@ -29,14 +29,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Function;
 
 public class EssencePickaxeItem extends BasePickaxeItem implements Tinkerable, MagnaTool {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.PICKAXE);
     private final int tinkerableTier;
     private final int slots;
 
-    public EssencePickaxeItem(ToolMaterial tier, int tinkerableTier, int slots) {
-        super(tier);
+    public EssencePickaxeItem(ToolMaterial tier, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
+        super(tier, settings);
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
     }

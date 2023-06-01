@@ -16,12 +16,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.function.Function;
 
 public class MachineUpgradeItem extends BaseItem {
     private final MachineUpgradeTier tier;
 
-    public MachineUpgradeItem(MachineUpgradeTier tier) {
-        super();
+    public MachineUpgradeItem(MachineUpgradeTier tier, Function<Settings, Settings> settings) {
+        super(settings);
         this.tier = tier;
     }
 

@@ -1,9 +1,8 @@
 package com.alex.mysticalagriculture.init;
 
 import com.alex.mysticalagriculture.world.feature.SoulstoneFeature;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 
@@ -25,7 +24,7 @@ public final class WorldFeatures {
 
     public static void registerFeatures() {
         FEATURES.forEach((feature, id) -> {
-            Registry.register(Registries.FEATURE, id, feature);
+            Registry.register(Registry.FEATURE, id, feature);
         });
     }
 }

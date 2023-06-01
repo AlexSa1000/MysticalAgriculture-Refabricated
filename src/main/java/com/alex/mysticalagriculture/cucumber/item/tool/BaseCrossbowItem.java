@@ -1,8 +1,7 @@
 package com.alex.mysticalagriculture.cucumber.item.tool;
 
 import com.alex.mysticalagriculture.cucumber.iface.CustomBow;
-import net.minecraft.client.item.ClampedModelPredicateProvider;
-import net.minecraft.client.item.ModelPredicateProvider;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -53,7 +52,7 @@ public class BaseCrossbowItem extends CrossbowItem implements CustomBow {
         int i = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, stack);
         int j = i == 0 ? 1 : 3;
         boolean flag = entity instanceof PlayerEntity && ((PlayerEntity)entity).getAbilities().creativeMode;
-        ItemStack itemstack = entity.getProjectileType(stack);
+        ItemStack itemstack = entity.getArrowType(stack);
         ItemStack itemstack1 = itemstack.copy();
 
         for(int k = 0; k < j; ++k) {
@@ -109,7 +108,7 @@ public class BaseCrossbowItem extends CrossbowItem implements CustomBow {
         compoundtag.put("ChargedProjectiles", listtag);
     }
 
-    public static ClampedModelPredicateProvider getPullPropertyGetter() {
+    public static UnclampedModelPredicateProvider getPullPropertyGetter() {
         return (stack, level, entity, _unused) -> {
             if (entity == null) {
                 return 0.0F;
@@ -119,19 +118,19 @@ public class BaseCrossbowItem extends CrossbowItem implements CustomBow {
         };
     }
 
-    public static ClampedModelPredicateProvider getPullingPropertyGetter() {
+    public static UnclampedModelPredicateProvider getPullingPropertyGetter() {
         return (stack, level, entity, _unused) -> {
             return entity != null && entity.isUsingItem() && entity.getActiveItem() == stack && !CrossbowItem.isCharged(stack) ? 1.0F : 0.0F;
         };
     }
 
-    public static ClampedModelPredicateProvider getChargedPropertyGetter() {
+    public static UnclampedModelPredicateProvider getChargedPropertyGetter() {
         return (stack, level, entity, _unused) -> {
             return entity != null && isCharged(stack) ? 1.0F : 0.0F;
         };
     }
 
-    public static ClampedModelPredicateProvider getFireworkPropertyGetter() {
+    public static UnclampedModelPredicateProvider getFireworkPropertyGetter() {
         return (stack, level, entity, _unused) -> {
             return entity != null && isCharged(stack) && hasProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
         };

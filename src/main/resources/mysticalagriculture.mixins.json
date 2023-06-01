@@ -8,13 +8,21 @@
     "CropBlockMixin",
     "DataPackContentsMixin",
     "ExperienceOrbEntityMixin",
+    "FishingBobberEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "PlayerManagerMixin"
+    "MooshroomEntityMixin",
+    "PlayerEntityMixin",
+    "PlayerManagerMixin",
+    "ServerPlayerInteractionManagerMixin",
+    "SheepEntityMixin",
+    "SnowGolemEntityMixin"
   ],
   "client": [
     "AbstractClientPlayerEntityMixin",
+    "ClientPlayerInteractionManagerMixin",
     "ClientRecipeBookMixin",
+    "FishingBobberEntityRendererMixin",
     "HeldItemRendererMixin",
     "PlayerEntityRendererMixin"
   ],

@@ -15,7 +15,7 @@
   },
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/quartz"
+      "item": "minecraft:quartz_block"
     },
     {
       "item": "mysticalagriculture:imperium_essence"
@@ -27,7 +27,7 @@
       "item": "mysticalagriculture:imperium_essence"
     },
     {
-      "tag": "forge:storage_blocks/quartz"
+      "item": "minecraft:quartz_block"
     },
     {
       "item": "mysticalagriculture:imperium_essence"

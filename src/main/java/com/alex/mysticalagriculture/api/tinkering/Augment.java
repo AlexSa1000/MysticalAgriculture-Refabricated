@@ -1,9 +1,9 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
+import com.alex.mysticalagriculture.cucumber.util.Utils;
 import com.alex.mysticalagriculture.forge.common.ForgeHooks;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.cucumber.util.Utils;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -14,12 +14,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.EnumSet;
@@ -56,7 +56,7 @@ public class Augment {
     }
 
     public Item getItem() {
-        return Registries.ITEM.get(new Identifier(MOD_ID, this.getName() + "_augment"));
+        return Registry.ITEM.get(new Identifier(MOD_ID, this.getName() + "_augment"));
     }
 
     public int getPrimaryColor() {
@@ -110,6 +110,10 @@ public class Augment {
 
     public String getNameWithSuffix(String suffix) {
         return String.format("%s_%s", this.getName(), suffix);
+    }
+
+    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
+        return false;
     }
 
     public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {

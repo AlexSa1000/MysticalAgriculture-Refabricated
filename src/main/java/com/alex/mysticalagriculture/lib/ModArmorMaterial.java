@@ -53,13 +53,13 @@ public enum ModArmorMaterial implements ArmorMaterial {
     }
 
     @Override
-    public int getDurability(ArmorItem.Type type) {
-        return MAX_DAMAGE_ARRAY[type.ordinal()] * this.maxDamageFactor;
+    public int getDurability(EquipmentSlot slot) {
+        return MAX_DAMAGE_ARRAY[slot.getEntitySlotId()] * this.maxDamageFactor;
     }
 
     @Override
-    public int getProtection(ArmorItem.Type type) {
-        return this.damageReductionAmountArray[type.ordinal()];
+    public int getProtectionAmount(EquipmentSlot slot) {
+        return this.damageReductionAmountArray[slot.getEntitySlotId()];
     }
 
     @Override

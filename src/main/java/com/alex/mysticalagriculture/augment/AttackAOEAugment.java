@@ -4,6 +4,7 @@ import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.cucumber.helper.ColorHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
@@ -31,7 +32,7 @@ public class AttackAOEAugment extends Augment {
                 for (LivingEntity aoeEntity : entities) {
                     if (aoeEntity != player && aoeEntity != target && !player.isTeammate(target)) {
                         aoeEntity.takeKnockback(0.4F, MathHelper.sin(player.getYaw() * 0.017453292F), -MathHelper.cos(player.getYaw() * 0.017453292F));
-                        aoeEntity.damage(level.getDamageSources().playerAttack(player), 5.0F + (5.0F * this.amplifier));
+                        aoeEntity.damage(DamageSource.player(player), 5.0F + (5.0F * this.amplifier));
                     }
                 }
 

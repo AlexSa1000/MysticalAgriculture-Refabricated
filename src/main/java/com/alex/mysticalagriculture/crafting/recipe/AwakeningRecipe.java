@@ -1,10 +1,10 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
+import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -43,7 +42,7 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(Inventory inventory) {
         return this.output.copy();
     }
 
@@ -53,7 +52,7 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getOutput() {
         return this.output;
     }
 

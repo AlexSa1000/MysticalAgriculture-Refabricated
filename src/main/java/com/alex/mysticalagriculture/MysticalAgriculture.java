@@ -7,22 +7,25 @@ import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
 import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.mysticalagriculture.cucumber.crafting.TagMapper;
+import com.alex.mysticalagriculture.cucumber.helper.ConfigHelper;
+import com.alex.mysticalagriculture.cucumber.item.tool.BaseShearsItem;
 import com.alex.mysticalagriculture.init.*;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.registry.PluginRegistry;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.crafting.TagMapper;
-import com.alex.mysticalagriculture.cucumber.helper.ConfigHelper;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -32,7 +35,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.slf4j.Logger;
@@ -40,17 +42,13 @@ import org.slf4j.LoggerFactory;
 import team.reborn.energy.api.EnergyStorage;
 
 import static com.alex.mysticalagriculture.api.tinkering.Augment.getEssenceForTinkerable;
-import static com.alex.mysticalagriculture.init.CreativeModeTabs.displayItems;
 
 
 public class MysticalAgriculture implements ModInitializer {
     public static final String MOD_ID = "mysticalagriculture";
     public static final String NAME = "MysticalAgriculture: Refabricated";
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
-    public static final ItemGroup ITEM_GROUP = FabricItemGroup.builder(new Identifier(MysticalAgriculture.MOD_ID, "creative_mode_tab"))
-            .displayName(Text.translatable("itemGroup.minecraft.mysticalagriculture"))
-            .icon(() -> new ItemStack(Items.INFERIUM_ESSENCE))
-            .entries((displayItems)).build();
+    public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID), () -> new ItemStack(Items.INFERIUM_ESSENCE));
 
     @Override
     public void onInitialize() {

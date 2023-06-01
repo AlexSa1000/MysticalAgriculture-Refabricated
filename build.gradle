@@ -46,12 +46,24 @@ repositories {
 	}
 
 	maven {
-		name = "BlameJared Maven'"
+		// location of the maven that hosts JEI files before January 2023
+		name = "Progwml6's maven"
+		url = "https://dvs1.progwml6.com/files/maven/"
+	}
+
+	maven {
+		name = "BlameJared Maven"
 		url = "https://maven.blamejared.com"
 	}
 
+	maven {
+		// location of a maven mirror for JEI files, as a fallback
+		name = "ModMaven"
+		url = "https://modmaven.dev"
+	}
+
 	mavenCentral()
-	mavenLocal()
+	//mavenLocal()
 
 }
 
@@ -59,6 +71,7 @@ dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	//mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
@@ -68,8 +81,14 @@ dependencies {
 	// You may need to force-disable transitiveness on them.
 	
 	modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
+
+	// compile against the JEI API but do not include it at runtime
+	modCompileOnlyApi("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
+	modCompileOnlyApi("mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}")
+	// at runtime, use the full JEI jar for Fabric
+	modRuntimeOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}")
 	
-	include modImplementation ("draylar:magna:${project.magna_version}") {
+	include modImplementation ("com.github.Draylar:magna:${project.magna_version}") {
         exclude group: "net.fabricmc"
         exclude group: "com.jamieswhiteshirt"
         exclude group: "me.shedaniel.cloth"
@@ -77,16 +96,23 @@ dependencies {
 	}
 
 	//Almost Unified
-	modApi("com.almostreliable.mods:almostunified-fabric:1.19.4-0.4.1")
+	modApi("com.almostreliable.mods:almostunified-fabric:${project.almostunified_version}")
 
-	include modApi('teamreborn:energy:3.0.0') {
+	include modApi("teamreborn:energy:${project.energy_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 
-	modImplementation 'com.electronwill.night-config:core:3.6.6'
-	include "com.electronwill.night-config:core:3.6.6"
-	modImplementation 'com.electronwill.night-config:toml:3.6.6'
-	include "com.electronwill.night-config:toml:3.6.6"
+	modImplementation "com.electronwill.night-config:core:${project.nightconfig_version}"
+	include "com.electronwill.night-config:core:${project.nightconfig_version}"
+	modImplementation "com.electronwill.night-config:toml:${project.nightconfig_version}"
+	include "com.electronwill.night-config:toml:${project.nightconfig_version}"
+
+	//modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+	include modImplementation("vazkii.patchouli:Patchouli:${project.patchouli_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	modImplementation "curse.maven:jade-324717:${project.jade_version}"
 }
 
 base {
@@ -146,5 +172,11 @@ sourceSets {
 					'src/generated/resources'
 			]
 		}
+	}
+}
+
+configurations.all {
+	resolutionStrategy {
+		force("net.fabricmc:fabric-loader:$loader_version")
 	}
 }

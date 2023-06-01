@@ -7,11 +7,13 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.item.AliasedBlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
@@ -29,12 +31,15 @@ public class Crop {
     private Supplier<? extends CropBlock> crop;
     private Supplier<? extends Item> essence;
     private Supplier<? extends AliasedBlockItem> seeds;
+    private Supplier<? extends Block> crux;
     private final LazyIngredient craftingMaterial;
     private boolean enabled;
     private boolean registerCropBlock;
     private boolean registerEssenceItem;
     private boolean registerSeedsItem;
+    private boolean hasEffect;
     private CropRecipes recipeConfig;
+    private Set<Identifier> requiredBiomes;
 
     public Crop(Identifier id, CropTier tier, CropType type, LazyIngredient craftingMaterial) {
         this(id, tier, type, new CropTextures(), craftingMaterial);
@@ -61,7 +66,7 @@ public class Crop {
         this.registerEssenceItem = true;
         this.registerSeedsItem = true;
         this.recipeConfig = new CropRecipes();
-        //this.hasEffect = false;
+        this.hasEffect = false;
         //this.recipeConfig = new CropRecipes();
         //this.requiredBiomes = new HashSet<>();
     }
@@ -215,8 +220,32 @@ public class Crop {
         return this;
     }
 
+    public Block getCruxBlock() {
+        return this.crux == null ? null : this.crux.get();
+    }
+    public Crop setCruxBlock(Supplier<? extends Block> crux) {
+        this.crux = crux;
+        return this;
+    }
+
+    public boolean hasEffect(ItemStack stack) {
+        return this.hasEffect;
+    }
+    public Crop setHasEffect(boolean hasEffect) {
+        this.hasEffect = hasEffect;
+        return this;
+    }
+
     public CropRecipes getRecipeConfig() {
         return this.recipeConfig;
+    }
+
+    public Set<Identifier> getRequiredBiomes() {
+        return this.requiredBiomes;
+    }
+    public Crop addRequiredBiome(Identifier id) {
+        this.requiredBiomes.add(id);
+        return this;
     }
 
     public Crop setColor(int color) {

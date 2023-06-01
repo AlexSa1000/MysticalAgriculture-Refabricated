@@ -11,8 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -113,7 +113,7 @@ public class InfusionRecipeBuilder {
 
             var result = new JsonObject();
 
-            result.addProperty("item", Registries.ITEM.getId(this.result).toString());
+            result.addProperty("item", Registry.ITEM.getId(this.result).toString());
 
             if (this.count > 1) {
                 result.addProperty("count", this.count);

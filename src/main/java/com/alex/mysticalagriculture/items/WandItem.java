@@ -5,9 +5,11 @@ import com.alex.mysticalagriculture.cucumber.item.BaseItem;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 
+import java.util.function.Function;
+
 public class WandItem extends BaseItem {
-    public WandItem() {
-        super(p -> p.maxCount(1));
+    public WandItem(Function<Settings, Settings> settings) {
+        super(settings.compose(p -> p.maxCount(1)));
     }
 
     @Override
