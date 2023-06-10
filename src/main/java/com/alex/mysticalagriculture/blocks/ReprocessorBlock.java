@@ -1,114 +1,119 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
+import com.alex.cucumber.block.BaseEntityBlock;
+import com.alex.cucumber.lib.Tooltips;
+import com.alex.cucumber.util.Formatting;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.ReprocessorTier;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.cucumber.util.Formatting;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.Text;
-import net.minecraft.util.*;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.NumberFormat;
 import java.util.List;
 
-public class ReprocessorBlock extends BaseBlockEntity /*implements BlockEntityProvider*/ {
-    private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+public class ReprocessorBlock extends BaseEntityBlock {
+    private static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private final ReprocessorTier tier;
 
     public ReprocessorBlock(ReprocessorTier tier) {
-        super(Material.METAL, BlockSoundGroup.METAL, 3.5F, 3.5F, true);
-        this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH));
+        super(Material.METAL, SoundType.METAL, 3.5F, 3.5F, true);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
         this.tier = tier;
     }
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return this.tier.createTileEntity(pos, state);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient()) {
-            var block = world.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!world.isClientSide()) {
+            var tile = world.getBlockEntity(pos);
 
-            if (block instanceof ReprocessorBlockEntity) {
-                player.openHandledScreen((NamedScreenHandlerFactory) block);
+            if (tile instanceof ReprocessorBlockEntity reprocessor) {
+                //NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) tile, pos);
+                player.openMenu(reprocessor);
+
             }
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            var blockEntity = world.getBlockEntity(pos);
+            var tile = world.getBlockEntity(pos);
 
-            if (blockEntity instanceof ReprocessorBlockEntity furnace) {
-                ItemScatterer.spawn(world, pos, furnace.getInventory().getStacks());
+            if (tile instanceof ReprocessorBlockEntity furnace) {
+                Containers.dropContents(world, pos, furnace.getInventory().getStacks());
             }
         }
 
-        super.onStateReplaced(state, world, pos, newState, moved);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             tooltip.add(ModTooltips.MACHINE_SPEED.args(this.getStatText(this.tier.getOperationTime())).build());
             tooltip.add(ModTooltips.MACHINE_FUEL_RATE.args(this.getStatText(this.tier.getFuelUsage())).build());
             tooltip.add(ModTooltips.MACHINE_FUEL_CAPACITY.args(this.getStatText(this.tier.getFuelCapacity())).build());
         } else {
-            tooltip.add(ModTooltips.HOLD_SHIFT_FOR_INFO.build());
+            tooltip.add(Tooltips.HOLD_SHIFT_FOR_INFO.build());
         }
     }
 
     @Override
-    protected <T extends BlockEntity> BlockEntityTicker getServerTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, this.tier.getBlockEntityType(), ReprocessorBlockEntity::tick);
+    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTicker(type, this.tier.getBlockEntityType(), ReprocessorBlockEntity::tick);
     }
 
-    private Text getStatText(Object stat) {
-        return Formatting.number(stat).formatted(this.tier.getTextColor());
+    private Component getStatText(Object stat) {
+        return Formatting.number(stat).withStyle(this.tier.getTextColor());
     }
 }

@@ -1,40 +1,39 @@
 package com.alex.mysticalagriculture.blockentities;
 
+import com.alex.cucumber.forge.common.util.LazyOptional;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
+import com.alex.mysticalagriculture.container.SoulExtractorContainer;
 import com.alex.mysticalagriculture.crafting.recipe.SoulExtractionRecipe;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.items.SoulJarItem;
-import com.alex.mysticalagriculture.screenhandler.SoulExtractorScreenHandler;
-import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
+import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import com.alex.mysticalagriculture.util.UpgradeableMachine;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.energy.DynamicEnergyStorage;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.cucumber.inventory.SidedItemStackHandler;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
-import com.alex.mysticalagriculture.forge.common.util.LazyOptional;
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.energy.DynamicEnergyStorage;
+import com.alex.cucumber.helper.StackHelper;
+import com.alex.cucumber.inventory.SidedItemStackHandler;
+import com.alex.cucumber.util.Localizable;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, UpgradeableMachine {
     private static final int FUEL_TICK_MULTIPLIER = 20;
@@ -54,9 +53,9 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
 
     public SoulExtractorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.SOUL_EXTRACTOR, pos, state);
-        this.inventory = createInventoryHandler(this::markDirty);
+        this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
         this.upgradeInventory = new UpgradeItemStackHandler();
-        this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirty);
+        this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirtyAndDispatch);
         this.inventoryCapabilities = SidedItemStackHandler.create(this.inventory, new Direction[] { Direction.UP, Direction.DOWN, Direction.NORTH }, this::canInsertStackSided, this::canExtractStackSided);
     }
 
@@ -65,42 +64,41 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
-        this.progress = nbt.getInt("Progress");
-        this.fuelLeft = nbt.getInt("FuelLeft");
-        this.fuelItemValue = nbt.getInt("FuelItemValue");
-        this.energy.deserializeNBT(nbt.get("Energy"));
-        this.upgradeInventory.deserializeNBT(nbt.getCompound("UpgradeInventory"));
-        Inventories.readNbt(nbt.getCompound("UpgradeInventory"), this.upgradeInventory.getStacks());
+        this.progress = tag.getInt("Progress");
+        this.fuelLeft = tag.getInt("FuelLeft");
+        this.fuelItemValue = tag.getInt("FuelItemValue");
+        this.energy.deserializeNBT(tag.get("Energy"));
+        this.upgradeInventory.deserializeNBT(tag.getCompound("UpgradeInventory"));
+        ContainerHelper.loadAllItems(tag.getCompound("UpgradeInventory"), this.upgradeInventory.getStacks());
         //Inventories.readNbt(nbt, this.upgradeInventory.getStacks());
 
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
-        nbt.putInt("Progress", this.progress);
-        nbt.putInt("FuelLeft", this.fuelLeft);
-        nbt.putInt("FuelItemValue", this.fuelItemValue);
-        nbt.put("Energy", this.energy.serializeNBT());
+        tag.putInt("Progress", this.progress);
+        tag.putInt("FuelLeft", this.fuelLeft);
+        tag.putInt("FuelItemValue", this.fuelItemValue);
+        tag.put("Energy", this.energy.serializeNBT());
         //nbt.put("UpgradeInventory", this.upgradeInventory.serializeNBT());
-        NbtCompound nbtCompound = new NbtCompound();
-        nbt.put("UpgradeInventory", Inventories.writeNbt(nbtCompound, this.upgradeInventory.getStacks()));
+        CompoundTag nbtCompound = new CompoundTag();
+        tag.put("UpgradeInventory", ContainerHelper.saveAllItems(nbtCompound, this.upgradeInventory.getStacks()));
         //Inventories.writeNbt(nbt.getCompound("UpgradeInventory"), this.upgradeInventory.getStacks());
     }
 
     @Override
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return Localizable.of("container.mysticalagriculture.soul_extractor").build();
     }
 
-    @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return SoulExtractorScreenHandler.create(syncId, playerInventory, this.inventory, this.upgradeInventory, this.getPos());
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+        return SoulExtractorContainer.create(id, playerInventory, this.inventory, this.upgradeInventory, this.getBlockPos());
     }
 
     @Override
@@ -108,18 +106,18 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
         return this.upgradeInventory;
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, SoulExtractorBlockEntity block) {
+    public static void tick(Level level, BlockPos pos, BlockState state, SoulExtractorBlockEntity block) {
         var mark = false;
 
         if (block.energy.getAmount() < block.energy.getCapacity()) {
-            var fuel = block.inventory.getStack(1);
+            var fuel = block.inventory.getItem(1);
 
             if (block.fuelLeft <= 0 && !fuel.isEmpty()) {
                 block.fuelItemValue = getFuelTime(fuel);
 
                 if (block.fuelItemValue > 0) {
                     block.fuelLeft = block.fuelItemValue *= FUEL_TICK_MULTIPLIER;
-                    block.inventory.setStackInSlot(1, StackHelper.shrink(block.inventory.getStack(1), 1, false));
+                    block.inventory.setStackInSlot(1, StackHelper.shrink(block.inventory.getItem(1), 1, false));
 
                     mark = true;
                 }
@@ -140,7 +138,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
         }
 
         if (block.recipe == null || !block.recipe.matches(block.inventory)) {
-            var recipe = world.getRecipeManager().getFirstMatch(RecipeTypes.SOUL_EXTRACTION, block.inventory/*.toInventory()*/, world).orElse(null);
+            var recipe = level.getRecipeManager().getRecipeFor(RecipeTypes.SOUL_EXTRACTION, block.inventory/*.toInventory()*/, level).orElse(null);
             block.recipe = recipe instanceof SoulExtractionRecipe ? (SoulExtractionRecipe) recipe : null;
         }
 
@@ -166,8 +164,8 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
                     transaction.commit();
                 }
                 if (block.progress >= block.getOperationTime()) {
-                    block.inventory.setStackInSlot(0, StackHelper.shrink(block.inventory.getStack(0), 1, false));
-                    block.inventory.setStackInSlot(2, block.recipe.craft(block.inventory));
+                    block.inventory.setStackInSlot(0, StackHelper.shrink(block.inventory.getItem(0), 1, false));
+                    block.inventory.setStackInSlot(2, block.recipe.assemble(block.inventory));
 
                     block.progress = 0;
                 }
@@ -183,7 +181,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
         }
 
         if (mark) {
-            block.markDirty();
+            block.markDirtyAndDispatch();
         }
     }
 
@@ -192,7 +190,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
             return 0;
         } else {
             Item item = fuel.getItem();
-            return AbstractFurnaceBlockEntity.createFuelTimeMap().getOrDefault(item, 0);
+            return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
         }
     }
 
@@ -240,7 +238,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
         if (slot == 0 && direction == Direction.UP)
             return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.SOUL_EXTRACTION);
         if (slot == 1 && direction == Direction.NORTH)
-            return AbstractFurnaceBlockEntity.canUseAsFuel(stack);
+            return AbstractFurnaceBlockEntity.isFuel(stack);
         if (slot == 2 && direction == Direction.NORTH)
             return stack.getItem() instanceof SoulJarItem;
 
@@ -249,7 +247,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
 
     private boolean canExtractStackSided(int slot, Direction direction) {
         if (slot == 2 && direction == Direction.DOWN) {
-            var stack = this.inventory.getStack(2);
+            var stack = this.inventory.getItem(2);
             return stack.getItem() instanceof SoulJarItem && MobSoulUtils.isJarFull(stack);
         }
 
@@ -257,7 +255,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+        buf.writeBlockPos(worldPosition);
     }
 }

@@ -3,30 +3,30 @@ package com.alex.mysticalagriculture.augment;
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.cucumber.helper.ColorHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import com.alex.cucumber.helper.ColorHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
 public class SpeedAugment extends Augment {
     private final int amplifier;
 
-    public SpeedAugment(Identifier id, int tier, int amplifier) {
+    public SpeedAugment(ResourceLocation id, int tier, int amplifier) {
         super(id, tier, EnumSet.of(AugmentType.LEGGINGS), getColor(0xAD524D, tier), getColor(0x240805, tier));
         this.amplifier = amplifier;
     }
 
     @Override
-    public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {
+    public void onPlayerTick(Level level, Player player, AbilityCache cache) {
         var flying = player.getAbilities().flying;
         var swimming = player.isSwimming();
-        var inWater = player.isTouchingWater();
+        var inWater = player.isInWater();
 
         if (player.isOnGround() || flying || swimming || inWater) {
-            var sneaking = player.isInSneakingPose();
+            var sneaking = player.isCrouching();
             var sprinting = player.isSprinting();
 
             float speed = 0.1F
@@ -37,14 +37,14 @@ public class SpeedAugment extends Augment {
                     * (swimming ? 0.8F : 1.0F)
                     * this.amplifier;
 
-            if (player.forwardSpeed > 0F) {
-                player.updateVelocity(1F, new Vec3d(0F, 0F, speed));
-            } else if (player.forwardSpeed < 0F) {
-                player.updateVelocity(1F, new Vec3d(0F, 0F, -speed * 0.3F));
+            if (player.zza > 0F) {
+                player.moveRelative(1F, new Vec3(0F, 0F, speed));
+            } else if (player.zza < 0F) {
+                player.moveRelative(1F, new Vec3(0F, 0F, -speed * 0.3F));
             }
 
-            if (player.sidewaysSpeed != 0F) {
-                player.updateVelocity(1F, new Vec3d(speed * 0.5F * Math.signum(player.sidewaysSpeed), 0F, 0F));
+            if (player.xxa != 0F) {
+                player.moveRelative(1F, new Vec3(speed * 0.5F * Math.signum(player.xxa), 0F, 0F));
             }
         }
     }

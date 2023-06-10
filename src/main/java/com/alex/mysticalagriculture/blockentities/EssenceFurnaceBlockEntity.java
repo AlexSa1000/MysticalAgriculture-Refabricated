@@ -1,27 +1,27 @@
 package com.alex.mysticalagriculture.blockentities;
 
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.util.FurnaceTier;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.AbstractCookingRecipe;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.screen.FurnaceScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.FurnaceMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
     public EssenceFurnaceBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -29,51 +29,51 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
     }
 
     @Override
-    protected Text getContainerName() {
+    protected Component getDefaultName() {
         return Localizable.of(String.format("container.mysticalagriculture.%s_furnace", this.getTier().getName())).build();
-
     }
 
     @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new FurnaceScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+    protected AbstractContainerMenu createMenu(int id, Inventory player) {
+        return new FurnaceMenu(id, player, this, this.dataAccess);
     }
 
     @Override
-    protected int getFuelTime(ItemStack fuel) {
-        return (int) (super.getFuelTime(fuel) * this.getTier().getBurnTimeMultiplier());
+    protected int getBurnDuration(ItemStack stack) {
+        return (int) (super.getBurnDuration(stack) * this.getTier().getBurnTimeMultiplier());
     }
 
-    @Override
-    public void setStack(int slot, ItemStack stack) {
-        ItemStack itemStack = this.inventory.get(slot);
-        boolean bl = !stack.isEmpty() && stack.isItemEqual(itemStack) && ItemStack.areNbtEqual(stack, itemStack);
-        this.inventory.set(slot, stack);
-        if (stack.getCount() > this.getMaxCountPerStack()) {
-            stack.setCount(this.getMaxCountPerStack());
+    public void setItem(int slot, ItemStack stack) {
+        ItemStack itemstack = this.items.get(slot);
+        boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.tagMatches(stack, itemstack);
+        this.items.set(slot, stack);
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
         }
-        if (slot == 0 && !bl) {
-            this.cookTimeTotal = (int) (getCookTime(world, this) * this.getTier().getCookTimeMultiplier());
-            this.cookTime = 0;
-            this.markDirty();
+
+        if (slot == 0 && !flag) {
+            this.cookingTotalTime = (int) (getTotalCookTime(level, this) * this.getTier().getCookTimeMultiplier());
+            this.cookingProgress = 0;
+            this.setChanged();
         }
+
     }
 
-    protected boolean canAcceptRecipeOutput(Recipe<?> recipe, DefaultedList<ItemStack> items, int maxStackSize) {
+    protected boolean canAcceptRecipeOutput(Recipe<?> recipe, NonNullList<ItemStack> items, int maxStackSize) {
         if (!items.get(0).isEmpty() && recipe != null) {
-            ItemStack itemstack = ((Recipe<SidedInventory>) recipe).craft(this);
+            ItemStack itemstack = ((Recipe<WorldlyContainer>) recipe).assemble(this);
             if (itemstack.isEmpty()) {
                 return false;
             } else {
                 ItemStack itemstack1 = items.get(2);
                 if (itemstack1.isEmpty()) {
                     return true;
-                } else if (!itemstack1.isItemEqual(itemstack)) {
+                } else if (!itemstack1.sameItem(itemstack)) {
                     return false;
-                } else if (itemstack1.getCount() + itemstack.getCount() <= maxStackSize && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxCount()) { // Forge fix: make furnace respect stack sizes in furnace recipes
+                } else if (itemstack1.getCount() + itemstack.getCount() <= maxStackSize && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize()) {
                     return true;
                 } else {
-                    return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxCount(); // Forge fix: make furnace respect stack sizes in furnace recipes
+                    return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize();
                 }
             }
         } else {
@@ -81,85 +81,88 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
         }
     }
 
-    protected boolean craftRecipe(Recipe<?> recipe, DefaultedList<ItemStack> items, int maxStackSize) {
-        if (recipe != null && this.canAcceptRecipeOutput(recipe, items, maxStackSize)) {
+    protected boolean burn(Recipe<?> recipe, NonNullList<ItemStack> items, int maxStackSize) {
+        if (recipe != null && this.canBurn(recipe, items, maxStackSize)) {
             ItemStack itemstack = items.get(0);
-            ItemStack itemstack1 = ((Recipe<SidedInventory>) recipe).craft(this);
+            ItemStack itemstack1 = ((Recipe<WorldlyContainer>) recipe).assemble(this);
             ItemStack itemstack2 = items.get(2);
             if (itemstack2.isEmpty()) {
                 items.set(2, itemstack1.copy());
-            } else if (itemstack2.isOf(itemstack1.getItem())) {
-                itemstack2.increment(itemstack1.getCount());
+            } else if (itemstack2.is(itemstack1.getItem())) {
+                itemstack2.grow(itemstack1.getCount());
             }
 
-            if (itemstack.isOf(Blocks.WET_SPONGE.asItem()) && !items.get(1).isEmpty() && items.get(1).isOf(Items.BUCKET)) {
+            if (itemstack.is(Blocks.WET_SPONGE.asItem()) && !items.get(1).isEmpty() && items.get(1).is(Items.BUCKET)) {
                 items.set(1, new ItemStack(Items.WATER_BUCKET));
             }
 
-            itemstack.decrement(1);
+            itemstack.shrink(1);
             return true;
         } else {
             return false;
         }
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, EssenceFurnaceBlockEntity block) {
-        var flag = block.isBurning();
+    public static void tick(Level level, BlockPos pos, BlockState state, EssenceFurnaceBlockEntity block) {
+        var flag = block.isLit();
         var flag1 = false;
 
-        if (block.isBurning()) {
-            --block.burnTime;
+        if (block.isLit()) {
+            --block.litTime;
         }
-        var stack = block.inventory.get(1);
-        if (block.isBurning() || !stack.isEmpty() && !block.inventory.get(0).isEmpty()) {
-            Recipe<?> recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, block, world).orElse(null);
-            int i = block.getMaxCountPerStack();
-            if (!block.isBurning() && block.canAcceptRecipeOutput(recipe, block.inventory, i)) {
-                block.burnTime = block.getFuelTime(stack);
-                block.fuelTime = block.burnTime;
-                if (block.isBurning()) {
-                    flag1 = true;
 
+        var stack = block.items.get(1);
+        if (block.isLit() || !stack.isEmpty() && !block.items.get(0).isEmpty()) {
+            Recipe<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, block, level).orElse(null);
+            int i = block.getMaxStackSize();
+            if (!block.isLit() && block.canBurn(recipe, block.items, i)) {
+                block.litTime = block.getBurnDuration(stack);
+                block.litDuration = block.litTime;
+                if (block.isLit()) {
+                    flag1 = true;
+                    //if (stack.hasCraftingRemainingItem())
+                    //    block.items.set(1, stack.getRecipeRemainder());
+                    //else
                     if (!stack.isEmpty()) {
-                        stack.decrement(1);
+                        stack.shrink(1);
 
                         if (stack.isEmpty()) {
-                            block.inventory.set(1, stack.getRecipeRemainder());
+                            block.items.set(1, stack.getRecipeRemainder());
                         }
                     }
                 }
             }
 
-            if (block.isBurning() && block.canAcceptRecipeOutput(recipe, block.inventory, i)) {
-                ++block.cookTime;
-                if (block.cookTime == block.cookTimeTotal) {
-                    block.cookTime = 0;
-                    block.cookTimeTotal = (int) (getCookTime(world, block) * block.getTier().getCookTimeMultiplier());
-                    if (block.craftRecipe(recipe, block.inventory, i)) {
-                        block.setLastRecipe(recipe);
+            if (block.isLit() && block.canBurn(recipe, block.items, i)) {
+                ++block.cookingProgress;
+                if (block.cookingProgress == block.cookingTotalTime) {
+                    block.cookingProgress = 0;
+                    block.cookingTotalTime = (int) (getTotalCookTime(level, block) * block.getTier().getCookTimeMultiplier());
+                    if (block.burn(recipe, block.items, i)) {
+                        block.setRecipeUsed(recipe);
                     }
 
                 }
             } else {
-                block.cookTime = 0;
+                block.cookingProgress = 0;
             }
-        } else if (!block.isBurning() && block.cookTime > 0) {
-            block.cookTime = MathHelper.clamp(block.cookTime - 2, 0, block.cookTimeTotal);
+        } else if (!block.isLit() && block.cookingProgress > 0) {
+            block.cookingProgress = Mth.clamp(block.cookingProgress - 2, 0, block.cookingTotalTime);
         }
 
-        if (flag != block.isBurning()) {
+        if (flag != block.isLit()) {
             flag1 = true;
-            state = state.with(AbstractFurnaceBlock.LIT, block.isBurning());
-            world.setBlockState(pos, state, 3);
+            state = state.setValue(AbstractFurnaceBlock.LIT, block.isLit());
+            level.setBlock(pos, state, 3);
         }
 
         if (flag1) {
-            markDirty(world, pos, state);
+            setChanged(level, pos, state);
         }
     }
 
-    private static int getCookTime(World world, AbstractFurnaceBlockEntity furnace) {
-        return furnace.matchGetter.getFirstMatch(furnace, world).map(AbstractCookingRecipe::getCookTime).orElse(200);
+    private static int getTotalCookTime(Level p_222693_, AbstractFurnaceBlockEntity p_222694_) {
+        return p_222694_.quickCheck.getRecipeFor(p_222694_, p_222693_).map(AbstractCookingRecipe::getCookingTime).orElse(200);
     }
 
     public abstract FurnaceTier getTier();

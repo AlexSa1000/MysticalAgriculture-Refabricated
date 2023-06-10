@@ -3,17 +3,17 @@ package com.alex.mysticalagriculture.api;
 import com.alex.mysticalagriculture.api.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.api.registry.CropRegistry;
 import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.ItemTags;
-import net.minecraft.tag.TagKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public class MysticalAgricultureAPI {
     public static final String MOD_ID = "mysticalagriculture";
-    public static final TagKey<Block> CROPS_TAG = BlockTags.of("mysticalagriculture:crops");
-    public static final TagKey<Item> ESSENCES_TAG = ItemTags.of("mysticalagriculture:essences");
-    public static final TagKey<Item> SEEDS_TAG = ItemTags.of("mysticalagriculture:seeds");
+    public static final TagKey<Block> CROPS_TAG = BlockTags.create("mysticalagriculture:crops");
+    public static final TagKey<Item> ESSENCES_TAG = ItemTags.bind("mysticalagriculture:essences");
+    public static final TagKey<Item> SEEDS_TAG = ItemTags.bind("mysticalagriculture:seeds");
 
     private static CropRegistry cropRegistry;
     private static AugmentRegistry augmentRegistry;

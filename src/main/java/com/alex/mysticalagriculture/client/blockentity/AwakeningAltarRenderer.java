@@ -1,68 +1,69 @@
 package com.alex.mysticalagriculture.client.blockentity;
 
 import com.alex.mysticalagriculture.blockentities.AwakeningAltarBlockEntity;
-import com.alex.mysticalagriculture.client.ModRenderTypes;
+import com.alex.cucumber.client.ModRenderTypes;
 import com.alex.mysticalagriculture.init.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BlockItem;
-import net.minecraft.util.math.Vec3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.item.BlockItem;
 
 public class AwakeningAltarRenderer implements BlockEntityRenderer<AwakeningAltarBlockEntity> {
 
-    public AwakeningAltarRenderer(BlockEntityRendererFactory.Context context) { }
+    public AwakeningAltarRenderer(BlockEntityRendererProvider.Context context) { }
 
     @Override
-    public void render(AwakeningAltarBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        var minecraft = MinecraftClient.getInstance();
-        var inventory = entity.getInventory();
-        var stack = inventory.getStack(1).isEmpty() ? inventory.getStack(0) : inventory.getStack(1);
+    public void render(AwakeningAltarBlockEntity tile, float v, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+        var inventory = tile.getInventory();
+        var minecraft = Minecraft.getInstance();
+        var stack = inventory.getItem(1).isEmpty() ? inventory.getItem(0) : inventory.getItem(1);
 
         if (!stack.isEmpty()) {
-            matrices.push();
-            matrices.translate(0.5D, 1.1D, 0.5D);
-            float scale = stack.getItem() instanceof BlockItem ?  0.95F : 0.75F;
-            matrices.scale(scale, scale, scale);
+            matrix.pushPose();
+            matrix.translate(0.5D, 1.1D, 0.5D);
+            float scale = stack.getItem() instanceof BlockItem ? 0.95F : 0.75F;
+            matrix.scale(scale, scale, scale);
             double tick = System.currentTimeMillis() / 800.0D;
-            matrices.translate(0.0D, Math.sin(tick % (2 * Math.PI)) * 0.065D, 0.0D);
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) ((tick * 40.0D) % 360)));
-            minecraft.getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
-            matrices.pop();
+            matrix.translate(0.0D, Math.sin(tick % (2 * Math.PI)) * 0.065D, 0.0D);
+            matrix.mulPose(Vector3f.YP.rotationDegrees((float) ((tick * 40.0D) % 360)));
+            minecraft.getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrix, buffer, 0);
+            matrix.popPose();
         }
 
-        var pos = entity.getPos();
-        var world = entity.getWorld();
-        var builder = vertexConsumers.getBuffer(ModRenderTypes.GHOST);
+        var pos = tile.getBlockPos();
+        var level = tile.getLevel();
+        var builder = buffer.getBuffer(ModRenderTypes.GHOST);
 
-        matrices.push();
-        matrices.translate(-pos.getX(), -pos.getY(), -pos.getZ());
-        
-        var positions = entity.getPedestalPositions();
+        matrix.pushPose();
+        matrix.translate(-pos.getX(), -pos.getY(), -pos.getZ());
+
+        var positions = tile.getPedestalPositions();
         for (int i = 0; i < positions.size(); i++) {
             var aoePos = positions.get(i);
 
-            if (world != null && world.isAir(aoePos)) {
-                matrices.push();
-                matrices.translate(aoePos.getX(), aoePos.getY(), aoePos.getZ());
+            if (level != null && level.isEmptyBlock(aoePos)) {
+                matrix.pushPose();
+                matrix.translate(aoePos.getX(), aoePos.getY(), aoePos.getZ());
 
                 var state = i % 2 == 0
-                        ? Blocks.AWAKENING_PEDESTAL.getDefaultState()
-                        : Blocks.ESSENCE_VESSEL.getDefaultState();
+                        ? Blocks.AWAKENING_PEDESTAL.defaultBlockState()
+                        : Blocks.ESSENCE_VESSEL.defaultBlockState();
 
-                minecraft.getBlockRenderManager().renderBlock(state, aoePos, world, matrices, builder, false, world.getRandom());
+                minecraft.getBlockRenderer().renderBatched(state, aoePos, level, matrix, builder, false, level.getRandom());
 
-                matrices.pop();
+                matrix.popPose();
             }
         }
-        matrices.pop();
+
+        matrix.popPose();
     }
 
     @Override
-    public boolean rendersOutsideBoundingBox(AwakeningAltarBlockEntity blockEntity) {
+    public boolean shouldRenderOffScreen(AwakeningAltarBlockEntity tile) {
         return true;
     }
 }

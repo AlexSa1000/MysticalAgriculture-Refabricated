@@ -6,16 +6,16 @@
   ],
   "key": {
     "C": {
-      "tag": "c:dye_cyan"
+      "tag": "c:cyan_dyes"
     },
     "O": {
-      "tag": "c:dye_orange"
+      "tag": "c:orange_dyes"
     },
     "P": {
-      "tag": "c:dye_pink"
+      "tag": "c:pink_dyes"
     },
     "L": {
-      "tag": "c:dye_lime"
+      "tag": "c:lime_dyes"
     }
   },
   "result": {

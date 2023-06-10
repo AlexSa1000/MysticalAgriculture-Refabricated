@@ -1,24 +1,24 @@
 package com.alex.mysticalagriculture.enchantment;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class SoulSiphonerEnchant extends Enchantment {
     private static final EquipmentSlot[] SLOTS = new EquipmentSlot[] { EquipmentSlot.MAINHAND };
 
     public SoulSiphonerEnchant() {
-        super(Rarity.RARE, EnchantmentTarget.WEAPON, SLOTS);
+        super(Rarity.RARE, EnchantmentCategory.WEAPON, SLOTS);
     }
 
     @Override
-    public int getMinPower(int level) {
+    public int getMinCost(int level) {
         return 2 + (level - 1) * 11;
     }
 
     @Override
-    public int getMaxPower(int level) {
-        return this.getMinPower(level) + 20;
+    public int getMaxCost(int level) {
+        return this.getMinCost(level) + 20;
     }
 
     @Override

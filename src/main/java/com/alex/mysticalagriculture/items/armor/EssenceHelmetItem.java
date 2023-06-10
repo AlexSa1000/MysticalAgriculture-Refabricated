@@ -4,19 +4,18 @@ import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.cucumber.item.BaseArmorItem;
 import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.BaseArmorItem;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -29,28 +28,30 @@ public class EssenceHelmetItem extends BaseArmorItem implements Tinkerable {
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceHelmetItem(ArmorMaterial material, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
-        super(material, EquipmentSlot.HEAD, settings);
+    public EssenceHelmetItem(ArmorMaterial material, int tinkerableTier, int slots, Function<Properties, Properties> properties) {
+        super(material, EquipmentSlot.HEAD, properties);
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof PlayerEntity && slot == 3) {
-            AugmentUtils.getAugments(stack).forEach(a -> a.onArmorTick(stack, world, (PlayerEntity) entity));
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        if (entity instanceof Player player && slot == 3) {
+            AugmentUtils.getAugments(stack).forEach(a -> a.onArmorTick(stack, level, player));
         }
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
 
-        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.isOf(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
+        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.is(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
             tooltip.add(ModTooltips.SET_BONUS.args(ModTooltips.AWAKENED_SUPREMIUM_SET_BONUS.build()).build());
         }
 
-        AugmentUtils.getAugments(stack).forEach(a -> tooltip.add(a.getDisplayName().formatted(Formatting.GRAY)));
+        AugmentUtils.getAugments(stack).forEach(a -> {
+            tooltip.add(a.getDisplayName().withStyle(ChatFormatting.GRAY));
+        });
     }
 
     @Override

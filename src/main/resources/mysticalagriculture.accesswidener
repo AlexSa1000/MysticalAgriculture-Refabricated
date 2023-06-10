@@ -1,44 +1,121 @@
 accessWidener v1 named
 
-extendable class net/minecraft/recipe/Ingredient
-accessible method net/minecraft/recipe/Ingredient$TagEntry <init> (Lnet/minecraft/tag/TagKey;)V
-accessible class net/minecraft/recipe/Ingredient$Entry
-accessible method net/minecraft/recipe/Ingredient <init> (Ljava/util/stream/Stream;)V
-accessible method net/minecraft/recipe/Ingredient$StackEntry <init> (Lnet/minecraft/item/ItemStack;)V
-accessible method net/minecraft/item/ItemStack isEqual (Lnet/minecraft/item/ItemStack;)Z
-accessible method net/minecraft/tag/ItemTags of (Ljava/lang/String;)Lnet/minecraft/tag/TagKey;
+#extendable class net/minecraft/recipe/Ingredient
+#accessible method net/minecraft/recipe/Ingredient$TagEntry <init> (Lnet/minecraft/tag/TagKey;)V
+#accessible class net/minecraft/recipe/Ingredient$Entry
+#accessible method net/minecraft/recipe/Ingredient <init> (Ljava/util/stream/Stream;)V
+#accessible method net/minecraft/recipe/Ingredient$StackEntry <init> (Lnet/minecraft/item/ItemStack;)V
+#accessible method net/minecraft/item/ItemStack isEqual (Lnet/minecraft/item/ItemStack;)Z
+#accessible method net/minecraft/tag/ItemTags of (Ljava/lang/String;)Lnet/minecraft/tag/TagKey;
 #accessible method net/minecraft/registry/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/registry/tag/TagKey;
-accessible method net/minecraft/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/tag/TagKey;
-accessible method net/minecraft/block/FarmlandBlock isWaterNearby (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;)Z
+#accessible method net/minecraft/tag/BlockTags of (Ljava/lang/String;)Lnet/minecraft/tag/TagKey;
+#accessible method net/minecraft/block/FarmlandBlock isWaterNearby (Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;)Z
 
-extendable method net/minecraft/item/Item getMaxDamage ()I
+#extendable method net/minecraft/item/Item getMaxDamage ()I
 
-accessible method net/minecraft/recipe/ShapedRecipe readSymbols (Lcom/google/gson/JsonObject;)Ljava/util/Map;
-accessible method net/minecraft/recipe/ShapedRecipe getPattern (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
-accessible method net/minecraft/recipe/ShapedRecipe createPatternMatrix ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
-accessible method net/minecraft/recipe/ShapedRecipe removePadding ([Ljava/lang/String;)[Ljava/lang/String;
+#accessible method net/minecraft/recipe/ShapedRecipe readSymbols (Lcom/google/gson/JsonObject;)Ljava/util/Map;
+#accessible method net/minecraft/recipe/ShapedRecipe getPattern (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
+#accessible method net/minecraft/recipe/ShapedRecipe createPatternMatrix ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
+#accessible method net/minecraft/recipe/ShapedRecipe removePadding ([Ljava/lang/String;)[Ljava/lang/String;
 
-accessible field net/minecraft/recipe/RecipeManager GSON Lcom/google/gson/Gson;
-accessible field net/minecraft/recipe/RecipeManager LOGGER Lorg/slf4j/Logger;
-accessible method net/minecraft/recipe/RecipeManager apply (Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V
+#accessible field net/minecraft/recipe/RecipeManager GSON Lcom/google/gson/Gson;
+#accessible field net/minecraft/recipe/RecipeManager LOGGER Lorg/slf4j/Logger;
+#accessible method net/minecraft/recipe/RecipeManager apply (Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V
 
-accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
-accessible field net/minecraft/item/Item ATTACK_SPEED_MODIFIER_ID Ljava/util/UUID;
+#accessible field net/minecraft/item/Item ATTACK_DAMAGE_MODIFIER_ID Ljava/util/UUID;
+#accessible field net/minecraft/item/Item ATTACK_SPEED_MODIFIER_ID Ljava/util/UUID;
 
-accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime I
-accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime I
-accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTime I
-accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTimeTotal I
-accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity isBurning ()Z
-accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity matchGetter Lnet/minecraft/recipe/RecipeManager$MatchGetter;
+#accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime I
+#accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity fuelTime I
+#accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTime I
+#accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTimeTotal I
+#accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity isBurning ()Z
+#accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity matchGetter Lnet/minecraft/recipe/RecipeManager$MatchGetter;
 
-accessible field net/minecraft/recipe/RecipeManager recipes Ljava/util/Map;
-accessible field net/minecraft/recipe/RecipeManager recipesById Ljava/util/Map;
-accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
+#accessible field net/minecraft/recipe/RecipeManager recipes Ljava/util/Map;
+#accessible field net/minecraft/recipe/RecipeManager recipesById Ljava/util/Map;
+#accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
 
 #accessible field net/minecraft/item/ArmorItem type Lnet/minecraft/item/ArmorItem$Type;
-accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;)F
-accessible method net/minecraft/item/CrossbowItem loadProjectiles (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)Z
+#accessible method net/minecraft/item/CrossbowItem getPullProgress (ILnet/minecraft/item/ItemStack;)F
+#accessible method net/minecraft/item/CrossbowItem loadProjectiles (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)Z
 
-accessible method net/minecraft/entity/mob/PiglinBrain angerNearbyPiglins (Lnet/minecraft/entity/mob/AbstractPiglinEntity;)V
-accessible method net/minecraft/block/Block dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;I)V
+#accessible method net/minecraft/entity/mob/PiglinBrain angerNearbyPiglins (Lnet/minecraft/entity/mob/AbstractPiglinEntity;)V
+#accessible method net/minecraft/block/Block dropExperience (Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;I)V
+
+####
+
+accessible class net/minecraft/world/item/crafting/Ingredient$Value
+accessible method net/minecraft/tags/ItemTags bind (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
+accessible method net/minecraft/world/item/crafting/Ingredient$TagValue <init> (Lnet/minecraft/tags/TagKey;)V
+accessible method net/minecraft/world/item/crafting/Ingredient$ItemValue <init> (Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/tags/BlockTags create (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
+accessible method net/minecraft/world/item/crafting/ShapedRecipe keyFromJson (Lcom/google/gson/JsonObject;)Ljava/util/Map;
+accessible method net/minecraft/world/item/crafting/ShapedRecipe patternFromJson (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
+accessible method net/minecraft/world/item/crafting/ShapedRecipe dissolvePattern ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/core/NonNullList;
+accessible method net/minecraft/world/item/crafting/ShapedRecipe shrink ([Ljava/lang/String;)[Ljava/lang/String;
+accessible method net/minecraft/world/level/block/Block popExperience (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;I)V
+accessible field net/minecraft/world/item/crafting/RecipeManager recipes Ljava/util/Map;
+accessible field net/minecraft/world/item/crafting/RecipeManager byName Ljava/util/Map;
+accessible method net/minecraft/world/item/crafting/RecipeManager byType (Lnet/minecraft/world/item/crafting/RecipeType;)Ljava/util/Map;
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingTotalTime I
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingProgress I
+accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity canBurn (Lnet/minecraft/world/item/crafting/Recipe;Lnet/minecraft/core/NonNullList;I)Z
+accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity isLit ()Z
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity litTime I
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity litDuration I
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity quickCheck Lnet/minecraft/world/item/crafting/RecipeManager$CachedCheck;
+extendable class net/minecraft/world/item/crafting/Ingredient
+accessible method net/minecraft/world/item/crafting/Ingredient <init> (Ljava/util/stream/Stream;)V
+accessible method net/minecraft/world/item/ItemStack matches (Lnet/minecraft/world/item/ItemStack;)Z
+accessible method net/minecraft/world/level/block/FarmBlock isNearWater (Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z
+extendable method net/minecraft/world/item/Item getMaxDamage ()I
+
+accessible method net/minecraft/client/gui/Gui renderVignette (Lnet/minecraft/world/entity/Entity;)V
+accessible method net/minecraft/client/gui/Gui renderHotbar (FLcom/mojang/blaze3d/vertex/PoseStack;)V
+accessible method net/minecraft/client/gui/Gui renderCrosshair (Lcom/mojang/blaze3d/vertex/PoseStack;)V
+accessible method net/minecraft/client/gui/Gui renderEffects (Lcom/mojang/blaze3d/vertex/PoseStack;)V
+accessible method net/minecraft/client/gui/Gui displayScoreboardSidebar (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/scores/Objective;)V
+accessible method net/minecraft/client/gui/Gui renderTextureOverlay (Lnet/minecraft/resources/ResourceLocation;F)V
+accessible method net/minecraft/client/gui/Gui renderHearts (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V
+accessible method net/minecraft/client/gui/Gui renderSpyglassOverlay (F)V
+accessible method net/minecraft/client/gui/Gui renderPortalOverlay (F)V
+accessible method net/minecraft/client/gui/Gui drawBackdrop (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/gui/Font;III)V
+
+accessible field net/minecraft/client/gui/Gui screenWidth I
+accessible field net/minecraft/client/gui/Gui screenHeight I
+accessible field net/minecraft/client/gui/Gui minecraft Lnet/minecraft/client/Minecraft;
+accessible field net/minecraft/client/gui/Gui random Lnet/minecraft/util/RandomSource;
+accessible field net/minecraft/client/gui/Gui tickCount I
+accessible field net/minecraft/client/gui/Gui subtitleOverlay Lnet/minecraft/client/gui/components/SubtitleOverlay;
+accessible field net/minecraft/client/gui/Gui bossOverlay Lnet/minecraft/client/gui/components/BossHealthOverlay;
+accessible field net/minecraft/client/gui/Gui scopeScale F
+accessible field net/minecraft/client/gui/Gui PUMPKIN_BLUR_LOCATION Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/Gui POWDER_SNOW_OUTLINE_LOCATION Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/Gui healthBlinkTime J
+accessible field net/minecraft/client/gui/Gui lastHealth I
+accessible field net/minecraft/client/gui/Gui lastHealthTime J
+accessible field net/minecraft/client/gui/Gui displayHealth I
+accessible field net/minecraft/client/gui/Gui overlayMessageTime I
+accessible field net/minecraft/client/gui/Gui animateOverlayMessageColor Z
+accessible field net/minecraft/client/gui/Gui overlayMessageString Lnet/minecraft/network/chat/Component;
+accessible field net/minecraft/client/gui/Gui title Lnet/minecraft/network/chat/Component;
+accessible field net/minecraft/client/gui/Gui titleTime I
+accessible field net/minecraft/client/gui/Gui titleFadeOutTime I
+accessible field net/minecraft/client/gui/Gui titleStayTime I
+accessible field net/minecraft/client/gui/Gui titleFadeInTime I
+accessible field net/minecraft/client/gui/Gui subtitle Lnet/minecraft/network/chat/Component;
+accessible field net/minecraft/client/gui/Gui chat Lnet/minecraft/client/gui/components/ChatComponent;
+accessible field net/minecraft/client/gui/Gui tabList Lnet/minecraft/client/gui/components/PlayerTabOverlay;
+
+accessible field net/minecraft/client/gui/components/DebugScreenOverlay block Lnet/minecraft/world/phys/HitResult;
+accessible field net/minecraft/client/gui/components/DebugScreenOverlay liquid Lnet/minecraft/world/phys/HitResult;
+
+extendable method net/minecraft/client/gui/Gui renderPortalOverlay (F)V
+
+accessible field net/minecraft/client/renderer/entity/ItemRenderer blockEntityRenderer Lnet/minecraft/client/renderer/BlockEntityWithoutLevelRenderer;
+
+accessible field net/minecraft/client/resources/model/ModelBakery atlasSet Lnet/minecraft/client/renderer/texture/AtlasSet;
+
+accessible field net/minecraft/client/resources/model/ModelBakery unbakedCache Ljava/util/Map;
+accessible field net/minecraft/client/resources/model/ModelBakery topLevelModels Ljava/util/Map;

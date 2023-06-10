@@ -7,17 +7,17 @@ import com.alex.mysticalagriculture.blocks.InferiumCropBlock;
 import com.alex.mysticalagriculture.blocks.InfusedFarmlandBlock;
 import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
 @WailaPlugin
 public class JadeCompat implements IWailaPlugin {
-    private static final Identifier CROP_PROVIDER = new Identifier(MysticalAgriculture.MOD_ID, "crop");
-    private static final Identifier INFERIUM_CROP_PROVIDER = new Identifier(MysticalAgriculture.MOD_ID, "inferium_crop");
-    private static final Identifier INFUSED_FARMLAND_PROVIDER = new Identifier(MysticalAgriculture.MOD_ID, "infused_farmland");
+    private static final ResourceLocation CROP_PROVIDER = new ResourceLocation(MysticalAgriculture.MOD_ID, "crop");
+    private static final ResourceLocation INFERIUM_CROP_PROVIDER = new ResourceLocation(MysticalAgriculture.MOD_ID, "inferium_crop");
+    private static final ResourceLocation INFUSED_FARMLAND_PROVIDER = new ResourceLocation(MysticalAgriculture.MOD_ID, "infused_farmland");
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
@@ -30,15 +30,15 @@ public class JadeCompat implements IWailaPlugin {
                 tooltip.add(ModTooltips.TIER.args(crop.getTier().getDisplayName()).build());
 
                 var pos = accessor.getPosition();
-                var downPos = pos.down();
+                var downPos = pos.below();
                 var level = accessor.getLevel();
                 var belowBlock = level.getBlockState(downPos).getBlock();
 
                 var secondaryChance = crop.getSecondaryChance(belowBlock);
                 if (secondaryChance > 0) {
-                    var chanceText = Text.literal(String.valueOf((int) (secondaryChance * 100)))
+                    var chanceText = Component.literal(String.valueOf((int) (secondaryChance * 100)))
                             .append("%")
-                            .formatted(crop.getTier().getTextColor());
+                            .withStyle(crop.getTier().getTextColor());
 
                     tooltip.add(ModTooltips.SECONDARY_CHANCE.args(chanceText).build());
                 }
@@ -46,7 +46,7 @@ public class JadeCompat implements IWailaPlugin {
                 var crux = crop.getCruxBlock();
                 if (crux != null) {
                     var stack = new ItemStack(crux);
-                    tooltip.add(ModTooltips.REQUIRES_CRUX.args(stack.getName()).build());
+                    tooltip.add(ModTooltips.REQUIRES_CRUX.args(stack.getHoverName()).build());
                 }
 
                 /*var biomes = crop.getRequiredBiomes();
@@ -60,7 +60,7 @@ public class JadeCompat implements IWailaPlugin {
             }
 
             @Override
-            public Identifier getUid() {
+            public ResourceLocation getUid() {
                 return CROP_PROVIDER;
             }
         }, MysticalCropBlock.class);
@@ -70,7 +70,7 @@ public class JadeCompat implements IWailaPlugin {
             public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
                 var block = accessor.getBlock();
                 var crop = ((CropProvider) block).getCrop();
-                var downPos = accessor.getPosition().down();
+                var downPos = accessor.getPosition().below();
                 var belowBlock = accessor.getLevel().getBlockState(downPos).getBlock();
 
                 int output = 100;
@@ -79,13 +79,13 @@ public class JadeCompat implements IWailaPlugin {
                     output = (tier * 50) + 50;
                 }
 
-                var inferiumOutputText = Text.literal(String.valueOf(output)).append("%").formatted(crop.getTier().getTextColor());
+                var inferiumOutputText = Component.literal(String.valueOf(output)).append("%").withStyle(crop.getTier().getTextColor());
 
                 tooltip.add(ModTooltips.INFERIUM_OUTPUT.args(inferiumOutputText).build());
             }
 
             @Override
-            public Identifier getUid() {
+            public ResourceLocation getUid() {
                 return INFERIUM_CROP_PROVIDER;
             }
         }, InferiumCropBlock.class);
@@ -100,7 +100,7 @@ public class JadeCompat implements IWailaPlugin {
             }
 
             @Override
-            public Identifier getUid() {
+            public ResourceLocation getUid() {
                 return INFUSED_FARMLAND_PROVIDER;
             }
         }, InfusedFarmlandBlock.class);

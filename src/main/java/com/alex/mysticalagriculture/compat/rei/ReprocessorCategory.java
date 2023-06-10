@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.compat.rei;
 
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Blocks;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -13,12 +13,11 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class ReprocessorCategory implements DisplayCategory<ReprocessorCategory.RecipeDisplay> {
 
-    public static CategoryIdentifier<ReprocessorCategory.RecipeDisplay> REPROCESSOR = CategoryIdentifier.of(new Identifier(MOD_ID, "reprocessor"));
+    public static CategoryIdentifier<ReprocessorCategory.RecipeDisplay> REPROCESSOR = CategoryIdentifier.of(new ResourceLocation(MOD_ID, "reprocessor"));
 
     @Override
     public CategoryIdentifier<? extends RecipeDisplay> getCategoryIdentifier() {
@@ -36,7 +35,7 @@ public class ReprocessorCategory implements DisplayCategory<ReprocessorCategory.
     }
 
     @Override
-    public Text getTitle() {
+    public Component getTitle() {
         return Localizable.of("rei.category.mysticalagriculture.reprocessor").build();
     }
 
@@ -89,7 +88,7 @@ public class ReprocessorCategory implements DisplayCategory<ReprocessorCategory.
 
         @Override
         public List<EntryIngredient> getOutputEntries() {
-            return Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
+            return Collections.singletonList(EntryIngredients.of(recipe.getResultItem()));
         }
 
         @Override

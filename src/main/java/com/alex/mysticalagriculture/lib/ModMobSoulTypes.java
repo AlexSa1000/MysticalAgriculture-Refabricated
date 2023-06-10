@@ -4,8 +4,7 @@ import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.google.common.collect.Sets;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,49 +18,30 @@ public class ModMobSoulTypes {
 
     private static final List<MobSoulType> mobSoulTypes = new ArrayList<>();
 
-    private static final Set<Identifier> FISH_IDS = Sets.newHashSet(new Identifier("minecraft:cod"), new Identifier("minecraft:salmon"), new Identifier("minecraft:tropical_fish"), new Identifier("minecraft:pufferfish"));
-    private static final Set<Identifier> SLIME_IDS = Sets.newHashSet(new Identifier("minecraft:slime"), new Identifier("tconstruct:earth_slime"));
-    private static final Set<Identifier> ZOMBIE_IDS = Sets.newHashSet(new Identifier("minecraft:zombie"), new Identifier("minecraft:zombie_villager"));
-    private static final Set<Identifier> SPIDER_IDS = Sets.newHashSet(new Identifier("minecraft:spider"), new Identifier("minecraft:cave_spider"));
+    private static final Set<ResourceLocation> FISH_IDS = Sets.newHashSet(new ResourceLocation("minecraft:cod"), new ResourceLocation("minecraft:salmon"), new ResourceLocation("minecraft:tropical_fish"), new ResourceLocation("minecraft:pufferfish"));
+    private static final Set<ResourceLocation> SLIME_IDS = Sets.newHashSet(new ResourceLocation("minecraft:slime"), new ResourceLocation("tconstruct:earth_slime"));
+    private static final Set<ResourceLocation> ZOMBIE_IDS = Sets.newHashSet(new ResourceLocation("minecraft:zombie"), new ResourceLocation("minecraft:zombie_villager"));
+    private static final Set<ResourceLocation> SPIDER_IDS = Sets.newHashSet(new ResourceLocation("minecraft:spider"), new ResourceLocation("minecraft:cave_spider"));
 
 
-    public static final MobSoulType PIG = new MobSoulType(new Identifier(MOD_ID, "pig"), new Identifier("minecraft:pig"), 8, 15771042);
-    public static final MobSoulType CHICKEN = new MobSoulType(new Identifier(MOD_ID, "chicken"), new Identifier("minecraft:chicken"), 8, 10592673);
-    public static final MobSoulType COW = new MobSoulType(new Identifier(MOD_ID, "cow"), new Identifier("minecraft:cow"), 8, 4470310);
-    public static final MobSoulType SHEEP = new MobSoulType(new Identifier(MOD_ID, "sheep"), new Identifier("minecraft:sheep"), 8, 15198183);
-    public static final MobSoulType SQUID = new MobSoulType(new Identifier(MOD_ID, "squid"), new Identifier("minecraft:squid"), 6, 2243405);
-    public static final MobSoulType FISH = new MobSoulType(new Identifier(MOD_ID, "fish"), FISH_IDS, "Fish", 6, 12691306);
-    public static final MobSoulType SLIME = new MobSoulType(new Identifier(MOD_ID, "slime"), new Identifier("minecraft:slime"), 12, 5349438);
-    public static final MobSoulType TURTLE = new MobSoulType(new Identifier(MOD_ID, "turtle"), new Identifier("minecraft:turtle"), 6, 44975);
-    public static final MobSoulType ZOMBIE = new MobSoulType(new Identifier(MOD_ID, "zombie"), ZOMBIE_IDS, "Zombie", 10, 7969893);
-    public static final MobSoulType SKELETON = new MobSoulType(new Identifier(MOD_ID, "skeleton"), new Identifier("minecraft:skeleton"), 10, 12698049);
-    public static final MobSoulType CREEPER = new MobSoulType(new Identifier(MOD_ID, "creeper"), new Identifier("minecraft:creeper"), 10, 894731);
-    public static final MobSoulType SPIDER = new MobSoulType(new Identifier(MOD_ID, "spider"), SPIDER_IDS, "Spider", 10, 3419431);
-    public static final MobSoulType RABBIT = new MobSoulType(new Identifier(MOD_ID, "rabbit"), new Identifier("minecraft:rabbit"), 6, 10051392);
-    public static final MobSoulType BLAZE = new MobSoulType(new Identifier(MOD_ID, "blaze"), new Identifier("minecraft:blaze"), 10, 16167425);
-    public static final MobSoulType GHAST = new MobSoulType(new Identifier(MOD_ID, "ghast"), new Identifier("minecraft:ghast"), 4, 16382457);
-    public static final MobSoulType ENDERMAN = new MobSoulType(new Identifier(MOD_ID, "enderman"), new Identifier("minecraft:enderman"), 8, 1447446);
-    public static final MobSoulType WITHER = new MobSoulType(new Identifier(MOD_ID, "wither_skeleton"), new Identifier("minecraft:wither_skeleton"), 8, 1315860);
+    public static final MobSoulType PIG = new MobSoulType(new ResourceLocation(MOD_ID, "pig"), new ResourceLocation("minecraft:pig"), 8, 15771042);
+    public static final MobSoulType CHICKEN = new MobSoulType(new ResourceLocation(MOD_ID, "chicken"), new ResourceLocation("minecraft:chicken"), 8, 10592673);
+    public static final MobSoulType COW = new MobSoulType(new ResourceLocation(MOD_ID, "cow"), new ResourceLocation("minecraft:cow"), 8, 4470310);
+    public static final MobSoulType SHEEP = new MobSoulType(new ResourceLocation(MOD_ID, "sheep"), new ResourceLocation("minecraft:sheep"), 8, 15198183);
+    public static final MobSoulType SQUID = new MobSoulType(new ResourceLocation(MOD_ID, "squid"), new ResourceLocation("minecraft:squid"), 6, 2243405);
+    public static final MobSoulType FISH = new MobSoulType(new ResourceLocation(MOD_ID, "fish"), FISH_IDS, "Fish", 6, 12691306);
+    public static final MobSoulType SLIME = new MobSoulType(new ResourceLocation(MOD_ID, "slime"), new ResourceLocation("minecraft:slime"), 12, 5349438);
+    public static final MobSoulType TURTLE = new MobSoulType(new ResourceLocation(MOD_ID, "turtle"), new ResourceLocation("minecraft:turtle"), 6, 44975);
+    public static final MobSoulType ZOMBIE = new MobSoulType(new ResourceLocation(MOD_ID, "zombie"), ZOMBIE_IDS, "Zombie", 10, 7969893);
+    public static final MobSoulType SKELETON = new MobSoulType(new ResourceLocation(MOD_ID, "skeleton"), new ResourceLocation("minecraft:skeleton"), 10, 12698049);
+    public static final MobSoulType CREEPER = new MobSoulType(new ResourceLocation(MOD_ID, "creeper"), new ResourceLocation("minecraft:creeper"), 10, 894731);
+    public static final MobSoulType SPIDER = new MobSoulType(new ResourceLocation(MOD_ID, "spider"), SPIDER_IDS, "Spider", 10, 3419431);
+    public static final MobSoulType RABBIT = new MobSoulType(new ResourceLocation(MOD_ID, "rabbit"), new ResourceLocation("minecraft:rabbit"), 6, 10051392);
+    public static final MobSoulType BLAZE = new MobSoulType(new ResourceLocation(MOD_ID, "blaze"), new ResourceLocation("minecraft:blaze"), 10, 16167425);
+    public static final MobSoulType GHAST = new MobSoulType(new ResourceLocation(MOD_ID, "ghast"), new ResourceLocation("minecraft:ghast"), 4, 16382457);
+    public static final MobSoulType ENDERMAN = new MobSoulType(new ResourceLocation(MOD_ID, "enderman"), new ResourceLocation("minecraft:enderman"), 8, 1447446);
+    public static final MobSoulType WITHER = new MobSoulType(new ResourceLocation(MOD_ID, "wither_skeleton"), new ResourceLocation("minecraft:wither_skeleton"), 8, 1315860);
 
-    /*public static void register() {
-        mobSoulTypes.add(PIG);
-        mobSoulTypes.add(CHICKEN);
-        mobSoulTypes.add(COW);
-        mobSoulTypes.add(SHEEP);
-        mobSoulTypes.add(SQUID);
-        mobSoulTypes.add(FISH);
-        mobSoulTypes.add(SLIME);
-        mobSoulTypes.add(TURTLE);
-        mobSoulTypes.add(ZOMBIE);
-        mobSoulTypes.add(SKELETON);
-        mobSoulTypes.add(CREEPER);
-        mobSoulTypes.add(SPIDER);
-        mobSoulTypes.add(RABBIT);
-        mobSoulTypes.add(BLAZE);
-        mobSoulTypes.add(GHAST);
-        mobSoulTypes.add(ENDERMAN);
-        mobSoulTypes.add(WITHER);
-    }*/
     public static void onRegisterMobSoulTypes(MobSoulTypeRegistry registry) {
         registry.register(PIG);
         registry.register(CHICKEN);
@@ -88,21 +68,4 @@ public class ModMobSoulTypes {
         boolean enabled = Arrays.stream(mods).anyMatch(FabricLoader.getInstance()::isModLoaded);
         return type.setEnabled(enabled);
     }
-
-
-    /*public static List<MobSoulType> getMobSoulTypes() {
-        return mobSoulTypes;
-    }
-
-    public static MobSoulType getMobSoulTypeById(Identifier id) {
-        return mobSoulTypes.stream().filter(c -> id.equals(c.getId())).findFirst().orElse(null);
-    }
-
-    /*public static MobSoulType getMobSoulTypeById(Identifier id) {
-        return mobSoulTypes.;
-    }
-
-    public static MobSoulType getMobSoulTypeByEntity(LivingEntity entity) {
-        return mobSoulTypes.stream().filter(t -> t.isEntityApplicable(entity)).findFirst().orElse(null);
-    }*/
 }

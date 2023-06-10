@@ -1,110 +1,110 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
+import com.alex.cucumber.block.BaseEntityBlock;
+import com.alex.cucumber.lib.Tooltips;
+import com.alex.cucumber.util.Formatting;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.cucumber.util.Formatting;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.Text;
-import net.minecraft.util.*;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
 
-public class SoulExtractorBlock extends BaseBlockEntity {
-    private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+public class SoulExtractorBlock extends BaseEntityBlock {
+    private static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public SoulExtractorBlock() {
-        super(Material.METAL, BlockSoundGroup.METAL, 3.5F, 3.5F, true);
-        this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH));
+        super(Material.METAL, SoundType.METAL, 3.5F, 3.5F, true);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SoulExtractorBlockEntity(pos, state);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient()) {
-            var block = world.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide()) {
+            var block = level.getBlockEntity(pos);
 
             if (block instanceof SoulExtractorBlockEntity extractor) {
-                player.openHandledScreen(extractor);
+                //NetworkHooks.openScreen((ServerPlayer) player, extractor, pos);
+                player.openMenu(extractor);
             }
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            var tile = world.getBlockEntity(pos);
+            var block = level.getBlockEntity(pos);
 
-            if (tile instanceof SoulExtractorBlockEntity extractor) {
-                ItemScatterer.spawn(world, pos, extractor.getInventory().getStacks());
-                ItemScatterer.spawn(world, pos, extractor.getUpgradeInventory().getStacks());
+            if (block instanceof SoulExtractorBlockEntity extractor) {
+                Containers.dropContents(level, pos, extractor.getInventory().getStacks());
+                Containers.dropContents(level, pos, extractor.getUpgradeInventory().getStacks());
             }
         }
 
-        super.onStateReplaced(state, world, pos, newState, moved);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             tooltip.add(ModTooltips.MACHINE_SPEED.args(Formatting.number(SoulExtractorBlockEntity.OPERATION_TIME)).build());
             tooltip.add(ModTooltips.MACHINE_FUEL_RATE.args(Formatting.number(SoulExtractorBlockEntity.FUEL_USAGE)).build());
             tooltip.add(ModTooltips.MACHINE_FUEL_CAPACITY.args(Formatting.number(SoulExtractorBlockEntity.FUEL_CAPACITY)).build());
         } else {
-            tooltip.add(ModTooltips.HOLD_SHIFT_FOR_INFO.build());
+            tooltip.add(Tooltips.HOLD_SHIFT_FOR_INFO.build());
         }
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
     @Override
-    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.SOUL_EXTRACTOR, SoulExtractorBlockEntity::tick);
+    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTicker(type, BlockEntities.SOUL_EXTRACTOR, SoulExtractorBlockEntity::tick);
     }
 }

@@ -1,24 +1,24 @@
 package com.alex.mysticalagriculture.api.soul;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collections;
 import java.util.Set;
 
 public class
 MobSoulType {
-    private final Identifier id;
-    private final Set<Identifier> entityIds;
+    private final ResourceLocation id;
+    private final Set<ResourceLocation> entityIds;
     private final double soulRequirement;
     private final int color;
     private String entityDisplayNameKey = null;
-    private Text entityDisplayName = null;
+    private Component entityDisplayName = null;
     private boolean enabled;
 
-    public MobSoulType(Identifier id, Identifier entityId, double soulRequirement, int color) {
+    public MobSoulType(ResourceLocation id, ResourceLocation entityId, double soulRequirement, int color) {
         this.id = id;
         this.entityIds = Collections.singleton(entityId);
         this.soulRequirement = soulRequirement;
@@ -26,7 +26,7 @@ MobSoulType {
         this.enabled = true;
     }
 
-    public MobSoulType(Identifier id, Set<Identifier> entityIds, String entityDisplayNameKey, double soulRequirement, int color) {
+    public MobSoulType(ResourceLocation id, Set<ResourceLocation> entityIds, String entityDisplayNameKey, double soulRequirement, int color) {
         this.id = id;
         this.entityIds = entityIds;
         this.soulRequirement = soulRequirement;
@@ -35,7 +35,7 @@ MobSoulType {
         this.enabled = true;
     }
 
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.id;
     }
 
@@ -43,7 +43,7 @@ MobSoulType {
         return this.getId().getNamespace();
     }
 
-    public Set<Identifier> getEntityIds() {
+    public Set<ResourceLocation> getEntityIds() {
         return this.entityIds;
     }
 
@@ -59,10 +59,10 @@ MobSoulType {
         return this.entityIds.contains(Registry.ENTITY_TYPE.getId(entity.getType()));
     }
 
-    public Text getEntityDisplayName() {
+    public Component getEntityDisplayName() {
         if (this.entityDisplayName == null) {
             if (this.entityDisplayNameKey != null) {
-                this.entityDisplayName = Text.translatable(String.format("mobSoulType.%s.%s", this.getModId(), this.entityDisplayNameKey));
+                this.entityDisplayName = Component.translatable(String.format("mobSoulType.%s.%s", this.getModId(), this.entityDisplayNameKey));
             } else {
                 var entityId = this.entityIds.stream().findFirst().orElse(null);
 
@@ -70,12 +70,12 @@ MobSoulType {
                     var entity = Registry.ENTITY_TYPE.get(entityId);
 
                     if (entity != null) {
-                        this.entityDisplayName = entity.getName();
+                        this.entityDisplayName = entity.getDescription();
                         return this.entityDisplayName;
                     }
                 }
 
-                this.entityDisplayName = Text.translatable("tooltip.mysticalagriculture.invalid_entity");
+                this.entityDisplayName = Component.translatable("tooltip.mysticalagriculture.invalid_entity");
             }
 
         }

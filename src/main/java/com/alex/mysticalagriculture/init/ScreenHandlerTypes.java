@@ -1,24 +1,24 @@
 package com.alex.mysticalagriculture.init;
 
-import com.alex.mysticalagriculture.screenhandler.HarvesterScreenHandler;
-import com.alex.mysticalagriculture.screenhandler.ReprocessorScreenHandler;
-import com.alex.mysticalagriculture.screenhandler.SoulExtractorScreenHandler;
-import com.alex.mysticalagriculture.screenhandler.TinkeringTableScreenHandler;
+import com.alex.mysticalagriculture.container.HarvesterContainer;
+import com.alex.mysticalagriculture.container.ReprocessorContainer;
+import com.alex.mysticalagriculture.container.SoulExtractorContainer;
+import com.alex.mysticalagriculture.container.TinkeringTableContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
 
 public class ScreenHandlerTypes {
 
-    public static final ExtendedScreenHandlerType<ReprocessorScreenHandler> REPROCESSOR = new ExtendedScreenHandlerType<>(ReprocessorScreenHandler::create);
-    public static final ExtendedScreenHandlerType<TinkeringTableScreenHandler> TINKERING_TABLE = new ExtendedScreenHandlerType<>(TinkeringTableScreenHandler::create);
-    public static final ExtendedScreenHandlerType<SoulExtractorScreenHandler> SOUL_EXTRACTOR = new ExtendedScreenHandlerType<>(SoulExtractorScreenHandler::create);
-    public static final ExtendedScreenHandlerType<HarvesterScreenHandler> HARVESTER = new ExtendedScreenHandlerType<>(HarvesterScreenHandler::create);
+    public static final ExtendedScreenHandlerType<ReprocessorContainer> REPROCESSOR = new ExtendedScreenHandlerType<>(ReprocessorContainer::create);
+    public static final ExtendedScreenHandlerType<TinkeringTableContainer> TINKERING_TABLE = new ExtendedScreenHandlerType<>(TinkeringTableContainer::create);
+    public static final ExtendedScreenHandlerType<SoulExtractorContainer> SOUL_EXTRACTOR = new ExtendedScreenHandlerType<>(SoulExtractorContainer::create);
+    public static final ExtendedScreenHandlerType<HarvesterContainer> HARVESTER = new ExtendedScreenHandlerType<>(HarvesterContainer::create);
 
     public static void registerScreenHandlerTypes() {
-        Registry.register(Registry.SCREEN_HANDLER, "reprocessor", REPROCESSOR);
-        Registry.register(Registry.SCREEN_HANDLER, "tinkering_table", TINKERING_TABLE);
-        Registry.register(Registry.SCREEN_HANDLER, "soul_extractor", SOUL_EXTRACTOR);
-        Registry.register(Registry.SCREEN_HANDLER, "harvester", HARVESTER);
+        Registry.register(Registry.MENU, "reprocessor", REPROCESSOR);
+        Registry.register(Registry.MENU, "tinkering_table", TINKERING_TABLE);
+        Registry.register(Registry.MENU, "soul_extractor", SOUL_EXTRACTOR);
+        Registry.register(Registry.MENU, "harvester", HARVESTER);
     }
 
 }

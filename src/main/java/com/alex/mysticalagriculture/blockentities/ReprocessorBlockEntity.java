@@ -1,39 +1,36 @@
 package com.alex.mysticalagriculture.blockentities;
 
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.energy.BaseEnergyStorage;
+import com.alex.cucumber.forge.common.util.LazyOptional;
+import com.alex.cucumber.helper.StackHelper;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
+import com.alex.cucumber.inventory.SidedItemStackHandler;
+import com.alex.cucumber.util.Localizable;
+import com.alex.mysticalagriculture.container.ReprocessorContainer;
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.screenhandler.ReprocessorScreenHandler;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import com.alex.mysticalagriculture.util.ReprocessorTier;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.energy.BaseEnergyStorage;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.cucumber.inventory.SidedItemStackHandler;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
-import com.alex.mysticalagriculture.forge.common.util.LazyOptional;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.FurnaceBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import static com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity.createInventoryHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory {
     private static final int FUEL_TICK_MULTIPLIER = 20;
@@ -48,8 +45,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
 
     public ReprocessorBlockEntity(BlockEntityType<?> type, ReprocessorTier tier, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        this.inventory = createInventoryHandler(this::markDirty);
-        this.energy = new BaseEnergyStorage(tier.getFuelCapacity(), this::markDirty);
+        this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
+        this.energy = new BaseEnergyStorage(tier.getFuelCapacity(), this::markDirtyAndDispatch);
         this.inventoryCapabilities = SidedItemStackHandler.create(this.inventory, new Direction[] { Direction.UP, Direction.DOWN, Direction.NORTH }, this::canInsertStackSided, null);
         this.tier = tier;
     }
@@ -60,48 +57,47 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
-        this.progress = nbt.getInt("Progress");
-        this.fuelLeft = nbt.getInt("FuelLeft");
-        this.fuelItemValue = nbt.getInt("FuelItemValue");
-        this.energy.deserializeNBT(nbt.get("Energy"));
+        this.progress = tag.getInt("Progress");
+        this.fuelLeft = tag.getInt("FuelLeft");
+        this.fuelItemValue = tag.getInt("FuelItemValue");
+        this.energy.deserializeNBT(tag.get("Energy"));
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
-        nbt.putInt("Progress", this.progress);
-        nbt.putInt("FuelLeft", this.fuelLeft);
-        nbt.putInt("FuelItemValue", this.fuelItemValue);
-        nbt.put("Energy", this.energy.serializeNBT());
+        tag.putInt("Progress", this.progress);
+        tag.putInt("FuelLeft", this.fuelLeft);
+        tag.putInt("FuelItemValue", this.fuelItemValue);
+        tag.put("Energy", this.energy.serializeNBT());
     }
 
     @Override
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return Localizable.of("container.mysticalagriculture.reprocessor").build();
     }
 
-    @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return ReprocessorScreenHandler.create(syncId, inv, this.inventory, this.getPos());
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
+        return ReprocessorContainer.create(id, playerInventory, this.inventory, this.getBlockPos());
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, ReprocessorBlockEntity block) {
+    public static void tick(Level level, BlockPos pos, BlockState state, ReprocessorBlockEntity block) {
         var mark = false;
 
         if (block.energy.getAmount() < block.energy.getCapacity()) {
-            var fuel = block.inventory.getStack(1);
+            var fuel = block.inventory.getItem(1);
             
             if (block.fuelLeft <= 0 && !fuel.isEmpty()) {
                 block.fuelItemValue = block.getFuelTime(fuel);
 
                 if (block.fuelItemValue > 0) {
                     block.fuelLeft = block.fuelItemValue *= FUEL_TICK_MULTIPLIER;
-                    block.inventory.setStack(1, StackHelper.shrink(block.inventory.getStack(1), 1, false));
+                    block.inventory.setItem(1, StackHelper.shrink(block.inventory.getItem(1), 1, false));
                     
                     mark = true;
                 }
@@ -123,17 +119,17 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
 
         if (block.energy.getAmount() >= block.tier.getFuelUsage()) {
-            var input = block.inventory.getStack(0);
-            var output = block.inventory.getStack(2);
+            var input = block.inventory.getItem(0);
+            var output = block.inventory.getItem(2);
 
             if (!input.isEmpty()) {
                 if (block.recipe == null || !block.recipe.matches(block.inventory)) {
-                    var recipe = world.getRecipeManager().getFirstMatch(RecipeTypes.REPROCESSOR, block.inventory, world).orElse(null);
+                    var recipe = level.getRecipeManager().getRecipeFor(RecipeTypes.REPROCESSOR, block.inventory, level).orElse(null);
                     block.recipe = recipe instanceof ReprocessorRecipe ? (ReprocessorRecipe) recipe : null;
                 }
 
                 if (block.recipe != null) {
-                    var recipeOutput = block.recipe.craft(block.inventory);
+                    var recipeOutput = block.recipe.assemble(block.inventory);
                     if (!recipeOutput.isEmpty() && (output.isEmpty() || StackHelper.canCombineStacks(output, recipeOutput))) {
                         block.progress++;
                         try (Transaction transaction = Transaction.openOuter()) {
@@ -141,10 +137,10 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
                             transaction.commit();
                         }
                         if (block.progress >= block.tier.getOperationTime()) {
-                            block.inventory.setStack(0, StackHelper.shrink(block.inventory.getStack(0), 1, false));
+                            block.inventory.setItem(0, StackHelper.shrink(block.inventory.getItem(0), 1, false));
 
                             var result = StackHelper.combineStacks(output, recipeOutput);
-                            block.inventory.setStack(2, result);
+                            block.inventory.setItem(2, result);
 
                             block.progress = 0;
                         }
@@ -162,7 +158,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
 
         if (mark) {
-            block.markDirty();
+            block.markDirtyAndDispatch();
         }
     }
 
@@ -171,7 +167,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
             return 0;
         } else {
             Item item = fuel.getItem();
-            return AbstractFurnaceBlockEntity.createFuelTimeMap().getOrDefault(item, 0);
+            return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
         }
     }
 
@@ -211,14 +207,14 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         if (slot == 0 && direction == Direction.UP)
             return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.REPROCESSOR);
         if (slot == 1 && direction == Direction.NORTH)
-            return FurnaceBlockEntity.canUseAsFuel(stack);
+            return FurnaceBlockEntity.isFuel(stack);
 
         return false;
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+        buf.writeBlockPos(worldPosition);
     }
 
     public static class Basic extends ReprocessorBlockEntity {

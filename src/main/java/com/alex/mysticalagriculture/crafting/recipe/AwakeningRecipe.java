@@ -1,32 +1,32 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
+import com.alex.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import com.google.gson.JsonObject;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
 public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.AwakeningRecipe {
     public static final int RECIPE_SIZE = 9;
-    private final Identifier recipeId;
-    private final DefaultedList<Ingredient> inputs;
+    private final ResourceLocation recipeId;
+    private final NonNullList<Ingredient> inputs;
     private final AwakeningRecipe.EssenceVesselRequirements essences;
     private final ItemStack output;
 
-    public AwakeningRecipe(Identifier recipeId, DefaultedList<Ingredient> inputs, AwakeningRecipe.EssenceVesselRequirements essences, ItemStack output) {
+    public AwakeningRecipe(ResourceLocation recipeId, NonNullList<Ingredient> inputs, AwakeningRecipe.EssenceVesselRequirements essences, ItemStack output) {
         this.recipeId = recipeId;
-        this.inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
+        this.inputs = NonNullList.withSize(9, Ingredient.EMPTY);
         this.essences = essences;
         this.output = output;
 
@@ -42,27 +42,27 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
     }
 
     @Override
-    public ItemStack craft(Inventory inventory) {
+    public ItemStack assemble(Container inventory) {
         return this.output.copy();
     }
 
     @Override
-    public boolean fits(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getResultItem() {
         return this.output;
     }
 
     @Override
-    public DefaultedList<Ingredient> getIngredients() {
+    public NonNullList<Ingredient> getIngredients() {
         return this.inputs;
     }
 
     @Override
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.recipeId;
     }
 
@@ -83,45 +83,44 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
 
     private static Ingredient createEssenceIngredient(Crop crop) {
         var item = crop.getEssenceItem();
-        return item == null ? Ingredient.EMPTY : Ingredient.ofItems(item);
+        return item == null ? Ingredient.EMPTY : Ingredient.of(item);
     }
 
     public static class Serializer implements RecipeSerializer<AwakeningRecipe> {
-
         @Override
-        public AwakeningRecipe read(Identifier recipeId, JsonObject json) {
-            var inputs = DefaultedList.ofSize(RECIPE_SIZE, Ingredient.EMPTY);
-            var input = JsonHelper.getObject(json, "input");
+        public AwakeningRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+            var inputs = NonNullList.withSize(RECIPE_SIZE, Ingredient.EMPTY);
+            var input = GsonHelper.getAsJsonObject(json, "input");
 
             inputs.set(0, Ingredient.fromJson(input));
 
-            var ingredients = JsonHelper.getArray(json, "ingredients");
+            var ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
 
             for (int i = 0; i < ingredients.size(); i++) {
                 inputs.set(i + 1, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            var essences = JsonHelper.getObject(json, "essences");
+            var essences = GsonHelper.getAsJsonObject(json, "essences");
 
             var essenceRequirements = new AwakeningRecipe.EssenceVesselRequirements(
-                    JsonHelper.getInt(essences, "air"),
-                    JsonHelper.getInt(essences, "earth"),
-                    JsonHelper.getInt(essences, "water"),
-                    JsonHelper.getInt(essences, "fire")
+                    GsonHelper.getAsInt(essences, "air"),
+                    GsonHelper.getAsInt(essences, "earth"),
+                    GsonHelper.getAsInt(essences, "water"),
+                    GsonHelper.getAsInt(essences, "fire")
             );
 
-            var result = ShapedRecipe.outputFromJson(json.getAsJsonObject("result"));
+            var result = ShapedRecipe.itemStackFromJson(json.getAsJsonObject("result"));
 
             return new AwakeningRecipe(recipeId, inputs, essenceRequirements, result);
         }
 
         @Override
-        public AwakeningRecipe read(Identifier recipeId, PacketByteBuf buffer) {
+        public AwakeningRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             int size = buffer.readVarInt();
-            var inputs = DefaultedList.ofSize(size, Ingredient.EMPTY);
+            var inputs = NonNullList.withSize(size, Ingredient.EMPTY);
 
             for (int i = 0; i < size; i++) {
-                inputs.set(i, Ingredient.fromPacket(buffer));
+                inputs.set(i, Ingredient.fromNetwork(buffer));
             }
 
             var essences = new AwakeningRecipe.EssenceVesselRequirements(
@@ -131,18 +130,18 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
                     buffer.readVarInt()
             );
 
-            ItemStack output = buffer.readItemStack();
+            ItemStack output = buffer.readItem();
 
             return new AwakeningRecipe(recipeId, inputs, essences, output);
         }
 
         @Override
-        public void write(PacketByteBuf buffer, AwakeningRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, AwakeningRecipe recipe) {
             buffer.writeVarInt(5);
 
             // only send the non-vessel ingredients
             for (int i = 0; i <= 8; i += 2) {
-                recipe.inputs.get(i).write(buffer);
+                recipe.inputs.get(i).toNetwork(buffer);
             }
 
             buffer.writeVarInt(recipe.essences.air());
@@ -150,7 +149,7 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
             buffer.writeVarInt(recipe.essences.water());
             buffer.writeVarInt(recipe.essences.fire());
 
-            buffer.writeItemStack(recipe.output);
+            buffer.writeItem(recipe.output);
         }
     }
 }

@@ -1,40 +1,42 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
+import com.alex.cucumber.forge.common.ForgeHooks;
+import com.alex.cucumber.forge.event.entity.living.LivingFallEvent;
+import com.alex.cucumber.util.Utils;
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
-import com.alex.mysticalagriculture.cucumber.util.Utils;
-import com.alex.mysticalagriculture.forge.common.ForgeHooks;
 import com.alex.mysticalagriculture.init.Items;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumSet;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class Augment {
-    private final Identifier id;
+    private final ResourceLocation id;
     private final int tier;
     private final EnumSet<AugmentType> types;
     private final int primaryColor;
     private final int secondaryColor;
     private boolean enabled;
 
-    public Augment(Identifier id, int tier, EnumSet<AugmentType> types, int primaryColor, int secondaryColor) {
+    public Augment(ResourceLocation id, int tier, EnumSet<AugmentType> types, int primaryColor, int secondaryColor) {
         this.id = id;
         this.tier = tier;
         this.types = types;
@@ -43,7 +45,7 @@ public class Augment {
         this.enabled = true;
     }
 
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.id;
     }
 
@@ -56,7 +58,7 @@ public class Augment {
     }
 
     public Item getItem() {
-        return Registry.ITEM.get(new Identifier(MOD_ID, this.getName() + "_augment"));
+        return Registry.ITEM.get(new ResourceLocation(MOD_ID, this.getName() + "_augment"));
     }
 
     public int getPrimaryColor() {
@@ -79,15 +81,15 @@ public class Augment {
         return this.getTier() >= 5;
     }
 
-    public boolean onItemUse(ItemUsageContext context) {
+    public boolean onItemUse(UseOnContext context) {
         return false;
     }
 
-    public boolean onRightClick(ItemStack stack, World world, PlayerEntity player, Hand hand) {
+    public boolean onRightClick(ItemStack stack, Level world, Player player, InteractionHand hand) {
         return false;
     }
 
-    public boolean onRightClickEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+    public boolean onRightClickEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         return false;
     }
 
@@ -95,37 +97,34 @@ public class Augment {
         return false;
     }
 
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entity) {
+    public boolean onBlockDestroyed(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
         return false;
     }
 
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-    }
+    public void onInventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) { }
 
-    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
-    }
+    public void addToolAttributeModifiers(Multimap<Attribute, AttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) { }
 
-    public void addArmorAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
-    }
+    public void addArmorAttributeModifiers(Multimap<Attribute, AttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) { }
 
     public String getNameWithSuffix(String suffix) {
         return String.format("%s_%s", this.getName(), suffix);
     }
 
-    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
+    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, Player player) {
         return false;
     }
 
-    public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {
+    public void onPlayerTick(Level level, Player player, AbilityCache cache) {
     }
 
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+    public void onArmorTick(ItemStack stack, Level level, Player player) {
     }
 
-    public void onPlayerFall(World world, PlayerEntity player) {
+    public void onPlayerFall(Level level, Player player) {
     }
 
-    public void onPlayerFall(World world, PlayerEntity player, ForgeHooks.LivingFallEvent event) { }
+    public void onPlayerFall(Level level, Player player, LivingFallEvent event) { }
 
 
     public String getModId() {
@@ -136,8 +135,8 @@ public class Augment {
         return this.getId().getPath();
     }
 
-    public MutableText getDisplayName() {
-        return Text.translatable(String.format("augment.%s.%s", this.getModId(), this.getName()));
+    public MutableComponent getDisplayName() {
+        return Component.translatable(String.format("augment.%s.%s", this.getModId(), this.getName()));
     }
 
     public static ItemStack getEssenceForTinkerable(Tinkerable tinkerable, int min, int max) {

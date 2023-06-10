@@ -1,41 +1,40 @@
 package com.alex.mysticalagriculture.client.screen;
 
-import com.alex.mysticalagriculture.screenhandler.TinkeringTableScreenHandler;
-import com.alex.mysticalagriculture.cucumber.client.screen.BaseHandledScreen;
-import com.alex.mysticalagriculture.cucumber.iface.ToggleableSlot;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import com.alex.mysticalagriculture.container.TinkeringTableContainer;
+import com.alex.cucumber.client.screen.BaseContainerScreen;
+import com.alex.cucumber.iface.ToggleableSlot;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public class TinkeringTableScreen extends BaseHandledScreen<TinkeringTableScreenHandler> {
-    private static final Identifier BACKGROUND = new Identifier(MOD_ID, "textures/gui/tinkering_table.png");
+public class TinkeringTableScreen extends BaseContainerScreen<TinkeringTableContainer> {
+    private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/tinkering_table.png");
 
-    public TinkeringTableScreen(TinkeringTableScreenHandler container, PlayerInventory inv, Text title) {
+    public TinkeringTableScreen(TinkeringTableContainer container, Inventory inv, Component title) {
         super(container, inv, title, BACKGROUND, 176, 197);
     }
 
     @Override
-    protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
         var title = this.getTitle().getString();
 
-        this.textRenderer.draw(matrices, title, (float) (this.backgroundWidth / 2 - this.textRenderer.getWidth(title) / 2), 6.0F, 4210752);
-        this.textRenderer.draw(matrices, this.playerInventoryTitle, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
+        this.font.draw(stack, title, (float) (this.imageWidth / 2 - this.font.width(title) / 2), 6.0F, 4210752);
+        this.font.draw(stack, this.playerInventoryTitle, 8.0F, (float) (this.imageHeight - 96 + 2), 4210752);
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        super.drawBackground(matrices, delta, mouseX, mouseY);
+    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
+        this.renderDefaultBg(stack, partialTicks, mouseX, mouseY);
 
-        int x = this.x;
-        int y = this.y;
+        int x = this.leftPos;
+        int y = this.topPos;
 
-        for (var slot : this.handler.slots) {
-            if (slot.isEnabled() && slot instanceof ToggleableSlot) {
-                this.drawTexture(matrices, x + slot.x, y + slot.y, 8, 115, 16, 16);
+        for (var slot : this.menu.slots) {
+            if (slot.isActive() && slot instanceof ToggleableSlot) {
+                this.blit(stack, x + slot.x, y + slot.y, 8, 115, 16, 16);
             }
         }
     }

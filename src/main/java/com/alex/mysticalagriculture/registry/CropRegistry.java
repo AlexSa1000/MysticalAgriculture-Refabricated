@@ -8,8 +8,8 @@ import com.alex.mysticalagriculture.api.lib.PluginConfig;
 import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
 import com.alex.mysticalagriculture.items.MysticalEssenceItem;
 import com.alex.mysticalagriculture.items.MysticalSeedItem;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,9 +18,9 @@ import java.util.Map;
 public class CropRegistry implements com.alex.mysticalagriculture.api.registry.CropRegistry {
     private static final CropRegistry INSTANCE = new CropRegistry();
 
-    private Map<Identifier, Crop> crops = new LinkedHashMap<>();
-    private Map<Identifier, CropTier> tiers = new LinkedHashMap<>();
-    private Map<Identifier, CropType> types = new LinkedHashMap<>();
+    private Map<ResourceLocation, Crop> crops = new LinkedHashMap<>();
+    private Map<ResourceLocation, CropTier> tiers = new LinkedHashMap<>();
+    private Map<ResourceLocation, CropType> types = new LinkedHashMap<>();
     private boolean allowRegistration = false;
     private PluginConfig currentPluginConfig = null;
 
@@ -63,7 +63,7 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
     }
 
     @Override
-    public Crop getCropById(Identifier id) {
+    public Crop getCropById(ResourceLocation id) {
         return this.crops.get(id);
     }
 
@@ -78,7 +78,7 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
     }
 
     @Override
-    public CropTier getTierById(Identifier id) {
+    public CropTier getTierById(ResourceLocation id) {
         return this.tiers.get(id);
     }
 
@@ -88,7 +88,7 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
     }
 
     @Override
-    public CropType getTypeById(Identifier id) {
+    public CropType getTypeById(ResourceLocation id) {
         return this.types.get(id);
     }
 
@@ -117,7 +117,7 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
                 c.setCropBlock(() -> defaultCrop, true);
             }
 
-            var id = new Identifier(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("crop"));
+            var id = new ResourceLocation(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("crop"));
 
             Registry.register(Registry.BLOCK, id, crop);
         });
@@ -130,14 +130,14 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
             }
             c.setCropBlock(() -> defaultCrop);
 
-            Registry.register(Registries.BLOCK, new Identifier(MOD_ID, c.getId() + "_crop"), defaultCrop);
+            Registry.register(Registries.BLOCK, new ResourceLocation(MOD_ID, c.getId() + "_crop"), defaultCrop);
         });*/
     }
 
     public void onRegisterItems() {
         /*crops.forEach(c -> {
-            var idEssence = new Identifier(MOD_ID, c.getId() + "_essence");
-            var idSeeds = new Identifier(MOD_ID, c.getId() + "_seeds");
+            var idEssence = new ResourceLocation(MOD_ID, c.getId() + "_essence");
+            var idSeeds = new ResourceLocation(MOD_ID, c.getId() + "_seeds");
 
             if (c.getId().equals("inferium")) {
                 c.setEssenceItem(() -> Items.INFERIUM_ESSENCE);
@@ -180,12 +180,12 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
         crops.stream().filter(Crop::shouldRegisterEssenceItem).forEach(c -> {
             var essence = c.getEssenceItem();
             if (essence == null) {
-                var defaultEssence = new MysticalEssenceItem(c, p -> p.group(MysticalAgriculture.ITEM_GROUP));
+                var defaultEssence = new MysticalEssenceItem(c, p -> p.tab(MysticalAgriculture.CREATIVE_TAB));
                 essence = defaultEssence;
                 c.setEssenceItem(() -> defaultEssence, true);
             }
 
-            var id = new Identifier(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("essence"));
+            var id = new ResourceLocation(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("essence"));
 
             Registry.register(Registry.ITEM, id, essence);
         });
@@ -193,12 +193,12 @@ public class CropRegistry implements com.alex.mysticalagriculture.api.registry.C
         crops.stream().filter(Crop::shouldRegisterSeedsItem).forEach(c -> {
             var seeds = c.getSeedsItem();
             if (seeds == null) {
-                var defaultSeeds = new MysticalSeedItem(c, p -> p.group(MysticalAgriculture.ITEM_GROUP));
+                var defaultSeeds = new MysticalSeedItem(c, p -> p.tab(MysticalAgriculture.CREATIVE_TAB));
                 seeds = defaultSeeds;
                 c.setSeedsItem(() -> defaultSeeds, true);
             }
 
-            var id = new Identifier(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("seeds"));
+            var id = new ResourceLocation(MysticalAgriculture.MOD_ID, c.getNameWithSuffix("seeds"));
 
             Registry.register(Registry.ITEM, id, seeds.asItem());
         });

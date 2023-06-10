@@ -3,78 +3,72 @@ package com.alex.mysticalagriculture.items;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.block.dispenser.DispenserBehavior;
-import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.BoneMealItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
 
 public class FertilizedEssenceItem extends BoneMealItem {
-    public FertilizedEssenceItem(Settings settings) {
-        super(settings);
+    public FertilizedEssenceItem(Properties properties) {
+        super(properties);
 
         DispenserBlock.registerBehavior(this, new DispenserBehavior());
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        var stack = context.getStack();
-        var pos = context.getBlockPos();
+    public InteractionResult useOn(UseOnContext context) {
+        var stack = context.getItemInHand();
+        var pos = context.getClickedPos();
         var player = context.getPlayer();
-        var world = context.getWorld();
-        var direction = context.getSide();
+        var level = context.getLevel();
+        var direction = context.getClickedFace();
 
-        if (player == null || !player.canPlaceOn(pos.offset(direction), direction, stack)) {
-            return ActionResult.FAIL;
+        if (player == null || !player.mayUseItemAt(pos.relative(direction), direction, stack)) {
+            return InteractionResult.FAIL;
         } else {
-            if (applyFertilizer(stack, world, pos)) {
-                if (!world.isClient()){
-                    world.syncWorldEvent(1505, pos, 0);
+            if (applyFertilizer(stack, level, pos)) {
+                if (!level.isClientSide()){
+                    level.levelEvent(1505, pos, 0);
                 }
 
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
-
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         int chance = (int) (ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get() * 100);
         tooltip.add(ModTooltips.FERTILIZED_ESSENCE_CHANCE.args(chance + "%").build());
     }
 
-    public static boolean applyFertilizer(ItemStack stack, World world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
+
+    public static boolean applyFertilizer(ItemStack stack, Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        if (block instanceof Fertilizable) {
-            Fertilizable growable = (Fertilizable) block;
-            if (growable.isFertilizable(world, pos, state, world.isClient())) {
-                if (!world.isClient()) {
-                    var rand = world.getRandom();
-                    if (growable.canGrow(world, rand, pos, state) || canGrowRepointerCrops(growable)) {
-                        ServerWorld serverWorld = (ServerWorld) world;
-                        growable.grow(serverWorld, rand, pos, state);
+        if (block instanceof BonemealableBlock growable) {
+            if (growable.isValidBonemealTarget(level, pos, state, level.isClientSide())) {
+                if (!level.isClientSide()) {
+                    var random = level.getRandom();
+                    if (growable.isBonemealSuccess(level, random, pos, state) || canGrowRepointerCrops(growable)) {
+                        growable.performBonemeal((ServerLevel) level, random, pos, state);
+
                     }
-                    stack.decrement(1);
+                    stack.shrink(1);
                 }
                 return true;
             }
@@ -82,21 +76,21 @@ public class FertilizedEssenceItem extends BoneMealItem {
         return false;
     }
 
-    private static boolean canGrowRepointerCrops(Fertilizable growable) {
+    private static boolean canGrowRepointerCrops(BonemealableBlock growable) {
         return growable instanceof CropProvider && ((CropProvider) growable).getCrop().getTier().isFertilizable();
     }
 
-    public static class DispenserBehavior extends FallibleItemDispenserBehavior {
+    public static class DispenserBehavior extends OptionalDispenseItemBehavior {
         @Override
-        protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+        protected ItemStack execute(BlockSource source, ItemStack stack) {
             this.setSuccess(true);
 
-            var level = pointer.getWorld();
-            var pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
+            var level = source.getLevel();
+            var pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 
             if (FertilizedEssenceItem.applyFertilizer(stack, level, pos)) {
-                if (!level.isClient()) {
-                    level.syncWorldEvent(2005, pos, 0);
+                if (!level.isClientSide()) {
+                    level.levelEvent(2005, pos, 0);
                 }
             } else {
                 this.setSuccess(false);

@@ -3,53 +3,57 @@ package com.alex.mysticalagriculture.items;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.cucumber.iface.Enableable;
+import com.alex.cucumber.item.BaseItem;
+import com.alex.cucumber.lib.Colors;
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.iface.Enableable;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import com.alex.mysticalagriculture.cucumber.lib.Colors;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import com.google.common.base.Function;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class AugmentItem extends BaseItem implements AugmentProvider, Enableable {
     private final Augment augment;
 
-    public AugmentItem(Augment augment, Function<Settings, Settings> settings) {
-        super(settings);
+    public AugmentItem(Augment augment, Function<Properties, Properties> properties) {
+        super(properties);
         this.augment = augment;
     }
 
     @Override
-    public Text getName(ItemStack stack) {
+    public Component getName(ItemStack stack) {
         return Localizable.of("item.mysticalagriculture.augment").args(this.augment.getDisplayName()).build();
     }
 
     @Override
-    public Text getName() {
+    public Component getDescription() {
         return this.getName(ItemStack.EMPTY);
     }
 
     @Override
-    public boolean hasGlint(ItemStack stack) {
+    public boolean isFoil(ItemStack stack) {
         return this.augment.hasEffect();
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.augment.getTier()));
-        tooltip.add(Text.literal(Colors.GRAY + this.augment.getAugmentTypes()
+        tooltip.add(Component.literal(Colors.GRAY + this.augment.getAugmentTypes()
                 .stream()
                 .map(AugmentType::getDisplayName)
-                .map(Text::getString)
+                .map(Component::getString)
                 .collect(Collectors.joining(", "))
         ));
+
+        if (flag.isAdvanced()) {
+            tooltip.add(ModTooltips.AUGMENT_ID.args(this.augment.getId()).color(ChatFormatting.DARK_GRAY).build());
+        }
     }
 
     @Override

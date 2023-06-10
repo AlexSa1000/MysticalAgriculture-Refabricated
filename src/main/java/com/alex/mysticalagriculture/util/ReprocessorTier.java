@@ -2,23 +2,22 @@ package com.alex.mysticalagriculture.util;
 
 import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.init.BlockEntities;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 public enum ReprocessorTier {
-    BASIC("basic", 200, 20, 80000, ReprocessorBlockEntity.Basic::new, BlockEntities.BASIC_REPROCESSOR, Formatting.GRAY),
-    INFERIUM("inferium", 100, 40, 120000, ReprocessorBlockEntity.Inferium::new, BlockEntities.INFERIUM_REPROCESSOR, Formatting.YELLOW),
-    PRUDENTIUM("prudentium", 80, 60, 180000, ReprocessorBlockEntity.Prudentium::new, BlockEntities.PRUDENTIUM_REPROCESSOR, Formatting.GREEN),
-    TERTIUM("tertium", 54, 100, 300000, ReprocessorBlockEntity.Tertium::new, BlockEntities.TERTIUM_REPROCESSOR, Formatting.GOLD),
-    IMPERIUM("imperium", 20, 320, 420000, ReprocessorBlockEntity.Imperium::new, BlockEntities.IMPERIUM_REPROCESSOR, Formatting.AQUA),
-    SUPREMIUM("supremium", 5, 1440, 640000, ReprocessorBlockEntity.Supremium::new, BlockEntities.SUPREMIUM_REPROCESSOR, Formatting.RED),
-    AWAKENED_SUPREMIUM("awakened_supremium", 1, 2880, 1280000, ReprocessorBlockEntity.AwakenedSupremium::new, BlockEntities.AWAKENED_SUPREMIUM_REPROCESSOR, Formatting.RED);
+    BASIC("basic", 200, 20, 80000, ReprocessorBlockEntity.Basic::new, BlockEntities.BASIC_REPROCESSOR, ChatFormatting.GRAY),
+    INFERIUM("inferium", 100, 40, 120000, ReprocessorBlockEntity.Inferium::new, BlockEntities.INFERIUM_REPROCESSOR, ChatFormatting.YELLOW),
+    PRUDENTIUM("prudentium", 80, 60, 180000, ReprocessorBlockEntity.Prudentium::new, BlockEntities.PRUDENTIUM_REPROCESSOR, ChatFormatting.GREEN),
+    TERTIUM("tertium", 54, 100, 300000, ReprocessorBlockEntity.Tertium::new, BlockEntities.TERTIUM_REPROCESSOR, ChatFormatting.GOLD),
+    IMPERIUM("imperium", 20, 320, 420000, ReprocessorBlockEntity.Imperium::new, BlockEntities.IMPERIUM_REPROCESSOR, ChatFormatting.AQUA),
+    SUPREMIUM("supremium", 5, 1440, 640000, ReprocessorBlockEntity.Supremium::new, BlockEntities.SUPREMIUM_REPROCESSOR, ChatFormatting.RED),
+    AWAKENED_SUPREMIUM("awakened_supremium", 1, 2880, 1280000, ReprocessorBlockEntity.AwakenedSupremium::new, BlockEntities.AWAKENED_SUPREMIUM_REPROCESSOR, ChatFormatting.RED);
 
     private final String name;
     private final int operationTime;
@@ -26,10 +25,10 @@ public enum ReprocessorTier {
     private final int fuelCapacity;
     private final BiFunction<BlockPos, BlockState, ReprocessorBlockEntity> blockEntityFunc;
     private BlockEntityType<? extends ReprocessorBlockEntity> blockEntityType;
-    private final Formatting textColor;
+    private final ChatFormatting textColor;
 
     @SuppressWarnings("unchecked")
-    ReprocessorTier(String name, int operationTime, int fuelUsage, int fuelCapacity, BiFunction<BlockPos, BlockState, ReprocessorBlockEntity> blockEntityFunc, BlockEntityType<? extends ReprocessorBlockEntity> blockEntityType, Formatting textColor) {
+    ReprocessorTier(String name, int operationTime, int fuelUsage, int fuelCapacity, BiFunction<BlockPos, BlockState, ReprocessorBlockEntity> blockEntityFunc, BlockEntityType<? extends ReprocessorBlockEntity> blockEntityType, ChatFormatting textColor) {
         this.name = name;
         this.operationTime = operationTime;
         this.fuelUsage = fuelUsage;
@@ -83,7 +82,7 @@ public enum ReprocessorTier {
         return this.blockEntityFunc.apply(pos, state);
     }
 
-    public Formatting getTextColor() {
+    public ChatFormatting getTextColor() {
         return this.textColor;
     }
 }

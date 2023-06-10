@@ -3,7 +3,6 @@ package com.alex.mysticalagriculture.crafting.ingredient;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.items.SoulJarItem;
-import com.alex.mysticalagriculture.lib.ModMobSoulTypes;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -11,9 +10,9 @@ import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeMatcher;
+import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -25,19 +24,26 @@ public class FilledSoulJarIngredient extends Ingredient {
 
     public FilledSoulJarIngredient() {
         super(Stream.empty());
-        initMatchingStacks();
     }
 
     @Override
-    public ItemStack[] getMatchingStacks() {
+    public ItemStack[] getItems() {
+        if (this.stacks == null) {
+            this.initMatchingStacks();
+        }
+
         return this.stacks;
     }
 
     @Override
-    public IntList getMatchingItemIds() {
+    public IntList getStackingIds() {
         if (this.stacksPacked == null) {
+            if (this.stacks == null) {
+                this.initMatchingStacks();
+            }
+
             this.stacksPacked = new IntArrayList(this.stacks.length);
-            Arrays.stream(this.stacks).forEach(s -> this.stacksPacked.add(RecipeMatcher.getItemId(s)));
+            Arrays.stream(this.stacks).forEach(s -> this.stacksPacked.add(StackedContents.getStackingIndex(s)));
             this.stacksPacked.sort(IntComparators.NATURAL_COMPARATOR);
         }
 
@@ -74,4 +80,6 @@ public class FilledSoulJarIngredient extends Ingredient {
                 .map(type -> MobSoulUtils.getFilledSoulJar(type, Items.SOUL_JAR))
                 .toArray(ItemStack[]::new);
     }
+
+
 }

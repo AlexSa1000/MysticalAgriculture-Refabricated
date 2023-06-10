@@ -4,13 +4,13 @@ import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -21,7 +21,7 @@ public class ReprocessorRecipeBuilder {
     private final int count;
     private final JsonArray conditions = new JsonArray();
 
-    public ReprocessorRecipeBuilder(Ingredient input, ItemConvertible output, int count) {
+    public ReprocessorRecipeBuilder(Ingredient input, ItemLike output, int count) {
         this.input = input;
         this.result = output.asItem();
         this.count = count;
@@ -32,7 +32,7 @@ public class ReprocessorRecipeBuilder {
     }
 
     public static ReprocessorRecipeBuilder newSeedReprocessingRecipe(Crop crop) {
-        var input = Ingredient.ofItems(crop.getSeedsItem());
+        var input = Ingredient.of(crop.getSeedsItem());
         var output = crop.getEssenceItem();
 
         var builder = new ReprocessorRecipeBuilder(input, output, 2);
@@ -46,18 +46,18 @@ public class ReprocessorRecipeBuilder {
         return builder;
     }
 
-    public void build(Consumer<RecipeJsonProvider> consumer, Identifier id) {
+    public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
         consumer.accept(new ReprocessorRecipeBuilder.Result(id, this.result, this.count, this.input, this.conditions));
     }
 
-    public static class Result implements RecipeJsonProvider {
-        private final Identifier id;
+    public static class Result implements FinishedRecipe {
+        private final ResourceLocation id;
         private final Item result;
         private final int count;
         private final Ingredient input;
         private final JsonArray conditions;
 
-        public Result(Identifier id, Item result, int count, Ingredient input, JsonArray conditions) {
+        public Result(ResourceLocation id, Item result, int count, Ingredient input, JsonArray conditions) {
             this.id = id;
             this.result = result;
             this.count = count;
@@ -66,13 +66,13 @@ public class ReprocessorRecipeBuilder {
         }
 
         @Override
-        public void serialize(JsonObject json) {
+        public void serializeRecipeData(JsonObject json) {
             json.add("fabric:load_conditions", this.conditions);
             json.add("input", this.input.toJson());
 
             var result = new JsonObject();
 
-            result.addProperty("item", Registry.ITEM.getId(this.result).toString());
+            result.addProperty("item", Registry.ITEM.getKey(this.result).toString());
 
             if (this.count > 1) {
                 result.addProperty("count", this.count);
@@ -82,24 +82,24 @@ public class ReprocessorRecipeBuilder {
         }
 
         @Override
-        public Identifier getRecipeId() {
+        public ResourceLocation getId() {
             return this.id;
         }
 
         @Override
-        public RecipeSerializer<?> getSerializer() {
+        public RecipeSerializer<?> getType() {
             return RecipeSerializers.REPROCESSOR;
         }
 
         @Nullable
         @Override
-        public JsonObject toAdvancementJson() {
+        public JsonObject serializeAdvancement() {
             return null;
         }
 
         @Nullable
         @Override
-        public Identifier getAdvancementId() {
+        public ResourceLocation getAdvancementId() {
             return null;
         }
     }

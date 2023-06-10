@@ -1,103 +1,106 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import net.minecraft.block.*;
-import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 
 import java.util.List;
 import java.util.function.Function;
 
-import static net.minecraft.block.SaplingBlock.STAGE;
-
 public class MysticalFertilizerItem extends BaseItem {
-    public MysticalFertilizerItem(Function<Settings, Settings> settings) {
-        super(settings);
+    public MysticalFertilizerItem(Function<Properties, Properties> properties) {
+        super(properties);
 
         DispenserBlock.registerBehavior(this, new DispenserBehavior());
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-     var stack = context.getStack();
-        var pos = context.getBlockPos();
+    public InteractionResult useOn(UseOnContext context) {
+        var stack = context.getItemInHand();
+        var pos = context.getClickedPos();
         var player = context.getPlayer();
-        var world = context.getWorld();
-        var direction = context.getSide();
+        var level = context.getLevel();
+        var direction = context.getClickedFace();
 
-        if (player == null || !player.canPlaceOn(pos.offset(direction), direction, stack)) {
-            return ActionResult.FAIL;
+        if (player == null || !player.mayUseItemAt(pos.relative(direction), direction, stack)) {
+            return InteractionResult.FAIL;
         } else {
-            if (applyFertilizer(stack, world, pos)) {
-                if (!world.isClient()){
-                    world.syncWorldEvent(1505, pos, 0);
+            if (applyFertilizer(stack, level, pos)) {
+                if (!level.isClientSide()) {
+                    level.levelEvent(1505, pos, 0);
                 }
 
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.MYSTICAL_FERTILIZER.build());
     }
 
-    public static boolean applyFertilizer(ItemStack stack, World world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        if (block instanceof Fertilizable) {
-            Fertilizable growable = (Fertilizable) block;
-            if (growable.isFertilizable(world, pos, state, world.isClient())) {
-                if (!world.isClient()) {
-                    var rand = world.getRandom();
-                    if (growable.canGrow(world, rand, pos, state) || canGrowResourceCrops(growable) || growable instanceof SaplingBlock) {
-                        ServerWorld serverWorld = (ServerWorld) world;
-                        if (growable instanceof CropBlock) {
-                            CropBlock crop = (CropBlock) block;
-                            world.setBlockState(pos, crop.withAge(crop.getMaxAge()), 2);
-                        } else if (growable instanceof SaplingBlock) {
-                            ((SaplingBlock) growable).generate(serverWorld, pos, state.with(STAGE, 1), rand);
-                        } else {
-                            growable.grow(serverWorld, rand, pos, state);
-                        }
+    public static boolean applyFertilizer(ItemStack stack, Level level, BlockPos pos) {
+        var state = level.getBlockState(pos);
+
+        var block = state.getBlock();
+
+        if (block instanceof BonemealableBlock growable && growable.isValidBonemealTarget(level, pos, state, level.isClientSide())) {
+            if (!level.isClientSide()) {
+                var rand = level.getRandom();
+
+                if (growable.isBonemealSuccess(level, rand, pos, state) || canGrowResourceCrops(growable) || growable instanceof SaplingBlock) {
+                    var serverWorld = (ServerLevel) level;
+
+                    if (growable instanceof CropBlock crop) {
+                        level.setBlock(pos, crop.getStateForAge(crop.getMaxAge()), 2);
+                    } else if (growable instanceof SaplingBlock sapling) {
+                        sapling.advanceTree(serverWorld, pos, state.setValue(SaplingBlock.STAGE, 1), rand);
+                    } else {
+                        growable.performBonemeal(serverWorld, rand, pos, state);
                     }
-                    stack.decrement(1);
                 }
-                return true;
+
+                stack.shrink(1);
             }
+
+            return true;
         }
+
         return false;
     }
 
-    private static boolean canGrowResourceCrops(Fertilizable growable) {
-        return growable instanceof CropProvider && ((CropProvider) growable).getCrop().getTier().isFertilizable();
+    private static boolean canGrowResourceCrops(BonemealableBlock growable) {
+        return growable instanceof CropProvider cropGetter && cropGetter.getCrop().getTier().isFertilizable();
     }
 
-    public static class DispenserBehavior extends FallibleItemDispenserBehavior {
+    public static class DispenserBehavior extends OptionalDispenseItemBehavior {
         @Override
-        protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+        protected ItemStack execute(BlockSource source, ItemStack stack) {
             this.setSuccess(true);
 
-            var level = pointer.getWorld();
-            var pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
+            var level = source.getLevel();
+            var pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 
-            if (FertilizedEssenceItem.applyFertilizer(stack, level, pos)) {
-                if (!level.isClient()) {
-                    level.syncWorldEvent(2005, pos, 0);
+            if (MysticalFertilizerItem.applyFertilizer(stack, level, pos)) {
+                if (!level.isClientSide()) {
+                    level.levelEvent(2005, pos, 0);
                 }
             } else {
                 this.setSuccess(false);

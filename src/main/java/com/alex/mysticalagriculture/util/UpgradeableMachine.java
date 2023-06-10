@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.util;
 
+import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
-import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface UpgradeableMachine {
 
@@ -14,7 +14,7 @@ public interface UpgradeableMachine {
 
     default ItemStack applyUpgrade(MachineUpgradeItem item) {
         var inventory = getUpgradeInventory();
-        var current = inventory.getStack(0);
+        var current = inventory.getItem(0);
 
         inventory.setStackInSlot(0, new ItemStack(item));
 

@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.api.registry;
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.crop.CropType;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public interface CropRegistry {
      * @param id the resource location id of the crop
      * @return the crop for this id
      */
-    Crop getCropById(Identifier id);
+    Crop getCropById(ResourceLocation id);
 
     /**
      * Gets the crop with the specified internal name from the crop registry
@@ -57,7 +57,7 @@ public interface CropRegistry {
      * @param id the resource location id of the crop tier
      * @return the crop tier for this id
      */
-    CropTier getTierById(Identifier id);
+    CropTier getTierById(ResourceLocation id);
 
     /**
      * Get an unmodifiable list of all the registered crop types
@@ -70,5 +70,5 @@ public interface CropRegistry {
      * @param id the resource location id of the crop type
      * @return the crop type for this tier
      */
-    CropType getTypeById(Identifier id);
+    CropType getTypeById(ResourceLocation id);
 }

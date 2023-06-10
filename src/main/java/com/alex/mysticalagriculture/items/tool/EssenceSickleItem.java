@@ -4,24 +4,29 @@ import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
-import com.alex.mysticalagriculture.cucumber.item.tool.BaseSickleItem;
+import com.alex.cucumber.item.tool.BaseSickleItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -30,12 +35,12 @@ import java.util.function.Function;
 public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.WEAPON, AugmentType.SICKLE);
     private final int range;
-    private final Formatting textColor;
+    private final ChatFormatting textColor;
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceSickleItem(ToolMaterial toolMaterial, int range, Formatting textColor, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
-        super(toolMaterial, 4, -3.0F, range, settings);
+    public EssenceSickleItem(Tier tier, int range, ChatFormatting textColor, int tinkerableTier, int slots, Function<Properties, Properties> properties) {
+        super(tier, 4.0F, -3.0F, range, properties);
         this.range = range;
         this.textColor = textColor;
         this.tinkerableTier = tinkerableTier;
@@ -43,8 +48,8 @@ public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        var augments = AugmentUtils.getAugments(context.getStack());
+    public InteractionResult useOn(UseOnContext context) {
+        var augments = AugmentUtils.getAugments(context.getItemInHand());
         var success = false;
 
         for (var augment : augments) {
@@ -53,30 +58,30 @@ public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
         }
 
         if (success)
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
 
-        return super.useOnBlock(context);
+        return super.useOn(context);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        var stack = player.getStackInHand(hand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        var stack = player.getItemInHand(hand);
         var augments = AugmentUtils.getAugments(stack);
         var success = false;
 
         for (var augment : augments) {
-            if (augment.onRightClick(stack, world, player, hand))
+            if (augment.onRightClick(stack, level, player, hand))
                 success = true;
         }
 
         if (success)
-            return new TypedActionResult<>(ActionResult.SUCCESS, stack);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 
-        return new TypedActionResult<>(ActionResult.PASS, stack);
+        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
     }
 
     @Override
-    public ActionResult useOnEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         var augments = AugmentUtils.getAugments(stack);
         var success = false;
 
@@ -85,13 +90,13 @@ public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
                 success = true;
         }
 
-        return success ? ActionResult.SUCCESS : ActionResult.PASS;
+        return success ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         var augments = AugmentUtils.getAugments(stack);
-        var success = false;
+        var success = super.hurtEnemy(stack, target, attacker);
 
         for (var augment : augments) {
             if (augment.onHitEntity(stack, target, attacker))
@@ -102,12 +107,12 @@ public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
     }
 
     @Override
-    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entity) {
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
         var augments = AugmentUtils.getAugments(stack);
-        var success =  super.postMine(stack, world, state, pos, entity);
+        var success = super.mineBlock(stack, level, state, pos, entity);;
 
         for (var augment : augments) {
-            if (augment.onBlockDestroyed(stack, world, state, pos, entity))
+            if (augment.onBlockDestroyed(stack, level, state, pos, entity))
                 success = true;
         }
 
@@ -115,7 +120,7 @@ public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
         super.onBlockStartBreak(itemstack, pos, player);
 
         var augments = AugmentUtils.getAugments(itemstack);
@@ -130,23 +135,38 @@ public class EssenceSickleItem extends BaseSickleItem implements Tinkerable {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-        AugmentUtils.getAugments(stack).forEach(a -> a.onInventoryTick(stack, world, entity, slot, isSelected));
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+        AugmentUtils.getAugments(stack).forEach(a -> a.onInventoryTick(stack, level, entity, slot, isSelected));
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
 
         var rangeString = String.valueOf(this.range * 2 + 1);
-        var rangeNumber = Text.literal(rangeString + "x" + rangeString).formatted(this.textColor);
+        var rangeNumber = Component.literal(rangeString + "x" + rangeString).withStyle(this.textColor);
 
         tooltip.add(ModTooltips.TOOL_AREA.args(rangeNumber).build());
 
         AugmentUtils.getAugments(stack).forEach(a -> {
-            tooltip.add(a.getDisplayName().formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(a.getDisplayName().withStyle(ChatFormatting.GRAY));
         });
     }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> modifiers = HashMultimap.create();
+
+        if (slot == EquipmentSlot.MAINHAND) {
+            modifiers.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", this.getAttackDamage(), AttributeModifier.Operation.ADDITION));
+            modifiers.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", this.getAttackSpeed(), AttributeModifier.Operation.ADDITION));
+
+            AugmentUtils.getAugments(stack).forEach(a -> {
+                a.addToolAttributeModifiers(modifiers, slot, stack);
+            });
+        }
+
+        return modifiers;    }
 
     @Override
     public boolean isEnchantable(ItemStack stack) {

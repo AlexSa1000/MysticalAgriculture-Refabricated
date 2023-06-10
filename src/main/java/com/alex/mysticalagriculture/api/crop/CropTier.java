@@ -1,37 +1,36 @@
 package com.alex.mysticalagriculture.api.crop;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.item.Item;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class CropTier {
-    public static final CropTier ELEMENTAL = new CropTier(new Identifier(MOD_ID, "elemental"), 1, 0x748E00, Formatting.YELLOW);
-    public static final CropTier ONE = new CropTier(new Identifier(MOD_ID, "1"), 1, 0x748E00, Formatting.YELLOW);
-    public static final CropTier TWO = new CropTier(new Identifier(MOD_ID, "2"), 2, 0x008C23, Formatting.GREEN);
-    public static final CropTier THREE = new CropTier(new Identifier(MOD_ID, "3"), 3, 0xB74900, Formatting.GOLD);
-    public static final CropTier FOUR = new CropTier(new Identifier(MOD_ID, "4"), 4, 0x007FDB, Formatting.AQUA);
-    public static final CropTier FIVE = new CropTier(new Identifier(MOD_ID, "5"), 5, 0xC40000, Formatting.RED);
+    public static final CropTier ELEMENTAL = new CropTier(new ResourceLocation(MOD_ID, "elemental"), 1, 0x748E00, ChatFormatting.YELLOW);
+    public static final CropTier ONE = new CropTier(new ResourceLocation(MOD_ID, "1"), 1, 0x748E00, ChatFormatting.YELLOW);
+    public static final CropTier TWO = new CropTier(new ResourceLocation(MOD_ID, "2"), 2, 0x008C23, ChatFormatting.GREEN);
+    public static final CropTier THREE = new CropTier(new ResourceLocation(MOD_ID, "3"), 3, 0xB74900, ChatFormatting.GOLD);
+    public static final CropTier FOUR = new CropTier(new ResourceLocation(MOD_ID, "4"), 4, 0x007FDB, ChatFormatting.AQUA);
+    public static final CropTier FIVE = new CropTier(new ResourceLocation(MOD_ID, "5"), 5, 0xC40000, ChatFormatting.RED);
 
 
-    private final Identifier id;
+    private final ResourceLocation id;
     private final int value;
     private final int color;
-    private final Formatting textColor;
+    private final ChatFormatting textColor;
     private Supplier<? extends Block> farmland;
     private Supplier<? extends Item> essence;
-    private MutableText displayName;
+    private MutableComponent displayName;
     private boolean fertilizable;
     private final boolean secondarySeedDrop;
 
-    public CropTier(Identifier id, int value, int color, Formatting textColor) {
+    public CropTier(ResourceLocation id, int value, int color, ChatFormatting textColor) {
         this.id = id;
         this.value = value;
         this.color = color;
@@ -40,7 +39,7 @@ public class CropTier {
         this.secondarySeedDrop = true;
     }
 
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.id;
     }
 
@@ -59,7 +58,7 @@ public class CropTier {
         return this.color;
     }
 
-    public Formatting getTextColor() {
+    public ChatFormatting getTextColor() {
         return this.textColor;
     }
 
@@ -83,13 +82,13 @@ public class CropTier {
         return this.farmland.get() == block;
     }
 
-    public MutableText getDisplayName() {
+    public MutableComponent getDisplayName() {
         if (this.displayName != null)
-            return this.displayName.formatted(this.getTextColor());
+            return this.displayName.withStyle(this.getTextColor());
 
-        return Text.translatable(String.format("cropTier.%s.%s", this.getModId(), this.getName())).formatted(this.getTextColor());
+        return Component.translatable(String.format("cropTier.%s.%s", this.getModId(), this.getName())).withStyle(this.getTextColor());
     }
-    public CropTier setDisplayName(MutableText name) {
+    public CropTier setDisplayName(MutableComponent name) {
         this.displayName = name;
         return this;
     }

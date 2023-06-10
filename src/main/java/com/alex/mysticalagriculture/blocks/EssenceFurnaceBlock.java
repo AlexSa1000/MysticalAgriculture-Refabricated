@@ -1,26 +1,26 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.EssenceFurnaceBlockEntity;
+import com.alex.cucumber.util.Formatting;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.FurnaceTier;
-import com.alex.mysticalagriculture.cucumber.util.Formatting;
-import net.minecraft.block.AbstractFurnaceBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,44 +29,42 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
     private final FurnaceTier tier;
 
     public EssenceFurnaceBlock(FurnaceTier tier) {
-        super(Settings.copy(Blocks.FURNACE));
+        super(Properties.copy(Blocks.FURNACE));
         this.tier = tier;
     }
 
     @Override
-    protected void openScreen(World world, BlockPos pos, PlayerEntity player) {
-        var tile = world.getBlockEntity(pos);
+    protected void openContainer(Level level, BlockPos pos, Player player) {
+        var tile = level.getBlockEntity(pos);
 
-        if (tile instanceof EssenceFurnaceBlockEntity) {
-            player.openHandledScreen((EssenceFurnaceBlockEntity) tile);
-            player.incrementStat(Stats.INTERACT_WITH_FURNACE);
+        if (tile instanceof EssenceFurnaceBlockEntity furnace) {
+            player.openMenu(furnace);
+            player.awardStat(Stats.INTERACT_WITH_FURNACE);
         }
     }
-    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return this.tier.createBlockEntity(pos, state);
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-    }
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) { }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            var tile = world.getBlockEntity(pos);
+            var tile = level.getBlockEntity(pos);
 
             if (tile instanceof EssenceFurnaceBlockEntity furnace) {
-                ItemScatterer.spawn(world, pos, furnace);
+                Containers.dropContents(level, pos, furnace);
             }
         }
 
-        super.onStateReplaced(state, world, pos, newState, moved);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         double cookingSpeedDifference = 200D * this.tier.getCookTimeMultiplier();
         double cookingSpeedValue = Math.ceil(((200D - cookingSpeedDifference) / cookingSpeedDifference) * 100D) + 100D;
         var cookingSpeed = Formatting.percent(cookingSpeedValue);
@@ -85,12 +83,12 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
         @Nullable
         @Override
-        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-            return createTicker(world, type);
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            return createTicker(level, type);
         }
 
-        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(World world, BlockEntityType<T> type) {
-            return world.isClient ? null : checkType(type, BlockEntities.INFERIUM_FURNACE, EssenceFurnaceBlockEntity.Inferium::tick);
+        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
+            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.INFERIUM_FURNACE, EssenceFurnaceBlockEntity.Inferium::tick);
         }
     }
 
@@ -101,12 +99,12 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
         @Nullable
         @Override
-        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-            return createTicker(world, type);
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            return createTicker(level, type);
         }
 
-        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(World world, BlockEntityType<T> type) {
-            return world.isClient ? null : checkType(type, BlockEntities.PRUDENTIUM_FURNACE, EssenceFurnaceBlockEntity.Prudentium::tick);
+        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
+            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.PRUDENTIUM_FURNACE, EssenceFurnaceBlockEntity.Prudentium::tick);
         }
     }
 
@@ -117,12 +115,12 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
         @Nullable
         @Override
-        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-            return createTicker(world, type);
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            return createTicker(level, type);
         }
 
-        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(World world, BlockEntityType<T> type) {
-            return world.isClient ? null : checkType(type, BlockEntities.TERTIUM_FURNACE, EssenceFurnaceBlockEntity.Tertium::tick);
+        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
+            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.TERTIUM_FURNACE, EssenceFurnaceBlockEntity.Tertium::tick);
         }
     }
 
@@ -133,12 +131,12 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
         @Nullable
         @Override
-        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-            return createTicker(world, type);
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            return createTicker(level, type);
         }
 
-        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(World world, BlockEntityType<T> type) {
-            return world.isClient ? null : checkType(type, BlockEntities.IMPERIUM_FURNACE, EssenceFurnaceBlockEntity.Imperium::tick);
+        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
+            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.IMPERIUM_FURNACE, EssenceFurnaceBlockEntity.Imperium::tick);
         }
     }
 
@@ -149,12 +147,12 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
         @Nullable
         @Override
-        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-            return createTicker(world, type);
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            return createTicker(level, type);
         }
 
-        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(World world, BlockEntityType<T> type) {
-            return world.isClient ? null : checkType(type, BlockEntities.SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.Supremium::tick);
+        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
+            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.Supremium::tick);
         }
     }
 
@@ -165,12 +163,12 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
         @Nullable
         @Override
-        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-            return createTicker(world, type);
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            return createTicker(level, type);
         }
 
-        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(World world, BlockEntityType<T> type) {
-            return world.isClient ? null : checkType(type, BlockEntities.AWAKENED_SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.AwakenedSupremium::tick);
+        protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
+            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.AWAKENED_SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.AwakenedSupremium::tick);
         }
     }
 }

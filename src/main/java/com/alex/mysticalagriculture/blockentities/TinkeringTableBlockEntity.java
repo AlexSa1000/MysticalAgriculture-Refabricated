@@ -2,22 +2,21 @@ package com.alex.mysticalagriculture.blockentities;
 
 import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
-import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.screenhandler.TinkeringTableScreenHandler;
+import com.alex.mysticalagriculture.container.TinkeringTableContainer;
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.lib.ModCrops;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory {
     private final BaseItemStackHandler inventory;
@@ -25,8 +24,8 @@ public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implemen
     public TinkeringTableBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.TINKERING_TABLE, pos, state);
         this.inventory = createInventoryHandler(() -> {
-            if (this.getWorld() != null && !this.getWorld().isClient()) {
-                this.markDirty();
+            if (this.getLevel() != null && !this.getLevel().isClientSide()) {
+                this.markDirtyAndDispatch();
             }
         });
     }
@@ -37,19 +36,18 @@ public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implemen
     }
 
     @Override
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return Localizable.of("container.mysticalagriculture.tinkering_table").build();
     }
 
-    @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return TinkeringTableScreenHandler.create(syncId, inv, this.inventory, this.getPos());
+    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
+        return TinkeringTableContainer.create(windowId, playerInventory, this.inventory, this.getBlockPos());
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+        buf.writeBlockPos(worldPosition);
     }
 
     public static BaseItemStackHandler createInventoryHandler() {
@@ -73,23 +71,4 @@ public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implemen
             });
         });
     }
-
-    /*public static Inventory createInventory() {
-        return new SimpleInventory(7);
-    }
-
-    @Override
-    public int getMaxCountPerStack() {
-        return 1;
-    }
-
-    @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return false;
-    }*/
 }

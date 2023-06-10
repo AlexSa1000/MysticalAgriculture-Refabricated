@@ -2,8 +2,8 @@ package com.alex.mysticalagriculture.init;
 
 import com.alex.mysticalagriculture.enchantment.MysticalEnlightenmentEnchantment;
 import com.alex.mysticalagriculture.enchantment.SoulSiphonerEnchant;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class Enchantments {
     public static final Enchantment MYSTICAL_ENLIGHTENMENT = new MysticalEnlightenmentEnchantment();

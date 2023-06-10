@@ -1,46 +1,49 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
+import com.alex.mysticalagriculture.api.util.MobSoulUtils;
+import com.alex.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.UnclampedModelPredicateProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Function;
 
 public class ExperienceCapsuleItem extends BaseItem {
-    public ExperienceCapsuleItem(Function<Settings, Settings> settings) {
-        super(settings.compose(p -> p.maxCount(1)));
+    public ExperienceCapsuleItem(Function<Properties, Properties> properties) {
+        super(properties.compose(p -> p.stacksTo(1)));
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         int experience = ExperienceCapsuleUtils.getExperience(stack);
         tooltip.add(ModTooltips.EXPERIENCE_CAPSULE.args(experience, ExperienceCapsuleUtils.MAX_XP_POINTS).build());
     }
 
-    public static UnclampedModelPredicateProvider getFillPropertyGetter() {
-        return new UnclampedModelPredicateProvider() {
+    public static ClampedItemPropertyFunction getFillPropertyGetter() {
+        return new ClampedItemPropertyFunction() {
             @Override
-            public float call(ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity livingEntity, int i) {
-                return this.unclampedCall(itemStack, clientWorld, livingEntity, i);
+            public float call(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity, int i) {
+                return this.unclampedCall(itemStack, clientLevel, livingEntity, i);
             }
 
             @Override
-            public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
-                int experience = ExperienceCapsuleUtils.getExperience(stack);
+            public float unclampedCall(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity, int i) {
+                int experience = ExperienceCapsuleUtils.getExperience(itemStack);
 
                 if (experience > 0) {
                     double level = (double) experience / ExperienceCapsuleUtils.MAX_XP_POINTS;
                     return (int) (level * 10);
                 }
+
                 return 0;
             }
         };

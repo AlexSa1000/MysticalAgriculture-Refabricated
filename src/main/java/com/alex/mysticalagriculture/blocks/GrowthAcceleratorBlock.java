@@ -1,56 +1,57 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.cucumber.block.BaseBlock;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.block.BaseBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.block.Material;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 import java.util.List;
 
 public class GrowthAcceleratorBlock extends BaseBlock {
     private final int range;
-    private final Formatting textColor;
+    private final ChatFormatting textColor;
 
-    public GrowthAcceleratorBlock(int range, Formatting textColor) {
-        super(Material.STONE, BlockSoundGroup.STONE, 5.0F, 8.0F, true);
+    public GrowthAcceleratorBlock(int range, ChatFormatting textColor) {
+        super(Material.STONE, SoundType.STONE, 5.0F, 8.0F, true);
         this.range = range;
         this.textColor = textColor;
     }
 
     @Override
-    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        world.createAndScheduleBlockTick(pos, this, getTickRate());
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        level.scheduleTick(pos, this, getTickRate());
     }
 
     @Override
-    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, net.minecraft.util.math.random.Random random) {
-        BlockPos.stream(pos.up(2), pos.add(0, this.range + 2, 0))
-                .filter(aoePos -> world.getBlockState(aoePos).getBlock() instanceof Fertilizable)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        BlockPos.betweenClosedStream(pos.above(2), pos.offset(0, this.range + 2, 0))
+                .filter(aoePos -> level.getBlockState(aoePos).getBlock() instanceof BonemealableBlock)
                 .findFirst()
-                .ifPresent(aoePos -> world.getBlockState(aoePos).randomTick(world, aoePos, random));
+                .ifPresent(aoePos -> level.getBlockState(aoePos).randomTick(level, aoePos, random));
 
-        world.createAndScheduleBlockTick(pos, this, getTickRate());
+        level.scheduleTick(pos, this, getTickRate());
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.GROWTH_ACCELERATOR.build());
-        var rangeNumber = Text.literal(String.valueOf(this.range)).formatted(this.textColor);
+
+        var rangeNumber = Component.literal(String.valueOf(this.range)).withStyle(this.textColor);
+
         tooltip.add(ModTooltips.GROWTH_ACCELERATOR_RANGE.args(rangeNumber).build());
     }
-
 
     private static int getTickRate() {
         double variance = Math.random() * (1.1 - 0.9) + 0.9;

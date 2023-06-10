@@ -1,106 +1,119 @@
 package com.alex.mysticalagriculture.items;
 
+import com.alex.cucumber.helper.NBTHelper;
+import com.alex.cucumber.item.BaseItem;
+import com.alex.cucumber.util.Utils;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.helper.NBTHelper;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import com.alex.mysticalagriculture.cucumber.util.Utils;
-import net.minecraft.block.*;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.HitResult;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 public class WateringCanItem extends BaseItem {
-    //private static final Map<String, Long> THROTTLES = new HashMap<>();
     protected final int range;
     protected final double chance;
 
-    public WateringCanItem(int range, double chance, Function<Settings, Settings> settings) {
-        super(settings.compose(p -> p.maxCount(1)));
+    public WateringCanItem(Function<Properties, Properties> properties) {
+        this(3, 0.25, properties);
+    }
+
+    public WateringCanItem(int range, double chance, Function<Properties, Properties> properties) {
+        super(properties.compose(p -> p.stacksTo(1)));
         this.range = range;
         this.chance = chance;
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.NONE;
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+        if (this.allowedIn(group)) {
+            var stack = new ItemStack(this);
+            NBTHelper.setBoolean(stack, "Water", false);
+            items.add(stack);
+        }
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        var stack = player.getStackInHand(hand);
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.NONE;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        var stack = player.getItemInHand(hand);
 
         if (NBTHelper.getBoolean(stack, "Water")) {
-            return new TypedActionResult<>(ActionResult.PASS, stack);
+            return new InteractionResultHolder<>(InteractionResult.PASS, stack);
         }
 
-        var trace = raycast(world, player, RaycastContext.FluidHandling.SOURCE_ONLY);
+        var trace = getPlayerPOVHitResult(world, player, ClipContext.Fluid.SOURCE_ONLY);
 
         if (trace.getType() != HitResult.Type.BLOCK) {
-            return new TypedActionResult<>(ActionResult.PASS, stack);
+            return new InteractionResultHolder<>(InteractionResult.PASS, stack);
         }
 
         var pos = trace.getBlockPos();
-        var direction = trace.getSide();
+        var direction = trace.getDirection();
 
-        if (world.canPlayerModifyAt(player, pos) && player.canPlaceOn(pos.offset(direction), direction, stack)) {
+        if (world.mayInteract(player, pos) && player.mayUseItemAt(pos.relative(direction), direction, stack)) {
             var state = world.getBlockState(pos);
 
             if (state.getMaterial() == Material.WATER) {
                 NBTHelper.setString(stack, "ID", UUID.randomUUID().toString());
                 NBTHelper.setBoolean(stack, "Water", true);
 
-                player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+                player.playSound(SoundEvents.BUCKET_FILL, 1.0F, 1.0F);
 
-                return new TypedActionResult<>(ActionResult.SUCCESS, stack);
+                return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
             }
         }
 
-        return new TypedActionResult<>(ActionResult.PASS, stack);
+        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         var player = context.getPlayer();
-        var stack = context.getStack();
+        var stack = context.getItemInHand();
 
         if (player == null)
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
 
-        var world = context.getWorld();
-        var pos = context.getBlockPos();
-        var direction = context.getSide();
+        var world = context.getLevel();
+        var pos = context.getClickedPos();
+        var direction = context.getClickedFace();
 
-        if (!player.canPlaceOn(pos.offset(direction), direction, stack)) {
-            return ActionResult.FAIL;
-        }
+        if (!player.mayUseItemAt(pos.relative(direction), direction, stack))
+            return InteractionResult.FAIL;
 
-        if (!NBTHelper.getBoolean(stack, "Water")) {
-            return ActionResult.PASS;
-        }
+        if (!NBTHelper.getBoolean(stack, "Water"))
+            return InteractionResult.PASS;
 
         return this.doWater(stack, world, player, pos, direction);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag advanced) {
         if (NBTHelper.getBoolean(stack, "Water")) {
             tooltip.add(ModTooltips.FILLED.build());
         } else {
@@ -108,78 +121,76 @@ public class WateringCanItem extends BaseItem {
         }
     }
 
-    protected ActionResult doWater(ItemStack stack, World world, PlayerEntity player, BlockPos pos, Direction direction) {
+    protected InteractionResult doWater(ItemStack stack, Level world, Player player, BlockPos pos, Direction direction) {
         if (player == null)
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
 
-        if (!player.canPlaceOn(pos.offset(direction), direction, stack))
-            return ActionResult.FAIL;
+        if (!player.mayUseItemAt(pos.relative(direction), direction, stack))
+            return InteractionResult.FAIL;
 
         if (!NBTHelper.getBoolean(stack, "Water"))
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
 
-        if (!world.isClient()) {
-            var cooldowns = player.getItemCooldownManager();
+        //if (!ModConfigs.FAKE_PLAYER_WATERING.get() && player instanceof FakePlayer)
+        //    return InteractionResult.PASS;
+
+        if (!world.isClientSide()) {
+            var cooldowns = player.getCooldowns();
             var item = stack.getItem();
 
-            if (!cooldowns.isCoolingDown(item)) {
-                cooldowns.set(item, 5);
+            if (!cooldowns.isOnCooldown(item)) {
+                //cooldowns.addCooldown(item, getThrottleTicks(player));
+                cooldowns.addCooldown(item, 5);
+
             } else {
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
         }
 
         int range = (this.range - 1) / 2;
-        BlockPos.stream(pos.add(-range, -range, -range), pos.add(range, range, range)).forEach(aoePos -> {
+        BlockPos.betweenClosedStream(pos.offset(-range, -range, -range), pos.offset(range, range, range)).forEach(aoePos -> {
             var aoeState = world.getBlockState(aoePos);
-            if (aoeState.getBlock() instanceof FarmlandBlock) {
-                int moisture = aoeState.get(FarmlandBlock.MOISTURE);
+            if (aoeState.getBlock() instanceof FarmBlock) {
+                int moisture = aoeState.getValue(FarmBlock.MOISTURE);
                 if (moisture < 7) {
-                    world.setBlockState(aoePos, aoeState.with(FarmlandBlock.MOISTURE, 7), 3);
+                    world.setBlock(aoePos, aoeState.setValue(FarmBlock.MOISTURE, 7), 3);
                 }
             }
         });
 
         for (int x = -range; x <= range; x++) {
             for (int z = -range; z <= range; z++) {
-                double d0 = pos.add(x, 0, z).getX() + world.getRandom().nextFloat();
-                double d1 = pos.add(x, 0, z).getY() + 1.0D;
-                double d2 = pos.add(x, 0, z).getZ() + world.getRandom().nextFloat();
+                double d0 = pos.offset(x, 0, z).getX() + world.getRandom().nextFloat();
+                double d1 = pos.offset(x, 0, z).getY() + 1.0D;
+                double d2 = pos.offset(x, 0, z).getZ() + world.getRandom().nextFloat();
 
                 var state = world.getBlockState(pos);
-                if (state.isOpaque() || state.getBlock() instanceof FarmlandBlock)
+                if (state.canOcclude() || state.getBlock() instanceof FarmBlock)
                     d1 += 0.3D;
 
                 world.addParticle(ParticleTypes.RAIN, d0, d1, d2, 0.0D, 0.0D, 0.0D);
             }
         }
 
-        if (!world.isClient()) {
+        if (!world.isClientSide()) {
             if (Math.random() <= this.chance) {
-                BlockPos.stream(pos.add(-range, -range, -range), pos.add(range, range, range)).forEach(aoePos -> {
+                BlockPos.betweenClosedStream(pos.offset(-range, -range, -range), pos.offset(range, range, range)).forEach(aoePos -> {
                     var state = world.getBlockState(aoePos);
                     var plantBlock = state.getBlock();
 
-                    if (plantBlock instanceof Fertilizable || plantBlock instanceof PlantBlock || plantBlock instanceof CactusBlock || plantBlock instanceof SugarCaneBlock || plantBlock == Blocks.MYCELIUM || plantBlock == Blocks.CHORUS_FLOWER) {
-                        state.randomTick((ServerWorld) world, aoePos, Utils.RANDOM);
+                    if (plantBlock instanceof BonemealableBlock || plantBlock instanceof BushBlock || plantBlock instanceof CactusBlock || plantBlock instanceof SugarCaneBlock || plantBlock == Blocks.MYCELIUM || plantBlock == Blocks.CHORUS_FLOWER) {
+                        state.randomTick((ServerLevel) world, aoePos, Utils.RANDOM);
                     }
                 });
 
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
         }
-        return ActionResult.PASS;
+
+        return InteractionResult.PASS;
     }
 
     /*private static int getThrottleTicks(Player player) {
         return player instanceof FakePlayer ? 10 : 5;
-    }
-
-    private static String getID(ItemStack stack) {
-        if (!NBTHelper.hasKey(stack, "ID")) {
-            NBTHelper.setString(stack, "ID", UUID.randomUUID().toString());
-        }
-
-        return NBTHelper.getString(stack, "ID");
     }*/
 }

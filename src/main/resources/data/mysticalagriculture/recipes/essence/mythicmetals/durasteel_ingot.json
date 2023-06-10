@@ -1,5 +1,5 @@
 {
-  "type": "mysticalagriculture:shaped_no_mirror",
+  "type": "cucumber:shaped_no_mirror",
   "fabric:load_conditions": [
     {
       "condition": "mysticalagriculture:crop_enabled",

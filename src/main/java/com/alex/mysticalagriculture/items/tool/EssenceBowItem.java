@@ -4,24 +4,23 @@ import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.cucumber.item.tool.BaseBowItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.tool.BaseBowItem;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -33,16 +32,16 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     private final int slots;
     private final float drawSpeedMulti;
 
-    public EssenceBowItem(ToolMaterial tier, int tinkerableTier, int slots, float drawSpeedMulti, Function<Settings, Settings> settings) {
-        super(settings.compose(p -> p.maxDamage(tier.getDurability())));
+    public EssenceBowItem(Tier tier, int tinkerableTier, int slots, float drawSpeedMulti, Function<Properties, Properties> properties) {
+        super(properties.compose(p -> p.durability(tier.getUses())));
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
         this.drawSpeedMulti = drawSpeedMulti;
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        var augments = AugmentUtils.getAugments(context.getStack());
+    public InteractionResult useOn(UseOnContext context) {
+        var augments = AugmentUtils.getAugments(context.getItemInHand());
         var success = false;
 
         for (var augment : augments) {
@@ -51,30 +50,30 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
         }
 
         if (success)
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
 
-        return super.useOnBlock(context);
+        return super.useOn(context);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        var stack = player.getStackInHand(hand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        var stack = player.getItemInHand(hand);
         var augments = AugmentUtils.getAugments(stack);
         var success = false;
 
         for (var augment : augments) {
-            if (augment.onRightClick(stack, world, player, hand))
+            if (augment.onRightClick(stack, level, player, hand))
                 success = true;
         }
 
         if (success)
-            return new TypedActionResult<>(ActionResult.SUCCESS, stack);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 
-        return super.use(world, player, hand);
+        return super.use(level, player, hand);
     }
 
     @Override
-    public ActionResult useOnEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         var augments = AugmentUtils.getAugments(stack);
         var success = false;
 
@@ -83,13 +82,13 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
                 success = true;
         }
 
-        return success ? ActionResult.SUCCESS : ActionResult.PASS;
+        return success ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         var augments = AugmentUtils.getAugments(stack);
-        var success = false;
+        var success = super.hurtEnemy(stack, target, attacker);
 
         for (var augment : augments) {
             if (augment.onHitEntity(stack, target, attacker))
@@ -100,12 +99,12 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     }
 
     @Override
-    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entity) {
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
         var augments = AugmentUtils.getAugments(stack);
-        boolean success = super.postMine(stack, world, state, pos, entity);
+        var success = super.mineBlock(stack, level, state, pos, entity);
 
         for (var augment : augments) {
-            if (augment.onBlockDestroyed(stack, world, state, pos, entity))
+            if (augment.onBlockDestroyed(stack, level, state, pos, entity))
                 success = true;
         }
 
@@ -113,16 +112,16 @@ public class EssenceBowItem extends BaseBowItem implements Tinkerable {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        AugmentUtils.getAugments(stack).forEach(a -> a.onInventoryTick(stack, world, entity, slot, selected));
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+        AugmentUtils.getAugments(stack).forEach(a -> a.onInventoryTick(stack, level, entity, slot, isSelected));
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
 
         AugmentUtils.getAugments(stack).forEach(a -> {
-            tooltip.add(a.getDisplayName().formatted(Formatting.GRAY));
+            tooltip.add(a.getDisplayName().withStyle(ChatFormatting.GRAY));
         });
     }
 

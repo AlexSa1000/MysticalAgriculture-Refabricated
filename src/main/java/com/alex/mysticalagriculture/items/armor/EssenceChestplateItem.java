@@ -4,24 +4,29 @@ import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.cucumber.item.BaseArmorItem;
+import com.alex.cucumber.util.Utils;
 import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.BaseArmorItem;
-import com.alex.mysticalagriculture.cucumber.util.Utils;
-import net.minecraft.block.*;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.StemBlock;
+import net.minecraft.world.level.block.SugarCaneBlock;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -34,32 +39,56 @@ public class EssenceChestplateItem extends BaseArmorItem implements Tinkerable {
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceChestplateItem(ArmorMaterial material, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
-        super(material, EquipmentSlot.CHEST, settings);
+    public EssenceChestplateItem(ArmorMaterial material, int tinkerableTier, int slots, Function<Properties, Properties> properties) {
+        super(material, EquipmentSlot.CHEST, properties);
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (entity instanceof PlayerEntity player && slot == 2) {
-            AugmentUtils.getAugments(stack).forEach(a -> a.onArmorTick(stack, world, (PlayerEntity) entity));
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        if (entity instanceof Player player && slot == 2) {
+            AugmentUtils.getAugments(stack).forEach(a -> a.onArmorTick(stack, level, player));
 
-            if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && !world.isClient() && world.getTime() % 20L == 0 && hasAwakenedSupremiumSet(player)) {
-                handleGrowthTicks(world, player);
+            if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && !level.isClientSide() && level.getGameTime() % 20L == 0 && hasAwakenedSupremiumSet(player)) {
+                handleGrowthTicks(level, player);
             }
         }
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
 
-        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.isOf(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
+        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.is(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
             tooltip.add(ModTooltips.SET_BONUS.args(ModTooltips.AWAKENED_SUPREMIUM_SET_BONUS.build()).build());
         }
 
-        AugmentUtils.getAugments(stack).forEach(a -> tooltip.add(a.getDisplayName().formatted(Formatting.GRAY)));
+        AugmentUtils.getAugments(stack).forEach(a -> {
+            tooltip.add(a.getDisplayName().withStyle(ChatFormatting.GRAY));
+        });
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> modifiers = HashMultimap.create();
+
+        if (slot == this.getSlot()) {
+            var material = this.getMaterial();
+
+            modifiers.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", material.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+            modifiers.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", material.getToughness(), AttributeModifier.Operation.ADDITION));
+
+            if (material.getKnockbackResistance() > 0) {
+                modifiers.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor knockback resistance", material.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
+            }
+
+            AugmentUtils.getAugments(stack).forEach(a -> {
+                a.addArmorAttributeModifiers(modifiers, slot, stack);
+            });
+        }
+
+        return modifiers;
     }
 
     @Override
@@ -77,35 +106,35 @@ public class EssenceChestplateItem extends BaseArmorItem implements Tinkerable {
         return this.tinkerableTier;
     }
 
-    private static boolean hasAwakenedSupremiumSet(PlayerEntity player) {
-        var helmet = player.getEquippedStack(EquipmentSlot.HEAD).isOf(Items.AWAKENED_SUPREMIUM_HELMET);
-        var chestplate = player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.AWAKENED_SUPREMIUM_CHESTPLATE);
-        var leggings = player.getEquippedStack(EquipmentSlot.LEGS).isOf(Items.AWAKENED_SUPREMIUM_LEGGINGS);
-        var boots = player.getEquippedStack(EquipmentSlot.FEET).isOf(Items.AWAKENED_SUPREMIUM_BOOTS);
+    private static boolean hasAwakenedSupremiumSet(Player player) {
+        var helmet = player.getItemBySlot(EquipmentSlot.HEAD).is(Items.AWAKENED_SUPREMIUM_HELMET);
+        var chestplate = player.getItemBySlot(EquipmentSlot.CHEST).is(Items.AWAKENED_SUPREMIUM_CHESTPLATE);
+        var leggings = player.getItemBySlot(EquipmentSlot.LEGS).is(Items.AWAKENED_SUPREMIUM_LEGGINGS);
+        var boots = player.getItemBySlot(EquipmentSlot.FEET).is(Items.AWAKENED_SUPREMIUM_BOOTS);
 
         return helmet && chestplate && leggings && boots;
     }
 
-    private static void handleGrowthTicks(World world, PlayerEntity player) {
-        var pos = player.getBlockPos();
+    private static void handleGrowthTicks(Level level, Player player) {
+        var pos = player.getOnPos();
         int range = 5;
 
-        BlockPos.stream(pos.add(-range, -range, -range), pos.add(range, range, range)).forEach(aoePos -> {
+        BlockPos.betweenClosedStream(pos.offset(-range, -range, -range), pos.offset(range, range, range)).forEach(aoePos -> {
             if (Math.random() < 0.5)
                 return;
 
-            var state = world.getBlockState(aoePos);
+            var state = level.getBlockState(aoePos);
             var plantBlock = state.getBlock();
 
             if (plantBlock instanceof StemBlock || plantBlock instanceof SugarCaneBlock) {
 
-                state.randomTick((ServerWorld) world, aoePos, Utils.RANDOM);
+                state.randomTick((ServerLevel) level, aoePos, Utils.RANDOM);
 
-                double d0 = aoePos.getX() + world.getRandom().nextFloat();
+                double d0 = aoePos.getX() + level.getRandom().nextFloat();
                 double d1 = aoePos.getY();
-                double d2 = aoePos.getZ() + world.getRandom().nextFloat();
+                double d2 = aoePos.getZ() + level.getRandom().nextFloat();
 
-                ((ServerWorld) world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 1, 0, 0, 0, 0.1D);
+                ((ServerLevel) level).sendParticles(ParticleTypes.HAPPY_VILLAGER, d0, d1, d2, 1, 0, 0, 0, 0.1D);
             }
         });
     }

@@ -1,24 +1,24 @@
 package com.alex.mysticalagriculture.api.crop;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class CropType {
-    public static final CropType RESOURCE = new CropType(new Identifier(MOD_ID, "resource"), new Identifier(MOD_ID, "block/mystical_resource_crop"));
-    public static final CropType MOB = new CropType(new Identifier(MOD_ID, "mob"), new Identifier(MOD_ID, "block/mystical_mob_crop"));
+    public static final CropType RESOURCE = new CropType(new ResourceLocation(MOD_ID, "resource"), new ResourceLocation(MOD_ID, "block/mystical_resource_crop"));
+    public static final CropType MOB = new CropType(new ResourceLocation(MOD_ID, "mob"), new ResourceLocation(MOD_ID, "block/mystical_mob_crop"));
 
-    private final Identifier id;
-    private final Identifier stemModel;
+    private final ResourceLocation id;
+    private final ResourceLocation stemModel;
     private Item craftingSeed;
 
-    public CropType(Identifier id, Identifier stemModel) {
+    public CropType(ResourceLocation id, ResourceLocation stemModel) {
         this.id = id;
         this.stemModel = stemModel;
     }
 
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return id;
     }
 
@@ -30,7 +30,7 @@ public class CropType {
         return this.id.getNamespace();
     }
 
-    public Identifier getStemModel() {
+    public ResourceLocation getStemModel() {
         return this.stemModel;
     }
 

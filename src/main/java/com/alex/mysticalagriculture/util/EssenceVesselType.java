@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.lib.ModCrops;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
