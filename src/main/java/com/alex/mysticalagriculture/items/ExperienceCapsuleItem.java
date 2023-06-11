@@ -4,6 +4,8 @@ import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -28,6 +30,7 @@ public class ExperienceCapsuleItem extends BaseItem {
         tooltip.add(ModTooltips.EXPERIENCE_CAPSULE.args(experience, ExperienceCapsuleUtils.MAX_XP_POINTS).build());
     }
 
+    @Environment(value=EnvType.CLIENT)
     public static ClampedItemPropertyFunction getFillPropertyGetter() {
         return new ClampedItemPropertyFunction() {
             @Override

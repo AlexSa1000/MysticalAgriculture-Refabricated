@@ -1,6 +1,8 @@
 package com.alex.mysticalagriculture.mixin;
 
+import com.alex.cucumber.forge.event.entity.player.PlayerXpEvent;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
+import com.alex.mysticalagriculture.handler.ExperienceCapsuleHandler;
 import com.alex.mysticalagriculture.items.ExperienceCapsuleItem;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
@@ -16,43 +18,8 @@ import java.util.List;
 
 @Mixin(ExperienceOrb.class)
 public abstract class ExperienceOrbMixin {
-
-    @Shadow public abstract int getValue();
-
-    @Shadow private int value;
-
-    @Inject(method = "playerTouch", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "playerTouch", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;take(Lnet/minecraft/world/entity/Entity;I)V", shift = At.Shift.BY, by = -1), cancellable = true)
     private void injected(Player player, CallbackInfo ci) {
-        if (player != null) {
-            var capsules = this.getExperienceCapsules(player);
-
-            if (!capsules.isEmpty()) {
-                for (var stack : capsules) {
-                    int remaining = ExperienceCapsuleUtils.addExperienceToCapsule(stack, this.getValue());
-
-                    this.value = remaining;
-
-                    if (remaining == 0) {
-                        ci.cancel();
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private List<ItemStack> getExperienceCapsules(Player player) {
-        var items = new ArrayList<ItemStack>();
-
-        var stack = player.getOffhandItem();
-        if (stack.getItem() instanceof ExperienceCapsuleItem)
-            items.add(stack);
-
-        player.getInventory().items
-                .stream()
-                .filter(s -> s.getItem() instanceof ExperienceCapsuleItem)
-                .forEach(items::add);
-
-        return items;
+        if (ExperienceCapsuleHandler.onPlayerPickupXp(new PlayerXpEvent.PickupXp(player, (ExperienceOrb) ((Object) this)))) ci.cancel();
     }
 }

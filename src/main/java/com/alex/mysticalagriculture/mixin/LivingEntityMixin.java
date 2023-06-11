@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.mixin;
 
-import com.alex.cucumber.forge.common.ForgeHooks;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
@@ -65,6 +64,7 @@ public class LivingEntityMixin {
         return ret[1];
     }
 
+
     @Inject(method = "die", at = @At(value = "HEAD"))
     private void onLivingDrops(DamageSource source, CallbackInfo ci) {
         var entity = source.getEntity();
@@ -81,11 +81,9 @@ public class LivingEntityMixin {
                 }
 
                 var jars = getValidSoulJars(player, type);
-                System.out.println(jars);
 
                 if (!jars.isEmpty()) {
                     double remaining = siphoner.getSiphonAmount(held, livingEntity);
-                    System.out.println(remaining);
 
                     for (ItemStack jar : jars) {
                         remaining = MobSoulUtils.addSoulsToJar(jar, type, remaining);

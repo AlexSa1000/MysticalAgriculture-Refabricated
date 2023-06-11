@@ -56,7 +56,7 @@ MobSoulType {
     }
 
     public boolean isEntityApplicable(LivingEntity entity) {
-        return this.entityIds.contains(Registry.ENTITY_TYPE.getId(entity.getType()));
+        return this.entityIds.contains(Registry.ENTITY_TYPE.getKey(entity.getType()));
     }
 
     public Component getEntityDisplayName() {

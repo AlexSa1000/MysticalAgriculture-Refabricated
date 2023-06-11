@@ -4,9 +4,12 @@ import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,6 +60,7 @@ public class SoulJarItem extends BaseItem {
         }
     }
 
+    @Environment(value=EnvType.CLIENT)
     public static ClampedItemPropertyFunction getFillPropertyGetter() {
         return new ClampedItemPropertyFunction() {
             @Override

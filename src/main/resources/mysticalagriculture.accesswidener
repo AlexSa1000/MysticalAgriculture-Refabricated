@@ -119,3 +119,5 @@ accessible field net/minecraft/client/resources/model/ModelBakery atlasSet Lnet/
 
 accessible field net/minecraft/client/resources/model/ModelBakery unbakedCache Ljava/util/Map;
 accessible field net/minecraft/client/resources/model/ModelBakery topLevelModels Ljava/util/Map;
+
+accessible field net/minecraft/world/entity/ExperienceOrb value I

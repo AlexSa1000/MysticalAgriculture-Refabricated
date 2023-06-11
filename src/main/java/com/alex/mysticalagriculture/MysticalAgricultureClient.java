@@ -8,7 +8,6 @@ import com.alex.mysticalagriculture.client.screen.HarvesterScreen;
 import com.alex.mysticalagriculture.client.screen.ReprocessorScreen;
 import com.alex.mysticalagriculture.client.screen.SoulExtractorScreen;
 import com.alex.mysticalagriculture.client.screen.TinkeringTableScreen;
-import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.alex.mysticalagriculture.init.Items;
@@ -20,7 +19,6 @@ import com.alex.mysticalagriculture.items.tool.EssenceCrossbowItem;
 import com.alex.mysticalagriculture.items.tool.EssenceFishingRodItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
@@ -29,32 +27,13 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 
 public class MysticalAgricultureClient implements ClientModInitializer {
+
     @Override
     public void onInitializeClient() {
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setAltarOverlay);
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setEssenceVesselOverlay);
 
         ModelHandler.onRegisterAdditionalModels();
-
-        /*ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelId, context) -> {
-            if (resourceManager.getResource()) {
-
-            }
-            if (!ModConfigs.ANIMATED_GROWTH_ACCELERATORS.get()) {
-                for (var tier : new String[] { "inferium", "prudentium", "tertium", "imperium", "supremium" }) {
-                    var loc = String.format("%s_growth_accelerator", tier);
-                    var blockModel = resourceManager.getResource((new ResourceLocation(MysticalAgriculture.MOD_ID, "block/" + loc + "_static"));
-                    var itemModel = resourceManager.getResource((new ResourceLocation(MysticalAgriculture.MOD_ID, "item/" + loc + "_static"));
-
-                    if (modelId.equals(blockModel))
-                        return new ModelResourceLocation(MysticalAgriculture.MOD_ID + ":" + loc), blockModel
-                    registry.replace(new ModelResourceLocation(MysticalAgriculture.MOD_ID + ":" + loc), blockModel);
-                    registry.replace(new ModelResourceLocation(MysticalAgriculture.MOD_ID + ":" + loc, "inventory"), itemModel);
-                }
-            }
-        });
-
-        ClientSpriteRegistryCallback*/
 
         BlockEntityRenderers.register(BlockEntities.INFUSION_PEDESTAL, InfusionPedestalRenderer::new);
         BlockEntityRenderers.register(BlockEntities.INFUSION_ALTAR, InfusionAltarRenderer::new);
@@ -63,8 +42,8 @@ public class MysticalAgricultureClient implements ClientModInitializer {
         BlockEntityRenderers.register(BlockEntities.AWAKENING_ALTAR, AwakeningAltarRenderer::new);
         BlockEntityRenderers.register(BlockEntities.ESSENCE_VESSEL, EssenceVesselRenderer::new);
 
-        ItemProperties.register(Items.SOUL_JAR, new ResourceLocation("fill"), SoulJarItem.getFillPropertyGetter());
         ItemProperties.register(Items.EXPERIENCE_CAPSULE, new ResourceLocation("fill"), ExperienceCapsuleItem.getFillPropertyGetter());
+        ItemProperties.register(Items.SOUL_JAR, new ResourceLocation("fill"), SoulJarItem.getFillPropertyGetter());
         ItemProperties.register(Items.INFERIUM_BOW, new ResourceLocation("pull"), EssenceBowItem.getPullPropertyGetter());
         ItemProperties.register(Items.INFERIUM_BOW, new ResourceLocation("pulling"), EssenceBowItem.getPullingPropertyGetter());
         ItemProperties.register(Items.INFERIUM_CROSSBOW, new ResourceLocation("pull"), EssenceCrossbowItem.getPullPropertyGetter());
