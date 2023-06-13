@@ -1,16 +1,18 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
+import com.alex.cucumber.item.BaseItem;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import net.minecraft.client.item.ClampedModelPredicateProvider;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
+import com.alex.mysticalagriculture.lib.ModTooltips;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
@@ -20,24 +22,11 @@ public class SoulJarItem extends BaseItem {
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     public SoulJarItem() {
-        super(p -> p.maxCount(1));
+        super(p -> p.stacksTo(1));
     }
 
-    /*@Override
-    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> items) {
-        if (this.isIn(group)) {
-            items.add(new ItemStack(this));
-
-            ModMobSoulTypes.getMobSoulTypes().forEach(type -> {
-                if (type.isEnabled()) {
-                    items.add(MobSoulUtils.getFilledSoulJar(type, this));
-                }
-            });
-        }
-    }*/
-
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         var type = MobSoulUtils.getType(stack);
 
         if (type != null) {
@@ -47,25 +36,26 @@ public class SoulJarItem extends BaseItem {
 
             tooltip.add(ModTooltips.SOUL_JAR.args(entityName, souls, requirement).build());
 
-            if (context.isAdvanced()) {
-                tooltip.add(ModTooltips.MST_ID.args(type.getId()).color(Formatting.DARK_GRAY).build());
+            if (flag.isAdvanced()) {
+                tooltip.add(ModTooltips.MST_ID.args(type.getId()).color(ChatFormatting.DARK_GRAY).build());
             }
         }
     }
 
-    public static ClampedModelPredicateProvider getFillPropertyGetter() {
-        return new ClampedModelPredicateProvider() {
+    @Environment(value= EnvType.CLIENT)
+    public static ClampedItemPropertyFunction getFillPropertyGetter() {
+        return new ClampedItemPropertyFunction() {
             @Override
-            public float call(ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity livingEntity, int i) {
-                return this.unclampedCall(itemStack, clientWorld, livingEntity, i);
+            public float call(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity, int i) {
+                return this.unclampedCall(itemStack, clientLevel, livingEntity, i);
             }
 
             @Override
-            public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
-                var type = MobSoulUtils.getType(stack);
+            public float unclampedCall(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity, int i) {
+                var type = MobSoulUtils.getType(itemStack);
 
                 if (type != null) {
-                    double souls = MobSoulUtils.getSouls(stack);
+                    double souls = MobSoulUtils.getSouls(itemStack);
 
                     if (souls > 0) {
                         return (int) ((souls / type.getSoulRequirement()) * 9);

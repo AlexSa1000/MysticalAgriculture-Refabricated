@@ -1,17 +1,17 @@
 package com.alex.mysticalagriculture.blockentities;
 
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class InfusionPedestalBlockEntity extends BaseInventoryBlockEntity {
     private final BaseItemStackHandler inventory;
 
     public InfusionPedestalBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.INFUSION_PEDESTAL, pos, state);
-        this.inventory = createInventoryHandler(this::markDirty);
+        this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
     }
 
     @Override
@@ -24,20 +24,5 @@ public class InfusionPedestalBlockEntity extends BaseInventoryBlockEntity {
             builder.setDefaultSlotLimit(1);
         });
     }
-
-    /*@Override
-    public int[] getAvailableSlots(Direction side) {
-        return new int[]{0};
-    }
-
-    @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return this.getStack(0).isEmpty();
-    }
-
-    @Override
-    public int getMaxCountPerStack() {
-        return 1;
-    }*/
 }
 

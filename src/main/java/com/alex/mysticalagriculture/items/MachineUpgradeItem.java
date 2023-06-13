@@ -1,18 +1,18 @@
 package com.alex.mysticalagriculture.items;
 
+import com.alex.cucumber.item.BaseItem;
+import com.alex.cucumber.lib.Tooltips;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
-import com.alex.mysticalagriculture.util.UpgradeableMachine;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import com.alex.mysticalagriculture.util.IUpgradeableMachine;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -26,38 +26,38 @@ public class MachineUpgradeItem extends BaseItem {
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        var world = context.getWorld();
-        var pos = context.getBlockPos();
-        var tile = world.getBlockEntity(pos);
+    public InteractionResult useOn(UseOnContext context) {
+        var level = context.getLevel();
+        var pos = context.getClickedPos();
+        var tile = level.getBlockEntity(pos);
 
-        if (tile instanceof UpgradeableMachine machine && machine.canApplyUpgrade(this.tier)) {
-            var stack = context.getStack();
+        if (tile instanceof IUpgradeableMachine machine && machine.canApplyUpgrade(this.tier)) {
+            var stack = context.getItemInHand();
             var remaining = machine.applyUpgrade(this);
 
-            stack.decrement(1);
+            stack.shrink(1);
 
             if (!remaining.isEmpty()) {
-                var item = new ItemEntity(world, pos.getX(), pos.getY() + 1, pos.getZ(), remaining.copy());
+                var item = new ItemEntity(level, pos.getX(), pos.getY() + 1, pos.getZ(), remaining.copy());
 
-                world.spawnEntity(item);
+                level.addFreshEntity(item);
             }
 
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return ActionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             tooltip.add(ModTooltips.UPGRADE_SPEED.args(this.getStatText(this.tier.getOperationTimeMultiplier())).build());
             tooltip.add(ModTooltips.UPGRADE_FUEL_RATE.args(this.getStatText(this.tier.getFuelUsageMultiplier())).build());
             tooltip.add(ModTooltips.UPGRADE_FUEL_CAPACITY.args(this.getStatText(this.tier.getFuelCapacityMultiplier())).build());
             tooltip.add(ModTooltips.UPGRADE_AREA.args(this.getStatText(this.tier.getAddedRange())).build());
         } else {
-            tooltip.add(ModTooltips.HOLD_SHIFT_FOR_INFO.build());
+            tooltip.add(Tooltips.HOLD_SHIFT_FOR_INFO.build());
         }
     }
 
@@ -65,8 +65,8 @@ public class MachineUpgradeItem extends BaseItem {
         return this.tier;
     }
 
-    private Text getStatText(Object stat) {
+    private Component getStatText(Object stat) {
         var number = NumberFormat.getInstance().format(stat);
-        return Text.literal(number).formatted(this.tier.getTextColor());
+        return Component.literal(number).withStyle(this.tier.getTextColor());
     }
 }

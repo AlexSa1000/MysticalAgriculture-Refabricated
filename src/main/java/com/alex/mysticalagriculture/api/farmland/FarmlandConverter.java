@@ -1,53 +1,53 @@
 package com.alex.mysticalagriculture.api.farmland;
 
-import com.alex.mysticalagriculture.api.crop.CropTierProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.ActionResult;
+import com.alex.mysticalagriculture.api.crop.ICropTierProvider;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FarmBlock;
 
 public final class FarmlandConverter {
     /**
-     * Call this using {@link Item#useOnBlock(ItemUsageContext)} to allow default farmland conversion mechanics
+     * Call this using {@link Item#useOn(UseOnContext)} to allow default farmland conversion mechanics
      */
-    public static ActionResult convert(IFarmlandConverter converter, ItemUsageContext context) {
-        var pos = context.getBlockPos();
-        var world = context.getWorld();
-        var stack = context.getStack();
+    public static InteractionResult convert(IFarmlandConverter converter, UseOnContext context) {
+        var pos = context.getClickedPos();
+        var world = context.getLevel();
+        var stack = context.getItemInHand();
         var state = world.getBlockState(pos);
         var block = state.getBlock();
 
         if (block == Blocks.FARMLAND) {
-            var newState = converter.getConvertedFarmland().getDefaultState().with(FarmlandBlock.MOISTURE, state.get(FarmlandBlock.MOISTURE));
+            var newState = converter.getConvertedFarmland().defaultBlockState().setValue(FarmBlock.MOISTURE, state.getValue(FarmBlock.MOISTURE));
 
-            world.setBlockState(pos, newState);
-            stack.decrement(1);
+            world.setBlockAndUpdate(pos, newState);
+            stack.shrink(1);
 
-            return ActionResult.SUCCESS;
-        } else if (block instanceof EssenceFarmLand farmland) {
+            return InteractionResult.SUCCESS;
+        } else if (block instanceof IEssenceFarmland farmland) {
             var item = stack.getItem();
 
-            if (item instanceof CropTierProvider provider) {
+            if (item instanceof ICropTierProvider provider) {
                 var tier = provider.getTier();
 
                 if (tier != farmland.getTier()) {
-                    var newState = converter.getConvertedFarmland().getDefaultState().with(FarmlandBlock.MOISTURE, state.get(FarmlandBlock.MOISTURE));
+                    var newState = converter.getConvertedFarmland().defaultBlockState().setValue(FarmBlock.MOISTURE, state.getValue(FarmBlock.MOISTURE));
 
-                    world.setBlockState(pos, newState);
-                    stack.decrement(1);
+                    world.setBlockAndUpdate(pos, newState);
+                    stack.shrink(1);
 
                     if (Math.random() < 0.25) {
-                        Block.dropStack(world, pos.up(), new ItemStack(farmland.getTier().getEssence()));
+                        Block.popResource(world, pos.above(), new ItemStack(farmland.getTier().getEssence()));
                     }
 
-                    return ActionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

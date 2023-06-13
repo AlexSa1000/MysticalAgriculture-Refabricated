@@ -1,59 +1,58 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.lib.ModToolMaterial;
+import com.alex.cucumber.item.tool.BaseSwordItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.item.tool.BaseSwordItem;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class SouliumDaggerItem extends BaseSwordItem {
+public class SouliumDaggerItem extends BaseSwordItem implements SoulSiphoningItem {
     private final DaggerType type;
 
-    public SouliumDaggerItem(ToolMaterial tier, DaggerType type) {
-        super(tier, type.getDamage(), -2.4F, p -> p.maxDamageIfAbsent(type.getDurability()));
+    public SouliumDaggerItem(Tier tier, DaggerType type) {
+        super(tier, type.getDamage(), -2.4F, p -> p.defaultDurability(type.getDurability()));
         this.type = type;
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack) {
+    public String getDescriptionId(ItemStack stack) {
         return "item.mysticalagriculture.soulium_dagger";
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         switch (this.type) {
             case PASSIVE -> {
-                tooltip.add(ModTooltips.PASSIVE_ATTUNED.color(Formatting.GREEN).build());
+                tooltip.add(ModTooltips.PASSIVE_ATTUNED.color(ChatFormatting.GREEN).build());
                 tooltip.add(ModTooltips.PASSIVE_SOULIUM_DAGGER.build());
             }
             case HOSTILE -> {
-                tooltip.add(ModTooltips.HOSTILE_ATTUNED.color(Formatting.RED).build());
+                tooltip.add(ModTooltips.HOSTILE_ATTUNED.color(ChatFormatting.RED).build());
                 tooltip.add(ModTooltips.HOSTILE_SOULIUM_DAGGER.build());
             }
             case CREATIVE -> {
-                tooltip.add(ModTooltips.CREATIVE_ATTUNED.color(Formatting.LIGHT_PURPLE).build());
+                tooltip.add(ModTooltips.CREATIVE_ATTUNED.color(ChatFormatting.LIGHT_PURPLE).build());
                 tooltip.add(ModTooltips.CREATIVE_SOULIUM_DAGGER.build());
             }
         }
     }
 
+    @Override
     public double getSiphonAmount(ItemStack stack, LivingEntity entity) {
         return this.type.getSiphonAmount(stack, entity);
     }
 
     public enum DaggerType {
-        BASIC(3, ModToolMaterial.SOULIUM.getDurability(), (stack, entity) -> 1.0D),
-        PASSIVE(6, ModToolMaterial.SOULIUM.getDurability() * 2, (stack, entity) -> isPassive(entity) ? 1.5D : 1.0D),
-        HOSTILE(6, ModToolMaterial.SOULIUM.getDurability() * 2, (stack, entity) -> !isPassive(entity) ? 1.5D : 1.0D),
+        BASIC(3, ModItemTier.SOULIUM.getUses(), (stack, entity) -> 1.0D),
+        PASSIVE(6, ModItemTier.SOULIUM.getUses() * 2, (stack, entity) -> isPassive(entity) ? 1.5D : 1.0D),
+        HOSTILE(6, ModItemTier.SOULIUM.getUses() * 2, (stack, entity) -> !isPassive(entity) ? 1.5D : 1.0D),
         CREATIVE(65, -1, (stack, entity) -> Double.MAX_VALUE);
 
         private final int damage;
@@ -79,7 +78,7 @@ public class SouliumDaggerItem extends BaseSwordItem {
         }
 
         private static boolean isPassive(LivingEntity entity) {
-            return entity.getType().getSpawnGroup().isPeaceful();
+            return entity.getClassification().isFriendly();
         }
     }
 }

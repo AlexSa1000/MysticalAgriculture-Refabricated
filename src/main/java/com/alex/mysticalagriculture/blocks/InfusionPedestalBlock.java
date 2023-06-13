@@ -1,31 +1,30 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.InfusionPedestalBlockEntity;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.cucumber.util.VoxelShapeBuilder;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import com.alex.cucumber.block.BaseEntityBlock;
+import com.alex.cucumber.helper.StackHelper;
+import com.alex.cucumber.util.VoxelShapeBuilder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntityProvider {
+public class InfusionPedestalBlock extends BaseEntityBlock {
 
     public static final VoxelShape PEDESTAL_SHAPE = VoxelShapeBuilder.builder()
             .cuboid(2.0, 0.0, 2.0, 5.0, 2.0, 5.0).cuboid(11.0, 0.0, 2.0, 14.0, 2.0, 5.0)
@@ -35,78 +34,56 @@ public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntit
             .cuboid(3.0, 14.0, 5.0, 5.0, 16.0, 11.0).cuboid(11.0, 14.0, 5.0, 13.0, 16.0, 11.0).build();
 
     public InfusionPedestalBlock() {
-        super(Material.STONE, BlockSoundGroup.STONE, 10.0F, 12.0F, true);
+        super(Material.STONE, SoundType.STONE, 10.0F, 12.0F, true);
     }
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new InfusionPedestalBlockEntity(pos, state);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        var block = world.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
+        var tile = world.getBlockEntity(pos);
 
-        if (block instanceof InfusionPedestalBlockEntity pedestal) {
+        if (tile instanceof InfusionPedestalBlockEntity pedestal) {
             var inventory = pedestal.getInventory();
-            var input = inventory.getStack(0);
-            var held = player.getStackInHand(hand);
+            var input = inventory.getItem(0);
+            var held = player.getItemInHand(hand);
 
             if (input.isEmpty() && !held.isEmpty()) {
-                inventory.setStack(0, StackHelper.withSize(held, 1, false));
-                player.setStackInHand(hand, StackHelper.shrink(held, 1, false));
-                world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                inventory.setStackInSlot(0, StackHelper.withSize(held, 1, false));
+                player.setItemInHand(hand, StackHelper.shrink(held, 1, false));
+                world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
             } else if (!input.isEmpty()) {
-                inventory.setStack(0, ItemStack.EMPTY);
+                inventory.setStackInSlot(0, ItemStack.EMPTY);
 
                 var item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), input);
 
-                item.resetPickupDelay();
-                world.spawnEntity(item);
+                item.setNoPickUpDelay();
+                world.addFreshEntity(item);
             }
         }
 
-        return ActionResult.SUCCESS;
-        /*var block = world.getBlockEntity(pos);
-
-        if (block instanceof InfusionPedestalBlockEntity pedestal) {
-
-            var input = pedestal.getStack(0);
-            var held = player.getStackInHand(hand);
-
-            if (input.isEmpty() && !held.isEmpty()) {
-                pedestal.setStack(0, StackHelper.withSize(held, 1, false));
-                player.setStackInHand(hand, StackHelper.shrink(held, 1, false));
-                world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            } else if (!input.isEmpty()) {
-                pedestal.setStack(0, ItemStack.EMPTY);
-
-                var item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), input);
-
-                item.resetPickupDelay();
-                world.spawnEntity(item);
-            }
-        }
-
-        return ActionResult.SUCCESS;*/
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            var blockEntity = world.getBlockEntity(pos);
+            var tile = world.getBlockEntity(pos);
 
-            if (blockEntity instanceof InfusionPedestalBlockEntity pedestal) {
-                ItemScatterer.spawn(world, pos, pedestal.getInventory().getStacks());
+            if (tile instanceof InfusionPedestalBlockEntity altar) {
+                Containers.dropContents(world, pos, altar.getInventory().getStacks());
             }
         }
 
-        super.onStateReplaced(state, world, pos, newState, moved);
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return PEDESTAL_SHAPE;
     }
 }

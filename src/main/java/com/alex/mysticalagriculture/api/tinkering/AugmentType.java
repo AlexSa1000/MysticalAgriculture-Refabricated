@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +43,8 @@ public enum AugmentType {
         return this.name;
     }
 
-    public Text getDisplayName() {
-        return Text.translatable("augmentType.mysticalagriculture." + this.name);
+    public Component getDisplayName() {
+        return Component.translatable("augmentType.mysticalagriculture." + this.name);
     }
 
     public static AugmentType fromName(String name) {

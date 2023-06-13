@@ -1,13 +1,14 @@
 package com.alex.mysticalagriculture.api.lib;
 
 import com.alex.mysticalagriculture.crafting.ingredient.StrictNBTIngredient;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class LazyIngredient {
     public static final LazyIngredient EMPTY = new LazyIngredient(null, null, null) {
@@ -18,11 +19,11 @@ public class LazyIngredient {
     };
 
     private final String name;
-    private final NbtCompound nbt;
+    private final CompoundTag nbt;
     private final Type type;
     private Ingredient ingredient;
 
-    private LazyIngredient(String name, Type type, NbtCompound nbt) {
+    private LazyIngredient(String name, Type type, CompoundTag nbt) {
         this.name = name;
         this.type = type;
         this.nbt = nbt;
@@ -32,7 +33,7 @@ public class LazyIngredient {
         return item(name, null);
     }
 
-    public static LazyIngredient item(String name, NbtCompound nbt) {
+    public static LazyIngredient item(String name, CompoundTag nbt) {
         return new LazyIngredient(name, Type.ITEM, nbt);
     }
 
@@ -48,41 +49,20 @@ public class LazyIngredient {
         return this.type == Type.TAG;
     }
 
-    /*public Ingredient getIngredient() {
-        if (this.ingredient == null) {
-            if (this.isTag()) {
-                TagKey<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(new Identifier(this.name));
-                if (tag != null && !tag.values().isEmpty())
-                    this.ingredient = Ingredient.fromTag(tag);
-            } else if (this.isItem()) {
-                Item item = Registry.ITEM.get(new Identifier(this.name));
-                if (this.nbt == null || this.nbt.isEmpty()) {
-                    this.ingredient = Ingredient.ofItems(item);
-                } else {
-                    ItemStack stack = new ItemStack(item);
-                    stack.setTag(this.nbt);
-                    this.ingredient = new NBTIngredient(stack);
-                }
-            }
-        }
-
-        return this.ingredient == null ? Ingredient.EMPTY : this.ingredient;
-    }*/
-
-    public Ingredient.Entry createValue() {
+    public Ingredient.Value createValue() {
         if (this.isTag()) {
-            var tag = ItemTags.of(name);
-            return new Ingredient.TagEntry(tag);
+            var tag = ItemTags.bind(name);
+            return new Ingredient.TagValue(tag);
         } else if (this.isItem()) {
-            Item item = Registries.ITEM.get(new Identifier(this.name));
+            Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(this.name));
             if (item != null) {
                 ItemStack stack = new ItemStack(item);
 
                 if (this.nbt != null && !this.nbt.isEmpty()) {
-                    stack.setNbt(this.nbt);
+                    stack.setTag(this.nbt);
                 }
 
-                return new Ingredient.StackEntry(stack);
+                return new Ingredient.ItemValue(stack);
             }
         }
 
@@ -92,18 +72,18 @@ public class LazyIngredient {
     public Ingredient getIngredient() {
         if (this.ingredient == null) {
             if (this.isTag()) {
-                var tag = ItemTags.of(name);
-                this.ingredient = Ingredient.fromTag(tag);
+                var tag = ItemTags.bind(name);
+                this.ingredient = Ingredient.of(tag);
             } else if (this.isItem()) {
-                var item = Registries.ITEM.get(new Identifier(this.name));
+                var item = BuiltInRegistries.ITEM.get(new ResourceLocation(this.name));
 
                 if (item != null) {
                     if (this.nbt == null || this.nbt.isEmpty()) {
-                        this.ingredient = Ingredient.ofItems(item);
+                        this.ingredient = Ingredient.of(item);
                     } else {
                         var stack = new ItemStack(item);
 
-                        stack.setNbt(this.nbt);
+                        stack.setTag(this.nbt);
 
                         //this.ingredient = StrictNBTIngredient.of(stack);
                         this.ingredient = StrictNBTIngredient.of(stack).getBase();

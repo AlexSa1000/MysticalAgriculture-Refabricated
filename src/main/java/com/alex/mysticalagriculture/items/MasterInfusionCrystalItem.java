@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.cucumber.item.BaseReusableItem;
-import net.minecraft.item.ItemStack;
+import com.alex.cucumber.item.BaseReusableItem;
+import net.minecraft.world.item.ItemStack;
 
 public class MasterInfusionCrystalItem extends BaseReusableItem {
     public MasterInfusionCrystalItem() {
@@ -9,7 +9,7 @@ public class MasterInfusionCrystalItem extends BaseReusableItem {
     }
 
     @Override
-    public boolean hasGlint(ItemStack stack) {
+    public boolean isFoil(ItemStack stack) {
         return true;
     }
 }

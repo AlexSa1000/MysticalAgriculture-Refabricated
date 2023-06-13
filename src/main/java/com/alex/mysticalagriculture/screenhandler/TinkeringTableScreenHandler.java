@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.screenhandler;
 
-import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
+import com.alex.mysticalagriculture.api.tinkering.IAugmentProvider;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.blockentities.TinkeringTableBlockEntity;
 import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
@@ -59,8 +59,8 @@ public class TinkeringTableScreenHandler extends BaseScreenHandler {
                 var item = stack.getItem();
                 var augmentInSlot = AugmentUtils.getAugment(tinkerable, i);
 
-                if (!stack.isEmpty() && item instanceof AugmentProvider) {
-                    var augment = ((AugmentProvider) item).getAugment();
+                if (!stack.isEmpty() && item instanceof IAugmentProvider) {
+                    var augment = ((IAugmentProvider) item).getAugment();
                     if (augment != augmentInSlot)
                         AugmentUtils.addAugment(tinkerable, augment, i);
                 } else if (augmentInSlot != null) {

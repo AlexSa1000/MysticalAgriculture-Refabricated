@@ -1,42 +1,41 @@
 package com.alex.mysticalagriculture.augment;
 
+import com.alex.cucumber.helper.ColorHelper;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.cucumber.helper.ColorHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.EnumSet;
-import java.util.List;
 
 public class AttackAOEAugment extends Augment {
     private final int amplifier;
 
-    public AttackAOEAugment(Identifier id, int tier, int amplifier) {
+    public AttackAOEAugment(ResourceLocation id, int tier, int amplifier) {
         super(id, tier, EnumSet.of(AugmentType.SWORD), getColor(0xFF0000, tier), getColor(0x700000, tier));
         this.amplifier = amplifier;
     }
 
     @Override
     public boolean onHitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity player) {
-            if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-                List<LivingEntity> entities = player.getEntityWorld().getNonSpectatingEntities(LivingEntity.class, target.getBoundingBox().expand(1.5D * this.amplifier, 0.25D * this.amplifier, 1.5D * this.amplifier));
-                var level = player.world;
+        if (attacker instanceof Player player) {
+            if (!player.getCooldowns().isOnCooldown(stack.getItem())) {
+                var entities = player.getCommandSenderWorld().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(1.5D * this.amplifier, 0.25D * this.amplifier, 1.5D * this.amplifier));
+                var level = player.level;
 
-                for (LivingEntity aoeEntity : entities) {
-                    if (aoeEntity != player && aoeEntity != target && !player.isTeammate(target)) {
-                        aoeEntity.takeKnockback(0.4F, MathHelper.sin(player.getYaw() * 0.017453292F), -MathHelper.cos(player.getYaw() * 0.017453292F));
-                        aoeEntity.damage(level.getDamageSources().playerAttack(player), 5.0F + (5.0F * this.amplifier));
+                for (var aoeEntity : entities) {
+                    if (aoeEntity != player && aoeEntity != target && !player.isAlliedTo(target)) {
+                        aoeEntity.knockback(0.4F, Mth.sin(player.getYRot() * 0.017453292F), -Mth.cos(player.getYRot() * 0.017453292F));
+                        aoeEntity.hurt(level.damageSources().playerAttack(player), 5.0F + (5.0F * this.amplifier));
                     }
                 }
 
-                player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, player.getSoundCategory(), 1.0F, 1.0F);
-                player.spawnSweepAttackParticles();
+                player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
+                player.sweepAttack();
             }
 
             return true;

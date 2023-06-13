@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.google.common.collect.Sets;
 import net.fabricmc.loader.api.FabricLoader;

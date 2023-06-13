@@ -1,44 +1,45 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
+import com.alex.mysticalagriculture.api.crafting.ISoulExtractionRecipe;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
+import com.alex.cucumber.crafting.SpecialRecipe;
+import com.alex.cucumber.helper.StackHelper;
 import com.alex.mysticalagriculture.init.Items;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
-import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 
-public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.SoulExtractionRecipe {
-    private final Identifier recipeId;
-    private final DefaultedList<Ingredient> inputs;
+public class SoulExtractionRecipe implements SpecialRecipe, ISoulExtractionRecipe {
+    private final ResourceLocation recipeId;
+    private final NonNullList<Ingredient> inputs;
     private final MobSoulType type;
     private final double souls;
     private final ItemStack output;
 
-    public SoulExtractionRecipe(Identifier recipeId, Ingredient input, MobSoulType type, double souls) {
+    public SoulExtractionRecipe(ResourceLocation recipeId, Ingredient input, MobSoulType type, double souls) {
         this.recipeId = recipeId;
-        this.inputs = DefaultedList.copyOf(Ingredient.EMPTY, input);
+        this.inputs = NonNullList.of(Ingredient.EMPTY, input);
         this.type = type;
         this.souls = souls;
         this.output = MobSoulUtils.getSoulJar(type, souls, Items.SOUL_JAR);
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
-        var stack = inventory.getStack(2);
+    public ItemStack assemble(Container inventory, RegistryAccess access) {
+        var stack = inventory.getItem(2);
         var jar = StackHelper.withSize(stack, 1, false);
 
         MobSoulUtils.addSoulsToJar(jar, this.type, this.souls);
@@ -47,22 +48,23 @@ public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagr
     }
 
     @Override
-    public boolean fits(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getResultItem(RegistryAccess access) {
         return this.output;
     }
 
+
     @Override
-    public DefaultedList<Ingredient> getIngredients() {
+    public NonNullList<Ingredient> getIngredients() {
         return this.inputs;
     }
 
     @Override
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.recipeId;
     }
 
@@ -77,15 +79,15 @@ public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagr
     }
 
     @Override
-    public boolean matches(Inventory inventory, int startIndex, int endIndex) {
-        var input = inventory.getStack(0);
+    public boolean matches(Container inventory, int startIndex, int endIndex) {
+        var input = inventory.getItem(0);
 
         if (!this.inputs.get(0).test(input))
             return false;
 
-        var output = inventory.getStack(2);
+        var output = inventory.getItem(2);
 
-        if (!output.isItemEqual(this.output))
+        if (!output.sameItem(this.output))
             return false;
 
         return MobSoulUtils.canAddTypeToJar(output, this.type) && !MobSoulUtils.isJarFull(output);
@@ -103,37 +105,37 @@ public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagr
 
     public static class Serializer implements RecipeSerializer<SoulExtractionRecipe> {
         @Override
-        public SoulExtractionRecipe read(Identifier id, JsonObject json) {
+        public SoulExtractionRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             var ingredient = json.getAsJsonObject("input");
             var input = Ingredient.fromJson(ingredient);
-            var output = JsonHelper.getObject(json, "output");
-            var type = JsonHelper.getString(output, "type");
-            float amount = JsonHelper.getFloat(output, "souls");
+            var output = GsonHelper.getAsJsonObject(json, "output");
+            var type = GsonHelper.getAsString(output, "type");
+            float amount = GsonHelper.getAsFloat(output, "souls");
 
-            var mobSoulType = MobSoulTypeRegistry.getInstance().getMobSoulTypeById(new Identifier(type));
+            var mobSoulType = MobSoulTypeRegistry.getInstance().getMobSoulTypeById(new ResourceLocation(type));
 
             if (mobSoulType == null) {
                 throw new JsonParseException("Invalid mob soul type id: " + type);
             }
 
-            return new SoulExtractionRecipe(id, input, mobSoulType, amount);
+            return new SoulExtractionRecipe(recipeId, input, mobSoulType, amount);
         }
 
         @Override
-        public SoulExtractionRecipe read(Identifier id, PacketByteBuf buffer) {
-            var input = Ingredient.fromPacket(buffer);
-            var type = buffer.readIdentifier();
+        public SoulExtractionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+            var input = Ingredient.fromNetwork(buffer);
+            var type = buffer.readResourceLocation();
             double souls = buffer.readDouble();
 
             var mobSoulType = MobSoulTypeRegistry.getInstance().getMobSoulTypeById(type);
 
-            return new SoulExtractionRecipe(id, input, mobSoulType, souls);
+            return new SoulExtractionRecipe(recipeId, input, mobSoulType, souls);
         }
 
         @Override
-        public void write(PacketByteBuf buffer, SoulExtractionRecipe recipe) {
-            recipe.inputs.get(0).write(buffer);
-            buffer.writeIdentifier(recipe.type.getId());
+        public void toNetwork(FriendlyByteBuf buffer, SoulExtractionRecipe recipe) {
+            recipe.inputs.get(0).toNetwork(buffer);
+            buffer.writeResourceLocation(recipe.type.getId());
             buffer.writeDouble(recipe.souls);
         }
     }

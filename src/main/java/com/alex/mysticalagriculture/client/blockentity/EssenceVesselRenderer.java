@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.client.blockentity;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.blockentities.EssenceVesselBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
@@ -24,7 +24,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
         var inventory = entity.getInventory();
         var stack = inventory.getStack(0);
 
-        if (!stack.isEmpty() && stack.getItem() instanceof CropProvider provider) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ICropProvider provider) {
             var builder = vertexConsumers.getBuffer(RenderLayer.getSolid());
             var sprite = MinecraftClient.getInstance()
                     .getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE)

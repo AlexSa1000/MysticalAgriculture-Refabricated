@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.screenhandler.slot;
 
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.forge.items.SlotItemHandler;

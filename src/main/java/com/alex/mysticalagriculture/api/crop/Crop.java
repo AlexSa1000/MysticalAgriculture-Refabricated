@@ -2,24 +2,22 @@ package com.alex.mysticalagriculture.api.crop;
 
 import com.alex.mysticalagriculture.api.lib.LazyIngredient;
 import com.alex.mysticalagriculture.blocks.InfusedFarmlandBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.CropBlock;
-import net.minecraft.item.AliasedBlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CropBlock;
 
-import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
-
-import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class Crop {
 
-    private final Identifier id;
-    private Text displayName;
+    private final ResourceLocation id;
+    private Component displayName;
     private CropTier tier;
     private CropType type;
     private int essenceColor;
@@ -28,27 +26,30 @@ public class Crop {
     private CropTextures textures;
     private Supplier<? extends CropBlock> crop;
     private Supplier<? extends Item> essence;
-    private Supplier<? extends AliasedBlockItem> seeds;
+    private Supplier<? extends ItemNameBlockItem> seeds;
+    private Supplier<? extends Block> crux;
     private final LazyIngredient craftingMaterial;
     private boolean enabled;
     private boolean registerCropBlock;
     private boolean registerEssenceItem;
     private boolean registerSeedsItem;
+    private boolean hasEffect;
     private CropRecipes recipeConfig;
+    private Set<ResourceLocation> requiredBiomes;
 
-    public Crop(Identifier id, CropTier tier, CropType type, LazyIngredient craftingMaterial) {
+    public Crop(ResourceLocation id, CropTier tier, CropType type, LazyIngredient craftingMaterial) {
         this(id, tier, type, new CropTextures(), craftingMaterial);
     }
 
-    public Crop(Identifier id, CropTier tier, CropType type, int color, LazyIngredient craftingMaterial) {
+    public Crop(ResourceLocation id, CropTier tier, CropType type, int color, LazyIngredient craftingMaterial) {
         this(id, tier, type, new CropTextures(), color, craftingMaterial);
     }
 
-    public Crop(Identifier id, CropTier tier, CropType type, CropTextures textures, LazyIngredient craftingMaterial) {
+    public Crop(ResourceLocation id, CropTier tier, CropType type, CropTextures textures, LazyIngredient craftingMaterial) {
         this(id, tier, type, textures, -1, craftingMaterial);
     }
 
-    public Crop(Identifier id, CropTier tier, CropType type, CropTextures textures, int color, LazyIngredient craftingMaterial) {
+    public Crop(ResourceLocation id, CropTier tier, CropType type, CropTextures textures, int color, LazyIngredient craftingMaterial) {
         this.id = id;
         this.tier = tier;
         this.type = type;
@@ -61,12 +62,12 @@ public class Crop {
         this.registerEssenceItem = true;
         this.registerSeedsItem = true;
         this.recipeConfig = new CropRecipes();
-        //this.hasEffect = false;
+        this.hasEffect = false;
         //this.recipeConfig = new CropRecipes();
         //this.requiredBiomes = new HashSet<>();
     }
 
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.id;
     }
 
@@ -82,12 +83,12 @@ public class Crop {
         return String.format("%s_%s", this.getName(), suffix);
     }
 
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return this.displayName != null
                 ? this.displayName
-                : Text.translatable(String.format("crop.%s.%s", this.getModId(), this.getName()));
+                : Component.translatable(String.format("crop.%s.%s", this.getModId(), this.getName()));
     }
-    public Crop setDisplayName(Text name) {
+    public Crop setDisplayName(Component name) {
         this.displayName = name;
         return this;
     }
@@ -172,13 +173,13 @@ public class Crop {
         return this.registerEssenceItem;
     }
 
-    public ItemConvertible getSeedsItem() {
+    public ItemNameBlockItem getSeedsItem() {
         return this.seeds == null ? null : this.seeds.get();
     }
-    public Crop setSeedsItem(Supplier<? extends AliasedBlockItem> seeds) {
+    public Crop setSeedsItem(Supplier<? extends ItemNameBlockItem> seeds) {
         return this.setSeedsItem(seeds, false);
     }
-    public Crop setSeedsItem(Supplier<? extends AliasedBlockItem> seeds, boolean register) {
+    public Crop setSeedsItem(Supplier<? extends ItemNameBlockItem> seeds, boolean register) {
         this.seeds = seeds;
         this.registerSeedsItem = register;
         return this;
@@ -215,8 +216,32 @@ public class Crop {
         return this;
     }
 
+    public Block getCruxBlock() {
+        return this.crux == null ? null : this.crux.get();
+    }
+    public Crop setCruxBlock(Supplier<? extends Block> crux) {
+        this.crux = crux;
+        return this;
+    }
+
+    public boolean hasEffect(ItemStack stack) {
+        return this.hasEffect;
+    }
+    public Crop setHasEffect(boolean hasEffect) {
+        this.hasEffect = hasEffect;
+        return this;
+    }
+
     public CropRecipes getRecipeConfig() {
         return this.recipeConfig;
+    }
+
+    public Set<ResourceLocation> getRequiredBiomes() {
+        return this.requiredBiomes;
+    }
+    public Crop addRequiredBiome(ResourceLocation id) {
+        this.requiredBiomes.add(id);
+        return this;
     }
 
     public Crop setColor(int color) {

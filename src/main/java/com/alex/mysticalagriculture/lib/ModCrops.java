@@ -5,15 +5,10 @@ import com.alex.mysticalagriculture.api.crop.CropTextures;
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.crop.CropType;
 import com.alex.mysticalagriculture.api.lib.LazyIngredient;
-import com.alex.mysticalagriculture.api.registry.CropRegistry;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import com.alex.mysticalagriculture.blocks.InferiumCropBlock;
-import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.items.MysticalEssenceItem;
-import com.alex.mysticalagriculture.items.MysticalSeedItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -31,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
-import static com.alex.mysticalagriculture.init.Items.ITEMS;
 
 public class ModCrops {
     private static final List<Crop> crops = new ArrayList<>();

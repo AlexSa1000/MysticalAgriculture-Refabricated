@@ -1,40 +1,42 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
+import com.alex.cucumber.forge.event.entity.living.LivingFallEvent;
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
-import com.alex.mysticalagriculture.forge.common.ForgeHooks;
-import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.cucumber.util.Utils;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumSet;
 
-import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
+/**
+ * The default implementation of an Augment
+ *
+ * Extend this class for your augments
+ */
 public class Augment {
-    private final Identifier id;
-    private final int tier;
-    private final EnumSet<AugmentType> types;
-    private final int primaryColor;
-    private final int secondaryColor;
+    private final ResourceLocation id;
+    private int tier;
+    private EnumSet<AugmentType> types;
+    private int primaryColor;
+    private int secondaryColor;
     private boolean enabled;
 
-    public Augment(Identifier id, int tier, EnumSet<AugmentType> types, int primaryColor, int secondaryColor) {
+    public Augment(ResourceLocation id, int tier, EnumSet<AugmentType> types, int primaryColor, int secondaryColor) {
         this.id = id;
         this.tier = tier;
         this.types = types;
@@ -43,107 +45,242 @@ public class Augment {
         this.enabled = true;
     }
 
-    public Identifier getId() {
+    /**
+     * The id of this augment, the modid is taken from the namespace for {@link Augment#getModId()},
+     * and the path is used for {@link Augment#getName()}
+     * @return the id of this augment
+     */
+    public ResourceLocation getId() {
         return this.id;
     }
 
-    public EnumSet<AugmentType> getAugmentTypes() {
-        return this.types;
-    }
-
-    public int getTier() {
-        return this.tier;
-    }
-
-    public Item getItem() {
-        return Registries.ITEM.get(new Identifier(MOD_ID, this.getName() + "_augment"));
-    }
-
-    public int getPrimaryColor() {
-        return this.primaryColor;
-    }
-
-    public int getSecondaryColor() {
-        return this.secondaryColor;
-    }
-
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean hasEffect() {
-        return this.getTier() >= 5;
-    }
-
-    public boolean onItemUse(ItemUsageContext context) {
-        return false;
-    }
-
-    public boolean onRightClick(ItemStack stack, World world, PlayerEntity player, Hand hand) {
-        return false;
-    }
-
-    public boolean onRightClickEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-        return false;
-    }
-
-    public boolean onHitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return false;
-    }
-
-    public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entity) {
-        return false;
-    }
-
-    public void onInventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-    }
-
-    public void addToolAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
-    }
-
-    public void addArmorAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> attributes) {
-    }
-
-    public String getNameWithSuffix(String suffix) {
-        return String.format("%s_%s", this.getName(), suffix);
-    }
-
-    public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {
-    }
-
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-    }
-
-    public void onPlayerFall(World world, PlayerEntity player) {
-    }
-
-    public void onPlayerFall(World world, PlayerEntity player, ForgeHooks.LivingFallEvent event) { }
-
-
-    public String getModId() {
-        return this.getId().getNamespace();
-    }
-
+    /**
+     * The internal name of this augment.
+     * This is used for registration, so it MUST be all lowercase with underscores for spaces
+     * @return the internal name of this augment
+     */
     public String getName() {
         return this.getId().getPath();
     }
 
-    public MutableText getDisplayName() {
-        return Text.translatable(String.format("augment.%s.%s", this.getModId(), this.getName()));
+    /**
+     * The modid of the mod that registered this augment
+     * @return the modid of this augment
+     */
+    public String getModId() {
+        return this.getId().getNamespace();
     }
 
-    public static ItemStack getEssenceForTinkerable(Tinkerable tinkerable, int min, int max) {
-        switch (tinkerable.getTinkerableTier()) {
-            case 1: return new ItemStack(Items.INFERIUM_ESSENCE, Utils.randInt(min, max));
-            case 2: return new ItemStack(Items.PRUDENTIUM_ESSENCE, Utils.randInt(min, max));
-            case 3: return new ItemStack(Items.TERTIUM_ESSENCE, Utils.randInt(min, max));
-            case 4: return new ItemStack(Items.IMPERIUM_ESSENCE, Utils.randInt(min, max));
-            case 5: return new ItemStack(Items.SUPREMIUM_ESSENCE, Utils.randInt(min, max));
-            default: return ItemStack.EMPTY;
-        }
+    /**
+     * Used to get the internal name of this augment with an _suffix
+     * @param suffix the suffix to append (without the initial underscore)
+     * @return the name with _suffix
+     */
+    public String getNameWithSuffix(String suffix) {
+        return String.format("%s_%s", this.getName(), suffix);
     }
+
+    /**
+     * Get the localized name of this augment using the key augment.{@link Augment#getModId()}.{@link Augment#getName()}
+     * @return the localized name of this augment
+     */
+    public MutableComponent getDisplayName() {
+        return Component.translatable(String.format("augment.%s.%s", this.getModId(), this.getName()));
+    }
+
+    /**
+     * The augment types that this augment represents
+     * @return applicable augment types
+     */
+    public EnumSet<AugmentType> getAugmentTypes() {
+        return this.types;
+    }
+
+    /**
+     * The tier of this augment, used to define the minimum tier tinkerable required
+     * @return the numerical tier
+     */
+    public int getTier() {
+        return this.tier;
+    }
+
+
+    /**
+     * The primary color of this augment (for the lighter middle areas of the augment)
+     * @return the primary color
+     */
+    public int getPrimaryColor() {
+        return this.primaryColor;
+    }
+
+    /**
+     * Set the primary color of this augment
+     * @param color the primary color
+     * @return this augment
+     */
+    public Augment setPrimaryColor(int color) {
+        this.primaryColor = color;
+        return this;
+    }
+
+    /**
+     * The secondary color of this augment (for the darker areas of the augment)
+     * @return the secondary color
+     */
+    public int getSecondaryColor() {
+        return this.secondaryColor;
+    }
+
+    /**
+     * Set the secondary color of this augment
+     * @param color the secondary color
+     * @return this augment
+     */
+    public Augment setSecondaryColor(int color) {
+        this.secondaryColor = color;
+        return this;
+    }
+
+    /**
+     * Should this augment have the enchantment glint?
+     * @return has glint effect
+     */
+    public boolean hasEffect() {
+        return this.getTier() >= 5;
+    }
+
+    /**
+     * Whether this augment has recipes and shows up in the creative menu
+     * @return is this augment enabled
+     */
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set whether this augment should be hidden from the game
+     * @param enabled the enabled state
+     */
+    public Augment setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Called when the item is used while targeting a block, {@link Item#useOn(UseOnContext)}
+     * @param context the item use context
+     * @return was the action successful
+     */
+    public boolean onItemUse(UseOnContext context) {
+        return false;
+    }
+
+    /**
+     * Called when the item is right-clicked while not targeting a block, {@link Item#use(Level, Player, InteractionHand)}
+     * @param stack the item
+     * @param world the world
+     * @param player the player
+     * @param hand the hand
+     * @return was the action successful
+     */
+    public boolean onRightClick(ItemStack stack, Level world, Player player, InteractionHand hand) {
+        return false;
+    }
+
+    /**
+     * Called when this item is right-clicked on an entity, {@link Item#interactLivingEntity(ItemStack, Player, LivingEntity, InteractionHand)}
+     * @param stack the item
+     * @param player the player
+     * @param target the clicked entity
+     * @param hand the hand
+     * @return was the action successful
+     */
+    public boolean onRightClickEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+        return false;
+    }
+
+    /**
+     * Called when this item is used to attack an entity, {@link Item#hurtEnemy(ItemStack, LivingEntity, LivingEntity)}
+     * @param stack the item
+     * @param target the attacked entity
+     * @param attacker the attacking entity
+     * @return was the action successful
+     */
+    public boolean onHitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return false;
+    }
+
+    /**
+     * Called when a block is destroyed using this item, {@link Item#mineBlock(ItemStack, Level, BlockState, BlockPos, LivingEntity)}
+     * @param stack the item
+     * @param world the world
+     * @param state the block destroyed
+     * @param pos the pos of the block destroyed
+     * @param entity the entity that destroyed the block
+     * @return was the action successful
+     */
+    public boolean onBlockDestroyed(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entity) {
+        return false;
+    }
+
+    /**
+     * Called when a block is broken with this item
+     * @param stack the item
+     * @param pos the pos of the block broken
+     * @param player the player
+     * @return was the action successful
+     */
+    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, Player player) {
+        return false;
+    }
+
+    /**
+     * Called when the item is ticked in the player's inventory
+     * @param stack the item
+     * @param world the world
+     * @param entity the player
+     * @param slot the slot
+     * @param isSelected is currently being held
+     */
+    public void onInventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean isSelected) { }
+
+    /**
+     * Called every tick for equipped armor
+     * @param stack the item
+     * @param world the world
+     * @param player the player
+     */
+    public void onArmorTick(ItemStack stack, Level world, Player player) { }
+
+    /**
+     * Called every tick for equipped armor, meant for player ability changes
+     * @param world the world
+     * @param player the player
+     * @param cache the ability cache
+     */
+    public void onPlayerTick(Level world, Player player, AbilityCache cache) { }
+
+    /**
+     * Called when the player hits the ground
+     * @param world the world
+     * @param player the player
+     * @param event the fall event
+     */
+    public void onPlayerFall(Level world, Player player, LivingFallEvent event) { }
+
+    /**
+     * Add or modify the tool attributes
+     * @param attributes the attribute map
+     * @param slot the equipment slot type
+     * @param stack the item
+     */
+    public void addToolAttributeModifiers(Multimap<Attribute, AttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) { }
+
+    /**
+     * Add or modify the armor attributes
+     * @param attributes the attribute map
+     * @param slot the equipment slot type
+     * @param stack the item
+     */
+    public void addArmorAttributeModifiers(Multimap<Attribute, AttributeModifier> attributes, EquipmentSlot slot, ItemStack stack) { }
 }

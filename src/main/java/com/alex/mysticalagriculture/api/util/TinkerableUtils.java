@@ -1,22 +1,31 @@
 package com.alex.mysticalagriculture.api.util;
 
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class TinkerableUtils {
-
-    public static Tinkerable getTinkerable(ItemStack stack) {
+    /**
+     * Gets the {@link ITinkerable} instance from the provided item stack if applicable
+     * @param stack the item
+     * @return the {@link ITinkerable} or null
+     */
+    public static ITinkerable getTinkerable(ItemStack stack) {
         var item = stack.getItem();
-        return item instanceof Tinkerable tinkerable ? tinkerable : null;
+        return item instanceof ITinkerable tinkerable ? tinkerable : null;
     }
 
-    public static int getArmorSetMinimumTier(PlayerEntity player) {
+    /**
+     * Gets the minimum {@link ITinkerable} tier for the player's equipped armor
+     * @param player the player
+     * @return the minimum {@link ITinkerable} tier, or -1 if not wearing a full set
+     */
+    public static int getArmorSetMinimumTier(Player player) {
         int tier = -1;
 
         for (int i = 0; i < 4; i++) {
-            var stack = player.getEquippedStack(EquipmentSlot.fromTypeIndex(EquipmentSlot.Type.ARMOR, i));
+            var stack = player.getItemBySlot(EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, i));
             var tinkerable = getTinkerable(stack);
 
             if (tinkerable == null)
@@ -26,7 +35,13 @@ public class TinkerableUtils {
         return tier;
     }
 
-    public static boolean hasArmorSetMinimumTier(PlayerEntity player, int tier) {
+    /**
+     * Checks if the provided player has a full set of the minimum {@link ITinkerable} tier equipped
+     * @param player the player
+     * @param tier the {@link ITinkerable} tier
+     * @return has the minimum tier equipped
+     */
+    public static boolean hasArmorSetMinimumTier(Player player, int tier) {
         return getArmorSetMinimumTier(player) == tier;
     }
 }

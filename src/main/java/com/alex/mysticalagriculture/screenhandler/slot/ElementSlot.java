@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.screenhandler.slot;
 
-import com.alex.mysticalagriculture.api.tinkering.ElementalItem;
+import com.alex.mysticalagriculture.api.tinkering.IElementalItem;
 import com.alex.mysticalagriculture.cucumber.iface.ToggleableSlot;
 import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.forge.items.SlotItemHandler;
@@ -35,6 +35,6 @@ public class ElementSlot extends SlotItemHandler implements ToggleableSlot {
         var stack = this.getItemHandler().getStack(0);
         var item = stack.getItem();
 
-        return item instanceof ElementalItem;
+        return item instanceof IElementalItem;
     }
 }

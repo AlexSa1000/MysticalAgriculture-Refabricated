@@ -1,16 +1,16 @@
 package com.alex.mysticalagriculture.augment;
 
+import com.alex.cucumber.helper.ColorHelper;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.cucumber.helper.ColorHelper;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.EnumSet;
 
 public class MiningAOEAugment extends Augment {
     private final int range;
 
-    public MiningAOEAugment(Identifier id, int tier, int range) {
+    public MiningAOEAugment(ResourceLocation id, int tier, int range) {
         super(id, tier, EnumSet.of(AugmentType.PICKAXE, AugmentType.AXE, AugmentType.SHOVEL), getColor(0xD5FFF6, tier), getColor(0x0EBABD, tier));
         this.range = range;
     }

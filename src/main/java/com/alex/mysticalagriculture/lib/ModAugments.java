@@ -1,9 +1,7 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.api.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.augment.*;
-import com.alex.mysticalagriculture.items.AugmentItem;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;

@@ -1,10 +1,9 @@
 package com.alex.mysticalagriculture.registry;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.MysticalAgriculturePlugin;
+import com.alex.mysticalagriculture.api.IMysticalAgriculturePlugin;
 import com.alex.mysticalagriculture.api.lib.PluginConfig;
 import com.alex.mysticalagriculture.lib.ModCorePlugin;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.function.BiConsumer;
 
 public final class PluginRegistry {
     private static final PluginRegistry INSTANCE = new PluginRegistry();
-    private final Map<MysticalAgriculturePlugin, PluginConfig> plugins = new LinkedHashMap<>();
+    private final Map<IMysticalAgriculturePlugin, PluginConfig> plugins = new LinkedHashMap<>();
 
     public void loadPlugins() {
         this.plugins.put(new ModCorePlugin(), new PluginConfig());
@@ -46,7 +45,7 @@ public final class PluginRegistry {
         });
     }
 
-    public void forEach(BiConsumer<MysticalAgriculturePlugin, PluginConfig> action) {
+    public void forEach(BiConsumer<IMysticalAgriculturePlugin, PluginConfig> action) {
         this.plugins.forEach(action);
     }
 

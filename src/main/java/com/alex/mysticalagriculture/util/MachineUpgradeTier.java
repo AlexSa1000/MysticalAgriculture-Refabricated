@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.util;
 
 import com.alex.mysticalagriculture.api.crop.CropTier;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
 
 public enum MachineUpgradeTier {
     INFERIUM(CropTier.ONE, 0.84D, 2, 2, 1),
@@ -12,7 +12,7 @@ public enum MachineUpgradeTier {
     AWAKENED_SUPREMIUM(CropTier.FIVE, 0.005D, 96, 7, 6);
 
     private final int value;
-    private final Formatting textColor;
+    private final ChatFormatting textColor;
     private final double operationTimeMultiplier;
     private final double fuelUsageMultiplier;
     private final double fuelCapacityMultiplier;
@@ -31,7 +31,7 @@ public enum MachineUpgradeTier {
         return this.value;
     }
 
-    public Formatting getTextColor() {
+    public ChatFormatting getTextColor() {
         return this.textColor;
     }
 

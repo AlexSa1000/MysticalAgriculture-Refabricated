@@ -21,7 +21,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.item.Item;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,7 +31,7 @@ import java.util.Map;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class Items {
-    public static final Map<Identifier, Item> ITEMS = new LinkedHashMap<>();
+    public static final Map<ResourceLocation, Item> ITEMS = new LinkedHashMap<>();
 
     public static final Item PROSPERITY_SHARD = register("prosperity_shard");
     public static final Item INFERIUM_ESSENCE = register(new EssenceItem(CropTier.ONE), "inferium_essence");

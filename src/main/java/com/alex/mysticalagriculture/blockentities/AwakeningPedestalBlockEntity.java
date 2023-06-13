@@ -1,17 +1,17 @@
 package com.alex.mysticalagriculture.blockentities;
 
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class AwakeningPedestalBlockEntity extends BaseInventoryBlockEntity {
     private final BaseItemStackHandler inventory;
 
     public AwakeningPedestalBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.AWAKENING_PEDESTAL, pos, state);
-        this.inventory = BaseItemStackHandler.create(1, this::markDirty, handler -> {
+        this.inventory = BaseItemStackHandler.create(1, this::markDirtyAndDispatch, handler -> {
             handler.setDefaultSlotLimit(1);
         });
     }
@@ -20,19 +20,4 @@ public class AwakeningPedestalBlockEntity extends BaseInventoryBlockEntity {
     public BaseItemStackHandler getInventory() {
         return this.inventory;
     }
-
-    /*@Override
-    public int[] getAvailableSlots(Direction side) {
-        return new int[]{0};
-    }
-
-    @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return this.getStack(0).isEmpty();
-    }
-
-    @Override
-    public int getMaxCountPerStack() {
-        return 1;
-    }*/
 }

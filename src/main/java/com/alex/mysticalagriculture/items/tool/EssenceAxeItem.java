@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items.tool;
 
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.augment.MiningAOEAugment;
 import com.alex.mysticalagriculture.config.ModConfigs;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EssenceAxeItem extends BaseAxeItem implements Tinkerable, MagnaTool {
+public class EssenceAxeItem extends BaseAxeItem implements ITinkerable, MagnaTool {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.AXE);
     private final int tinkerableTier;
     private final int slots;

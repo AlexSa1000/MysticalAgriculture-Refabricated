@@ -1,13 +1,13 @@
 package com.alex.mysticalagriculture.blockentities;
 
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.util.EssenceVesselType;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class EssenceVesselBlockEntity extends BaseInventoryBlockEntity {
     private static final int MAX_STACK_SIZE = 40;
@@ -15,7 +15,7 @@ public class EssenceVesselBlockEntity extends BaseInventoryBlockEntity {
 
     public EssenceVesselBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.ESSENCE_VESSEL, pos, state);
-        this.inventory = BaseItemStackHandler.create(1, this::markDirty, handler -> {
+        this.inventory = BaseItemStackHandler.create(1, this::markDirtyAndDispatch, handler -> {
             handler.setDefaultSlotLimit(MAX_STACK_SIZE);
             handler.setCanInsert((slot, stack) -> canInsertStack(stack));
         });
@@ -35,7 +35,7 @@ public class EssenceVesselBlockEntity extends BaseInventoryBlockEntity {
     }
 
     private static boolean canInsertStack(ItemStack stack) {
-        if (stack.getItem() instanceof CropProvider provider) {
+        if (stack.getItem() instanceof ICropProvider provider) {
             return EssenceVesselType.fromCrop(provider) != null;
         }
 

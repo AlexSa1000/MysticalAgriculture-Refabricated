@@ -1,10 +1,12 @@
 package com.alex.mysticalagriculture.init;
 
 import com.alex.mysticalagriculture.crafting.recipe.*;
+import net.minecraft.core.Registry;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class RecipeTypes {
     public static final RecipeType<InfusionRecipe> INFUSION = new RecipeType<InfusionRecipe>() {};

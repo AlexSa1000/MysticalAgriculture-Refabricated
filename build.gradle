@@ -25,6 +25,9 @@ loom {
 }
 
 repositories {
+	mavenCentral()
+	mavenLocal()
+
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -50,15 +53,16 @@ repositories {
 		url = "https://maven.blamejared.com"
 	}
 
-	mavenCentral()
-	mavenLocal()
-
+	maven {
+		name = "Fuzs Mod Resources"
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+	}
 }
 
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
@@ -66,9 +70,33 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
-	
-	modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
-	
+
+	if (project.runtime_itemlist_mod == "jei") {
+		modImplementation("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") {
+			exclude group: "mezz.jei"
+		}
+	} else {
+		modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") {
+			exclude group: "mezz.jei"
+		}
+	}
+
+	if (project.runtime_itemlist_mod == "rei") {
+		// Manually override architectury TODO remove once REI's dependency is fixed
+		modRuntimeOnly "dev.architectury:architectury-fabric:6.5.69"
+		modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+			exclude(group: "net.fabricmc.fabric-api")
+		}
+	} else {
+		modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+			exclude group: "net.fabricmc.fabric-api"
+		}
+	}
+
+	if (!(project.runtime_itemlist_mod in ["jei", "rei"])) {
+		throw new GradleException("Invalid runtime_itemlist_mod value: " + project.runtime_itemlist_mod)
+	}
+
 	include modImplementation ("draylar:magna:${project.magna_version}") {
         exclude group: "net.fabricmc"
         exclude group: "com.jamieswhiteshirt"
@@ -76,17 +104,13 @@ dependencies {
 		exclude group: "io.github.prospector", module: "modmenu"
 	}
 
-	//Almost Unified
-	modApi("com.almostreliable.mods:almostunified-fabric:1.19.4-0.4.1")
+	modImplementation "curse.maven:jade-324717:${project.jade_version}"
 
-	include modApi('teamreborn:energy:3.0.0') {
-		exclude(group: "net.fabricmc.fabric-api")
-	}
+	modImplementation("com.alex.cucumber:Cucumber-Refabricated:1.1.0")
 
-	modImplementation 'com.electronwill.night-config:core:3.6.6'
-	include "com.electronwill.night-config:core:3.6.6"
-	modImplementation 'com.electronwill.night-config:toml:3.6.6'
-	include "com.electronwill.night-config:toml:3.6.6"
+	implementation "com.electronwill.night-config:core:${project.nightconfig_version}"
+	implementation "com.electronwill.night-config:toml:${project.nightconfig_version}"
+	modApi "net.minecraftforge:forgeconfigapiport-fabric:4.2.11"
 }
 
 base {

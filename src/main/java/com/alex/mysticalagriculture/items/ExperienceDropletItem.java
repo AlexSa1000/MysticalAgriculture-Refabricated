@@ -1,14 +1,14 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import com.alex.mysticalagriculture.cucumber.util.Utils;
-import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
+import com.alex.cucumber.item.BaseItem;
+import com.alex.cucumber.util.Utils;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ExperienceDropletItem extends BaseItem {
     public ExperienceDropletItem() {
@@ -16,35 +16,35 @@ public class ExperienceDropletItem extends BaseItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getStackInHand(hand);
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        var stack = player.getItemInHand(hand);
         int used = 0;
 
-        if (!world.isClient()) {
-            if (player.isInSneakingPose()) {
+        if (!world.isClientSide()) {
+            if (player.isCrouching()) {
                 int xp = 0;
                 for (int i = 0; i < stack.getCount(); i++) {
                     xp += Utils.randInt(8, 12);
                 }
 
-                var orb = new ExperienceOrbEntity(world, player.getX(), player.getY(), player.getZ(), xp);
+                var orb = new ExperienceOrb(world, player.getX(), player.getY(), player.getZ(), xp);
 
-                world.spawnEntity(orb);
+                world.addFreshEntity(orb);
 
                 used = stack.getCount();
             } else {
                 int xp = Utils.randInt(8, 12);
-                var orb = new ExperienceOrbEntity(world, player.getX(), player.getY(), player.getZ(), xp);
+                var orb = new ExperienceOrb(world, player.getX(), player.getY(), player.getZ(), xp);
 
-                world.spawnEntity(orb);
+                world.addFreshEntity(orb);
 
                 used = 1;
             }
         }
 
         if (!player.isCreative())
-            stack.decrement(used);
+            stack.shrink(used);
 
-        return new TypedActionResult<>(ActionResult.SUCCESS, stack);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 }

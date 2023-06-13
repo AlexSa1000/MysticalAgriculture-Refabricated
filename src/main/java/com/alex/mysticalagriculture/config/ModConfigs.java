@@ -1,16 +1,17 @@
 package com.alex.mysticalagriculture.config;
 
-import com.alex.mysticalagriculture.forge.common.ConfigSpec;
+
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ModConfigs {
-    public static final ConfigSpec CLIENT;
-    public static final ConfigSpec COMMON;
+    public static final ForgeConfigSpec CLIENT;
+    public static final ForgeConfigSpec COMMON;
 
-    public static final ConfigSpec.BooleanValue ANIMATED_GROWTH_ACCELERATORS;
+    public static final ForgeConfigSpec.BooleanValue ANIMATED_GROWTH_ACCELERATORS;
 
     // Client
     static {
-        final var client = new ConfigSpec.Builder();
+        final var client = new ForgeConfigSpec.Builder();
 
         client.comment("General configuration options.").push("General");
         ANIMATED_GROWTH_ACCELERATORS = client
@@ -21,28 +22,28 @@ public class ModConfigs {
         CLIENT = client.build();
     }
 
-    public static final ConfigSpec.DoubleValue INFERIUM_DROP_CHANCE;
-    public static final ConfigSpec.IntValue INFUSION_CRYSTAL_USES;
-    public static final ConfigSpec.IntValue GROWTH_ACCELERATOR_COOLDOWN;
-    public static final ConfigSpec.DoubleValue FERTILIZED_ESSENCE_DROP_CHANCE;
-    public static final ConfigSpec.BooleanValue SECONDARY_SEED_DROPS;
-    public static final ConfigSpec.BooleanValue WITHER_DROPS_ESSENCE;
-    public static final ConfigSpec.BooleanValue WITHER_DROPS_COGNIZANT;
-    public static final ConfigSpec.BooleanValue DRAGON_DROPS_ESSENCE;
-    public static final ConfigSpec.BooleanValue DRAGON_DROPS_COGNIZANT;
-    public static final ConfigSpec.BooleanValue ESSENCE_FARMLAND_CONVERSION;
-    public static final ConfigSpec.BooleanValue SEED_CRAFTING_RECIPES;
-    public static final ConfigSpec.BooleanValue ENCHANTABLE_SUPREMIUM_TOOLS;
-    public static final ConfigSpec.BooleanValue FAKE_PLAYER_WATERING;
-    public static final ConfigSpec.BooleanValue AWAKENED_SUPREMIUM_SET_BONUS;
+    public static final ForgeConfigSpec.DoubleValue INFERIUM_DROP_CHANCE;
+    public static final ForgeConfigSpec.IntValue INFUSION_CRYSTAL_USES;
+    public static final ForgeConfigSpec.IntValue GROWTH_ACCELERATOR_COOLDOWN;
+    public static final ForgeConfigSpec.DoubleValue FERTILIZED_ESSENCE_DROP_CHANCE;
+    public static final ForgeConfigSpec.BooleanValue SECONDARY_SEED_DROPS;
+    public static final ForgeConfigSpec.BooleanValue WITHER_DROPS_ESSENCE;
+    public static final ForgeConfigSpec.BooleanValue WITHER_DROPS_COGNIZANT;
+    public static final ForgeConfigSpec.BooleanValue DRAGON_DROPS_ESSENCE;
+    public static final ForgeConfigSpec.BooleanValue DRAGON_DROPS_COGNIZANT;
+    public static final ForgeConfigSpec.BooleanValue ESSENCE_FARMLAND_CONVERSION;
+    public static final ForgeConfigSpec.BooleanValue SEED_CRAFTING_RECIPES;
+    public static final ForgeConfigSpec.BooleanValue ENCHANTABLE_SUPREMIUM_TOOLS;
+    public static final ForgeConfigSpec.BooleanValue FAKE_PLAYER_WATERING;
+    public static final ForgeConfigSpec.BooleanValue AWAKENED_SUPREMIUM_SET_BONUS;
 
-    public static final ConfigSpec.BooleanValue GENERATE_PROSPERITY;
-    public static final ConfigSpec.BooleanValue GENERATE_INFERIUM;
-    public static final ConfigSpec.BooleanValue GENERATE_SOULSTONE;
-    public static final ConfigSpec.DoubleValue SOULIUM_ORE_CHANCE;
-    
+    public static final ForgeConfigSpec.BooleanValue GENERATE_PROSPERITY;
+    public static final ForgeConfigSpec.BooleanValue GENERATE_INFERIUM;
+    public static final ForgeConfigSpec.BooleanValue GENERATE_SOULSTONE;
+    public static final ForgeConfigSpec.DoubleValue SOULIUM_ORE_CHANCE;
+
     static {
-        final var common = new ConfigSpec.Builder();
+        final var common = new ForgeConfigSpec.Builder();
 
         common.comment("General configuration options.").push("General");
         INFERIUM_DROP_CHANCE = common

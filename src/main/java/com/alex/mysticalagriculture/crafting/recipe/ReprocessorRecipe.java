@@ -1,53 +1,54 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.cucumber.crafting.SpecialRecipe;
+import com.alex.cucumber.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.api.crafting.IReprocessorRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.google.gson.JsonObject;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
-public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.ReprocessorRecipe {
-    private final Identifier recipeId;
-    private final DefaultedList<Ingredient> inputs;
+public class ReprocessorRecipe implements SpecialRecipe, IReprocessorRecipe {
+    private final ResourceLocation recipeId;
+    private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
 
-    public ReprocessorRecipe(Identifier recipeId, Ingredient input, ItemStack output) {
+    public ReprocessorRecipe(ResourceLocation recipeId, Ingredient input, ItemStack output) {
         this.recipeId = recipeId;
-        this.inputs = DefaultedList.copyOf(Ingredient.EMPTY, input);
+        this.inputs = NonNullList.of(Ingredient.EMPTY, input);
         this.output = output;
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack assemble(Container inventory, RegistryAccess access) {
         return this.output.copy();
     }
 
     @Override
-    public boolean fits(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getResultItem(RegistryAccess access) {
         return this.output;
     }
 
     @Override
-    public DefaultedList<Ingredient> getIngredients() {
+    public NonNullList<Ingredient> getIngredients() {
         return this.inputs;
     }
 
     @Override
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return this.recipeId;
     }
 
@@ -62,34 +63,34 @@ public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagricu
     }
 
     @Override
-    public boolean matches(Inventory inventory, int startIndex, int endIndex) {
-        ItemStack stack = inventory.getStack(0);
+    public boolean matches(Container inventory) {
+        ItemStack stack = inventory.getItem(0);
         return this.inputs.get(0).test(stack);
     }
 
     public static class Serializer implements RecipeSerializer<ReprocessorRecipe> {
 
         @Override
-        public ReprocessorRecipe read(Identifier id, JsonObject json) {
+        public ReprocessorRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             var ingredient = json.getAsJsonObject("input");
             var input = Ingredient.fromJson(ingredient);
-            var output = ShapedRecipe.outputFromJson(json.getAsJsonObject("result"));
+            var output = ShapedRecipe.itemStackFromJson(json.getAsJsonObject("result"));
 
-            return new ReprocessorRecipe(id, input, output);
+            return new ReprocessorRecipe(recipeId, input, output);
         }
 
         @Override
-        public ReprocessorRecipe read(Identifier id, PacketByteBuf buf) {
-            var input = Ingredient.fromPacket(buf);
-            var output = buf.readItemStack();
+        public ReprocessorRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+            var input = Ingredient.fromNetwork(buffer);
+            var output = buffer.readItem();
 
-            return new ReprocessorRecipe(id, input, output);
+            return new ReprocessorRecipe(recipeId, input, output);
         }
 
         @Override
-        public void write(PacketByteBuf buf, ReprocessorRecipe recipe) {
-            recipe.inputs.get(0).write(buf);
-            buf.writeItemStack(recipe.output);
+        public void toNetwork(FriendlyByteBuf buffer, ReprocessorRecipe recipe) {
+            recipe.inputs.get(0).toNetwork(buffer);
+            buffer.writeItem(recipe.output);
         }
     }
 }

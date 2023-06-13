@@ -1,27 +1,27 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.util.Activatable;
-import com.alex.mysticalagriculture.cucumber.item.BaseItem;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.ActionResult;
+import com.alex.cucumber.item.BaseItem;
+import com.alex.mysticalagriculture.util.IActivatable;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.context.UseOnContext;
 
 public class WandItem extends BaseItem {
     public WandItem() {
-        super(p -> p.maxCount(1));
+        super(p -> p.stacksTo(1));
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        var world = context.getWorld();
-        var pos = context.getBlockPos();
+    public InteractionResult useOn(UseOnContext context) {
+        var level = context.getLevel();
+        var pos = context.getClickedPos();
 
-        var tile = world.getBlockEntity(pos);
-        if (tile instanceof Activatable activatable) {
+        var tile = level.getBlockEntity(pos);
+        if (tile instanceof IActivatable activatable) {
             activatable.activate();
 
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

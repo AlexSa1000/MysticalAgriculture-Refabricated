@@ -2,34 +2,40 @@ package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import net.minecraft.block.*;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.text.MutableText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysticalCropBlock extends CropBlock implements CropProvider {
+public class MysticalCropBlock extends CropBlock implements ICropProvider {
+    private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
     private final Crop crop;
-    private static final VoxelShape SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
 
     public MysticalCropBlock(Crop crop) {
-        super(Settings.copy(Blocks.WHEAT));
+        super(Properties.copy(Blocks.WHEAT));
         this.crop = crop;
     }
 
     @Override
-    public boolean canGrow(World world, net.minecraft.util.math.random.Random random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return false;
     }
 
@@ -42,13 +48,18 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
     }*/
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
-        int age = state.get(AGE);
+    public String getDescriptionId() {
+        return Localizable.of("block.mysticalagriculture.mystical_crop").args(this.crop.getDisplayName()).buildString();
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+        int age = state.getValue(AGE);
 
         int crop = 0;
         int seed = 1;
@@ -57,18 +68,18 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
         if (age == this.getMaxAge()) {
             crop = 1;
 
-            var vec = builder.get(LootContextParameters.ORIGIN);
+            var vec = builder.getOptionalParameter(LootContextParams.ORIGIN);
 
             if (vec != null) {
-                var world = builder.getWorld();
+                var level = builder.getLevel();
                 var pos = new BlockPos((int) Math.floor(vec.x), (int) Math.floor(vec.y), (int) Math.floor(vec.z));
-                var below = world.getBlockState(pos.down()).getBlock();
+                var below = level.getBlockState(pos.below()).getBlock();
                 double chance = this.crop.getSecondaryChance(below);
 
                 if (Math.random() < chance)
                     crop = 2;
 
-                if ((ModConfigs.SECONDARY_SEED_DROPS.get() && Math.random() < chance))
+                if (ModConfigs.SECONDARY_SEED_DROPS.get() && Math.random() < chance)
                     seed = 2;
 
                 double fertilizerChance = ModConfigs.FERTILIZED_ESSENCE_DROP_CHANCE.get();
@@ -78,10 +89,11 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
         }
 
         List<ItemStack> drops = new ArrayList<>();
+
         if (crop > 0)
             drops.add(new ItemStack(this.getCropsItem(), crop));
 
-        drops.add(new ItemStack(this.getSeedsItem(), seed));
+        drops.add(new ItemStack(this.getBaseSeedId(), seed));
 
         if (fertilizer > 0)
             drops.add(new ItemStack(Items.FERTILIZED_ESSENCE));
@@ -89,33 +101,26 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
         return drops;
     }
 
-
-
     /*@Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
         return super.getPickStack(world, pos, state);
     }*/
 
     @Override
-    protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-        return floor.getBlock() instanceof FarmlandBlock;
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getBlock() instanceof FarmBlock;
     }
 
     @Override
-    protected ItemConvertible getSeedsItem() {
+    protected ItemLike getBaseSeedId() {
         return this.crop.getSeedsItem();
-    }
-
-    @Override
-    public MutableText getName() {
-        return Localizable.of("block.mysticalagriculture.mystical_crop").args(this.crop.getDisplayName()).build();
     }
 
     public Crop getCrop() {
         return this.crop;
     }
 
-    protected ItemConvertible getCropsItem() {
+    protected ItemLike getCropsItem() {
         return this.crop.getEssenceItem();
     }
 }

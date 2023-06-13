@@ -1,43 +1,43 @@
 package com.alex.mysticalagriculture.blockentities;
 
+import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
+import com.alex.cucumber.energy.DynamicEnergyStorage;
+import com.alex.cucumber.helper.StackHelper;
+import com.alex.cucumber.inventory.BaseItemStackHandler;
+import com.alex.cucumber.mixin.CropBlockInvoker;
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.blocks.HarvesterBlock;
+import com.alex.mysticalagriculture.container.HarvesterContainer;
+import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.mixin.CropBlockInvoker;
-import com.alex.mysticalagriculture.screenhandler.HarvesterScreenHandler;
 import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
-import com.alex.mysticalagriculture.util.UpgradeableMachine;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseInventoryBlockEntity;
-import com.alex.mysticalagriculture.cucumber.energy.DynamicEnergyStorage;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.cucumber.inventory.BaseItemStackHandler;
+import com.alex.mysticalagriculture.util.IUpgradeableMachine;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, UpgradeableMachine {
+public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, IUpgradeableMachine {
     private static final int FUEL_TICK_MULTIPLIER = 20;
     public static final int OPERATION_TIME = 100;
     public static final int FUEL_USAGE = 40;
@@ -53,16 +53,15 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     private int fuelItemValue;
     private long oldEnergy;
     private List<BlockPos> positions;
-    private BlockPos lastPosition = BlockPos.ORIGIN;
+    private BlockPos lastPosition = BlockPos.ZERO;
     private MachineUpgradeTier tier;
     private Direction direction;
 
-
     public HarvesterBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.HARVESTER, pos, state);
-        this.inventory = createInventoryHandler(this::markDirty);
+        this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
         this.upgradeInventory = new UpgradeItemStackHandler();
-        this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirty);
+        this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirtyAndDispatch);
     }
 
     public BaseItemStackHandler getInventory() {
@@ -70,14 +69,13 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     }
 
     @Override
-    public Text getDisplayName() {
+    public Component getDisplayName() {
         return Localizable.of("container.mysticalagriculture.harvester").build();
     }
 
-    @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return HarvesterScreenHandler.create(syncId, playerInventory, this.inventory, this.upgradeInventory, this.getPos());
+    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return HarvesterContainer.create(i, inventory, this.inventory, this.upgradeInventory, this.getBlockPos());
     }
 
     @Override
@@ -86,41 +84,41 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
-        this.progress = nbt.getInt("Progress");
-        this.fuelLeft = nbt.getInt("FuelLeft");
-        this.fuelItemValue = nbt.getInt("FuelItemValue");
-        this.energy.deserializeNBT(nbt.get("Energy"));
-        this.lastPosition = BlockPos.fromLong(nbt.getLong("LastPosition"));
-        this.upgradeInventory.deserializeNBT(nbt.getCompound("UpgradeInventory"));
+        this.progress = tag.getInt("Progress");
+        this.fuelLeft = tag.getInt("FuelLeft");
+        this.fuelItemValue = tag.getInt("FuelItemValue");
+        this.energy.deserializeNBT(tag.get("Energy"));
+        this.lastPosition = BlockPos.of(tag.getLong("LastPosition"));
+        this.upgradeInventory.deserializeNBT(tag.getCompound("UpgradeInventory"));
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
-        nbt.putInt("Progress", this.progress);
-        nbt.putInt("FuelLeft", this.fuelLeft);
-        nbt.putInt("FuelItemValue", this.fuelItemValue);
-        nbt.put("Energy", this.energy.serializeNBT());
-        nbt.putLong("LastPosition", this.lastPosition.asLong());
-        nbt.put("UpgradeInventory", this.upgradeInventory.serializeNBT());
+        tag.putInt("Progress", this.progress);
+        tag.putInt("FuelLeft", this.fuelLeft);
+        tag.putInt("FuelItemValue", this.fuelItemValue);
+        tag.put("Energy", this.energy.serializeNBT());
+        tag.putLong("LastPosition", this.lastPosition.asLong());
+        tag.put("UpgradeInventory", this.upgradeInventory.serializeNBT());
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, HarvesterBlockEntity blockEntity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, HarvesterBlockEntity blockEntity) {
         var mark = false;
 
         if (blockEntity.energy.getAmount() < blockEntity.energy.getCapacity()) {
-            var fuel = blockEntity.inventory.getStack(0);
+            var fuel = blockEntity.inventory.getItem(0);
 
             if (blockEntity.fuelLeft <= 0 && !fuel.isEmpty()) {
                 blockEntity.fuelItemValue = getFuelTime(fuel);
 
                 if (blockEntity.fuelItemValue > 0) {
                     blockEntity.fuelLeft = blockEntity.fuelItemValue *= FUEL_TICK_MULTIPLIER;
-                    blockEntity.inventory.setStackInSlot(0, StackHelper.shrink(blockEntity.inventory.getStack(0), 1, false));
+                    blockEntity.inventory.setStackInSlot(0, StackHelper.shrink(blockEntity.inventory.getItem(0), 1, false));
 
                     mark = true;
                 }
@@ -141,11 +139,11 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
         }
 
         var tier = blockEntity.getMachineTier();
-        var direction = state.get(HarvesterBlock.FACING);
+        Direction direction = state.getValue(HarvesterBlock.FACING);
 
         if (tier != blockEntity.tier || direction != blockEntity.direction) {
             var range = tier != null ? BASE_RANGE + tier.getAddedRange() : BASE_RANGE;
-            var center = pos.offset(direction, range + 1);
+            var center = pos.relative(direction, range + 1);
 
             blockEntity.tier = tier;
             blockEntity.direction = direction;
@@ -162,32 +160,32 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
 
         var operationTime = blockEntity.getOperationTime();
 
-        if (blockEntity.progress > operationTime && !world.isReceivingRedstonePower(blockEntity.getPos())) {
+        if (blockEntity.progress > operationTime && !level.hasNeighborSignal(blockEntity.getBlockPos())) {
             var nextPos = blockEntity.findNextPosition();
-            var cropState = world.getBlockState(nextPos);
+            var cropState = level.getBlockState(nextPos);
             var block = cropState.getBlock();
 
             if (block instanceof CropBlock crop) {
                 var seed = getSeed(block);
-                if (seed != null && crop.isMature(cropState)) {
-                    var drops = Block.getDroppedStacks(cropState, (ServerWorld) world, nextPos, blockEntity);
+                if (seed != null && crop.isMaxAge(cropState)) {
+                    var drops = Block.getDrops(cropState, (ServerLevel) level, nextPos, blockEntity);
 
                     for (var drop : drops) {
                         var item = drop.getItem();
 
                         if (!drop.isEmpty() && item == seed) {
-                            drop.decrement(1);
+                            drop.shrink(1);
                             break;
                         }
                     }
 
                     for (var drop : drops) {
                         if (!drop.isEmpty()) {
-                            blockEntity.addItemToInventory(drop, world, nextPos);
+                            blockEntity.addItemToInventory(drop, level, nextPos);
                         }
                     }
 
-                    world.setBlockState(nextPos, crop.withAge(0));
+                    level.setBlockAndUpdate(nextPos, crop.getStateForAge(0));
 
                     try (Transaction transaction = Transaction.openOuter()) {
                         blockEntity.energy.extract(blockEntity.getFuelUsage(), transaction);
@@ -219,7 +217,7 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
         }
 
         if (mark) {
-            blockEntity.markDirty();
+            blockEntity.markDirtyAndDispatch();
         }
     }
 
@@ -228,7 +226,7 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
             return 0;
         } else {
             Item item = fuel.getItem();
-            return AbstractFurnaceBlockEntity.createFuelTimeMap().getOrDefault(item, 0);
+            return AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0);
         }
     }
 
@@ -302,17 +300,17 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
         return this.lastPosition;
     }
 
-    private void addItemToInventory(ItemStack stack, World world, BlockPos pos) {
+    private void addItemToInventory(ItemStack stack, Level level, BlockPos pos) {
         var remaining = stack.getCount();
-        for (int i = 1; i < this.inventory.size(); i++) {
-            var stackInSlot = this.inventory.getStack(i);
+        for (int i = 1; i < this.inventory.getContainerSize(); i++) {
+            var stackInSlot = this.inventory.getItem(i);
 
             if (stackInSlot.isEmpty()) {
                 this.inventory.setStackInSlot(i, stack.copy());
                 return;
             }
 
-            var insertSize = Math.min(remaining, stackInSlot.getMaxCount() - stackInSlot.getCount());
+            var insertSize = Math.min(remaining, stackInSlot.getMaxStackSize() - stackInSlot.getCount());
 
             remaining -= insertSize;
 
@@ -324,7 +322,7 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
                 return;
         }
 
-        Block.dropStack(world, pos, StackHelper.withSize(stack, remaining, false));
+        Block.popResource(level, pos, StackHelper.withSize(stack, remaining, false));
     }
 
     private static Item getSeed(Block block) {
@@ -338,7 +336,7 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(pos);
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+        buf.writeBlockPos(worldPosition);
     }
 }

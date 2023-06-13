@@ -1,66 +1,68 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.CropTier;
+import com.alex.cucumber.iface.Colored;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.iface.Colored;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FarmlandBlock;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfusedFarmlandBlock extends FarmlandBlock implements Colored {
+public class InfusedFarmlandBlock extends FarmBlock implements Colored {
     public static final List<InfusedFarmlandBlock> FARMLANDS = new ArrayList<>();
     private final CropTier tier;
 
     public InfusedFarmlandBlock(CropTier tier) {
-        super(Settings.copy(Blocks.FARMLAND));
+        super(Properties.copy(Blocks.FARMLAND));
         this.tier = tier;
 
         FARMLANDS.add(this);
     }
 
     @Override
-    public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-        entity.handleFallDamage(fallDistance, 1.0F, world.getDamageSources().fall());
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+        entity.causeFallDamage(fallDistance, 1.0F, level.damageSources().fall());
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, net.minecraft.util.math.random.Random random) {
-        int moisture = state.get(MOISTURE);
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        int moisture = state.getValue(MOISTURE);
 
-        if (!isWaterNearby(world, pos) && !world.hasRain(pos.up())) {
+        if (!isNearWater(level, pos) && !level.isRainingAt(pos.above())) {
             if (moisture > 0) {
-                world.setBlockState(pos, state.with(MOISTURE, moisture - 1), 2);
+                level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
             }
         } else if (moisture < 7) {
-            world.setBlockState(pos, state.with(MOISTURE, 7), 2);
-        }    }
+            level.setBlock(pos, state.setValue(MOISTURE, 7), 2);
+        }
+    }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         List<ItemStack> drops = new ArrayList<>();
-        var stack = builder.get(LootContextParameters.TOOL);
+        var stack = builder.getOptionalParameter(LootContextParams.TOOL);
 
-        if (stack != null && EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) > 0) {
+        if (stack != null && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
             drops.add(new ItemStack(this));
         } else {
             drops.add(new ItemStack(Blocks.DIRT));
-            var random = builder.getWorld().getRandom();
+            var random = builder.getLevel().getRandom();
             if (random.nextInt(100) < 25)
                 drops.add(new ItemStack(this.tier.getEssence(), 1));
         }
@@ -69,7 +71,7 @@ public class InfusedFarmlandBlock extends FarmlandBlock implements Colored {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.TIER.args(this.tier.getDisplayName()).build());
     }
 

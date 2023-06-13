@@ -1,17 +1,14 @@
 package com.alex.mysticalagriculture.lib;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.MysticalAgriculturePlugin;
+import com.alex.mysticalagriculture.api.IMysticalAgriculturePlugin;
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.crop.CropType;
 import com.alex.mysticalagriculture.api.lib.PluginConfig;
-import com.alex.mysticalagriculture.api.registry.AugmentRegistry;
-import com.alex.mysticalagriculture.api.registry.CropRegistry;
-import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.alex.mysticalagriculture.init.Items;
 
-public class ModCorePlugin implements MysticalAgriculturePlugin {
+public class ModCorePlugin implements IMysticalAgriculturePlugin {
     @Override
     public void configure(PluginConfig config) {
         config.setModId(MysticalAgriculture.MOD_ID);

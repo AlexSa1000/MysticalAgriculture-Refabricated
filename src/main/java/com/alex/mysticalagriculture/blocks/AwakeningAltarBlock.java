@@ -1,39 +1,38 @@
 package com.alex.mysticalagriculture.blocks;
 
+import com.alex.cucumber.block.BaseEntityBlock;
+import com.alex.cucumber.helper.StackHelper;
+import com.alex.cucumber.util.VoxelShapeBuilder;
 import com.alex.mysticalagriculture.blockentities.AwakeningAltarBlockEntity;
 import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.items.WandItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.cucumber.blockentity.BaseBlockEntity;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.cucumber.util.VoxelShapeBuilder;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
-public class AwakeningAltarBlock extends BaseBlockEntity implements BlockEntityProvider {
+public class AwakeningAltarBlock extends BaseEntityBlock {
     public static final VoxelShape ALTAR_SHAPE = VoxelShapeBuilder.builder()
             .cuboid(0, 0, 0, 16, 8, 16).cuboid(3, 13, 3, 13, 14, 13)
             .cuboid(6, 10, 6, 10, 11, 10).cuboid(5, 11, 5, 11, 13, 11)
@@ -48,74 +47,76 @@ public class AwakeningAltarBlock extends BaseBlockEntity implements BlockEntityP
             .cuboid(5, 8, 5, 11, 10, 11).build();
 
     public AwakeningAltarBlock() {
-        super(Material.STONE, BlockSoundGroup.STONE, 10.0F, 12.0F, true);
+        super(Material.STONE, SoundType.STONE, 10.0F, 12.0F, true);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AwakeningAltarBlockEntity(pos, state);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        var block = world.getBlockEntity(pos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        var tile = level.getBlockEntity(pos);
 
-        if (block instanceof AwakeningAltarBlockEntity altar) {
+        if (tile instanceof AwakeningAltarBlockEntity altar) {
             var inventory = altar.getInventory();
-            var input = inventory.getStack(0);
-            var output = inventory.getStack(1);
+            var input = inventory.getItem(0);
+            var output = inventory.getItem(1);
 
             if (!output.isEmpty()) {
-                var item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), output);
+                var item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), output);
 
-                item.resetPickupDelay();
-                world.spawnEntity(item);
-                inventory.setStack(1, ItemStack.EMPTY);
+                item.setNoPickUpDelay();
+                level.addFreshEntity(item);
+                inventory.setStackInSlot(1, ItemStack.EMPTY);
             } else {
-                var held = player.getStackInHand(hand);
-
+                var held = player.getItemInHand(hand);
                 if (input.isEmpty() && !held.isEmpty()) {
-                    inventory.setStack(0, StackHelper.withSize(held, 1, false));
-                    player.setStackInHand(hand, StackHelper.shrink(held, 1, false));
-                    world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    inventory.setStackInSlot(0, StackHelper.withSize(held, 1, false));
+                    player.setItemInHand(hand, StackHelper.shrink(held, 1, false));
+                    level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                } else if (!input.isEmpty()) {
+                    if (held.getItem() instanceof WandItem)
+                        return InteractionResult.PASS;
 
-                } else if (!input.isEmpty()){
-                    var item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), input);
+                    var item = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), input);
 
-                    item.resetPickupDelay();
-                    world.spawnEntity(item);
-                    inventory.setStack(0, ItemStack.EMPTY);
+                    item.setNoPickUpDelay();
+                    level.addFreshEntity(item);
+                    inventory.setStackInSlot(0, ItemStack.EMPTY);
                 }
             }
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            var block = world.getBlockEntity(pos);
-            if (block instanceof AwakeningAltarBlockEntity altar) {
-                ItemScatterer.spawn(world, pos, altar.getInventory().getStacks());
+            var tile = level.getBlockEntity(pos);
+
+            if (tile instanceof AwakeningAltarBlockEntity altar) {
+                Containers.dropContents(level, pos, altar.getInventory().getStacks());
             }
         }
 
-        super.onStateReplaced(state, world, pos, newState, moved);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return ALTAR_SHAPE;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.ACTIVATE_WITH_REDSTONE.build());
     }
 
     @Override
-    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntities.AWAKENING_ALTAR, AwakeningAltarBlockEntity::tick);
+    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTicker(type, BlockEntities.AWAKENING_ALTAR, AwakeningAltarBlockEntity::tick);
     }
 }
