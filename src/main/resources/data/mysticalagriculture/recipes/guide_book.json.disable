@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "mysticalagriculture:inferium_essence"
+    }
+  ],
+  "result": {
+    "item": "patchouli:guide_book",
+    "nbt": {
+      "patchouli:book": "mysticalagriculture:guide"
+    }
+  }
+}

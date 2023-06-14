@@ -12,7 +12,7 @@ public class CropType {
 
     private final ResourceLocation id;
     private final ResourceLocation stemModel;
-    private Supplier<? extends Item> craftingSeed;
+    private Item craftingSeed;
 
     /**
      * Represents a type of crop, such as resource or mob
@@ -58,7 +58,7 @@ public class CropType {
      * @return the crafting seed of this type
      */
     public Item getCraftingSeed() {
-        return this.craftingSeed == null ? null : this.craftingSeed.get();
+        return this.craftingSeed == null ? null : this.craftingSeed;
     }
 
     /**
@@ -66,8 +66,7 @@ public class CropType {
      * @param item the crafting seed item
      * @return this crop type
      */
-    public CropType setCraftingSeed(Supplier<? extends Item> item) {
+    public void setCraftingSeed(Item item) {
         this.craftingSeed = item;
-        return this;
     }
 }

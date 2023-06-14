@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.1-SNAPSHOT'
+	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -83,7 +83,7 @@ dependencies {
 
 	if (project.runtime_itemlist_mod == "rei") {
 		// Manually override architectury TODO remove once REI's dependency is fixed
-		modRuntimeOnly "dev.architectury:architectury-fabric:6.5.69"
+		modRuntimeOnly("dev.architectury:architectury-fabric:8.1.87")
 		modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
 			exclude(group: "net.fabricmc.fabric-api")
 		}
@@ -97,20 +97,20 @@ dependencies {
 		throw new GradleException("Invalid runtime_itemlist_mod value: " + project.runtime_itemlist_mod)
 	}
 
-	include modImplementation ("draylar:magna:${project.magna_version}") {
+	include modImplementation("draylar:magna:${project.magna_version}") {
         exclude group: "net.fabricmc"
         exclude group: "com.jamieswhiteshirt"
         exclude group: "me.shedaniel.cloth"
 		exclude group: "io.github.prospector", module: "modmenu"
 	}
 
-	modImplementation "curse.maven:jade-324717:${project.jade_version}"
+	modImplementation("curse.maven:jade-324717:${project.jade_version}")
 
 	modImplementation("com.alex.cucumber:Cucumber-Refabricated:1.1.1")
 
 	implementation "com.electronwill.night-config:core:${project.nightconfig_version}"
 	implementation "com.electronwill.night-config:toml:${project.nightconfig_version}"
-	modApi "net.minecraftforge:forgeconfigapiport-fabric:4.2.11"
+	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:6.0.2"
 }
 
 base {
@@ -170,5 +170,11 @@ sourceSets {
 					'src/generated/resources'
 			]
 		}
+	}
+}
+
+configurations.all {
+	resolutionStrategy {
+		force("net.fabricmc:fabric-loader:$loader_version")
 	}
 }

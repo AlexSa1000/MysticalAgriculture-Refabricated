@@ -170,6 +170,14 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implemen
         }
     }
 
+    public List<EssenceVesselBlockEntity> getEssenceVessels() {
+        return this.getPedestals()
+                .stream()
+                .filter(p -> p instanceof EssenceVesselBlockEntity)
+                .map(p -> (EssenceVesselBlockEntity) p)
+                .toList();
+    }
+
     private List<BaseInventoryBlockEntity> getPedestals() {
         if (this.getLevel() == null)
             return Collections.emptyList();

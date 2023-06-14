@@ -33,17 +33,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import team.reborn.energy.api.EnergyStorage;
 
-import static com.alex.mysticalagriculture.init.ModCreativeModeTabs.displayItems;
-
-
 public class MysticalAgriculture implements ModInitializer {
     public static final String MOD_ID = "mysticalagriculture";
     public static final String NAME = "MysticalAgriculture: Refabricated";
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
-    public static final CreativeModeTab ITEM_GROUP = FabricItemGroup.builder(new ResourceLocation(MysticalAgriculture.MOD_ID, "creative_mode_tab"))
+    public static final CreativeModeTab CREATIVE_MODE_TAB = FabricItemGroup.builder(new ResourceLocation(MysticalAgriculture.MOD_ID, "creative_mode_tab"))
             .title(Component.translatable("itemGroup.minecraft.mysticalagriculture"))
             .icon(() -> new ItemStack(ModItems.INFERIUM_ESSENCE))
-            .displayItems((displayItems)).build();
+            .displayItems((ModCreativeModeTabs.displayItems)).build();
 
     @Override
     public void onInitialize() {
@@ -67,7 +64,7 @@ public class MysticalAgriculture implements ModInitializer {
         ModBlockEntities.registerBlockEntities();
         ModRecipeTypes.registerRecipeTypes();
         ModRecipeSerializers.registerRecipeSerializers();
-        ModContainerTypes.registerScreenHandlerTypes();
+        ModContainerTypes.registerModContainerTypes();
         ModEnchantments.registerEnchantments();
 
         ModWorldFeatures.registerFeatures();

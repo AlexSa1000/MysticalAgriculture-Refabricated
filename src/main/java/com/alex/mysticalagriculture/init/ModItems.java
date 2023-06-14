@@ -221,6 +221,9 @@ public class ModItems {
         ITEMS.forEach((id, item) -> Registry.register(BuiltInRegistries.ITEM, id, item));
 
         CropRegistry.getInstance().onRegisterItems();
+
+        GEAR_ITEMS.forEach((id, item) -> Registry.register(BuiltInRegistries.ITEM, id, item));
+
         AugmentRegistry.getInstance().onRegisterItems();
     }
 

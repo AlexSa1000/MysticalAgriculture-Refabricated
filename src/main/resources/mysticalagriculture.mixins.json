@@ -4,19 +4,21 @@
   "package": "com.alex.mysticalagriculture.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CropBlockInvoker",
     "CropBlockMixin",
-    "DataPackContentsMixin",
-    "ExperienceOrbEntityMixin",
-    "ItemStackMixin",
+    "FishingHookMixin",
     "LivingEntityMixin",
-    "PlayerManagerMixin"
+    "MushroomCowMixin",
+    "ReloadableServerResourcesMixin",
+    "ServerPlayerGameModeMixin",
+    "SheepMixin",
+    "SnowGolemMixin"
   ],
   "client": [
-    "AbstractClientPlayerEntityMixin",
+    "AbstractClientPlayerMixin",
     "ClientRecipeBookMixin",
-    "HeldItemRendererMixin",
-    "PlayerEntityRendererMixin"
+    "FishingHookRendererMixin",
+    "ItemInHandRendererMixin",
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
