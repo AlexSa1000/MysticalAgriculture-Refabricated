@@ -48,7 +48,7 @@ public abstract class ItemInHandRendererMixin {
             boolean bl3 = humanoidArm == HumanoidArm.RIGHT;
             int n = k = bl3 ? 1 : -1;
             if (abstractClientPlayer.isUsingItem() && abstractClientPlayer.getUseItemRemainingTicks() > 0 && abstractClientPlayer.getUsedItemHand() == interactionHand) {
-                this.applyItemArmAttackTransform(poseStack, humanoidArm, i);
+                this.applyItemArmTransform(poseStack, humanoidArm, i);
                 poseStack.translate((float)k * -0.4785682f, -0.094387f, 0.05731531f);
                 poseStack.mulPose(Axis.XP.rotationDegrees(-11.935f));
                 poseStack.mulPose(Axis.YP.rotationDegrees((float)k * 65.3f));
@@ -80,6 +80,7 @@ public abstract class ItemInHandRendererMixin {
                 }
             }
             this.renderItem(abstractClientPlayer, itemStack, bl3 ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, !bl3, poseStack, multiBufferSource, j);
+            ci.cancel();
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.mixin;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;

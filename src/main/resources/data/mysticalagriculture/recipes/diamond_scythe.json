@@ -10,7 +10,7 @@
       "tag": "c:diamonds"
     },
     "S": {
-      "tag": "c:wooden_rods"
+      "item": "minecraft:stick"
     }
   },
   "result": {
