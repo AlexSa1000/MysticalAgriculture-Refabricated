@@ -2,20 +2,20 @@ package com.alex.mysticalagriculture.client.screen;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
-import com.alex.mysticalagriculture.screenhandler.HarvesterScreenHandler;
-import com.alex.mysticalagriculture.cucumber.client.screen.BaseHandledScreen;
-import com.alex.mysticalagriculture.cucumber.client.screen.widget.EnergyBarWidget;
-import com.alex.mysticalagriculture.cucumber.util.Formatting;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import com.alex.mysticalagriculture.container.HarvesterContainer;
+import com.alex.cucumber.client.screen.BaseContainerScreen;
+import com.alex.cucumber.client.screen.widget.EnergyBarWidget;
+import com.alex.cucumber.util.Formatting;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-public class HarvesterScreen extends BaseHandledScreen<HarvesterScreenHandler> {
-    private static final Identifier BACKGROUND = new Identifier(MysticalAgriculture.MOD_ID, "textures/gui/harvester.png");
+public class HarvesterScreen extends BaseContainerScreen<HarvesterContainer> {
+    private static final ResourceLocation BACKGROUND = new ResourceLocation(MysticalAgriculture.MOD_ID, "textures/gui/harvester.png");
     private HarvesterBlockEntity block;
 
-    public HarvesterScreen(HarvesterScreenHandler container, PlayerInventory inv, Text title) {
+    public HarvesterScreen(HarvesterContainer container, Inventory inv, Component title) {
         super(container, inv, title, BACKGROUND, 176, 194);
     }
 
@@ -23,22 +23,22 @@ public class HarvesterScreen extends BaseHandledScreen<HarvesterScreenHandler> {
     protected void init() {
         super.init();
 
-        int x = this.x;
-        int y = this.y;
+        int x = this.leftPos;
+        int y = this.topPos;
 
         this.block = this.getBlockEntity();
 
         if (this.block != null) {
-            this.addDrawableChild(new EnergyBarWidget(x + 7, y + 17, this.block.getEnergy(), this));
+            this.addRenderableWidget(new EnergyBarWidget(x + 7, y + 17, this.block.getEnergy(), this));
         }
     }
 
     @Override
-    protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
         var title = this.getTitle().getString();
 
-        this.textRenderer.draw(matrices, title, (float) (this.backgroundWidth / 2 - this.textRenderer.getWidth(title) / 2), 6.0F, 4210752);
-        this.textRenderer.draw(matrices, this.playerInventoryTitle, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
+        this.font.draw(stack, title, (float) (this.imageWidth / 2 - this.font.width(title) / 2), 6.0F, 4210752);
+        this.font.draw(stack, this.playerInventoryTitle, 8.0F, (float) (this.imageHeight - 96 + 2), 4210752);
 
         // TODO: temporary workaround for dynamic energy storage
         if (this.block != null) {
@@ -54,36 +54,36 @@ public class HarvesterScreen extends BaseHandledScreen<HarvesterScreenHandler> {
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        super.drawBackground(matrices, delta, mouseX, mouseY);
+    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
+        this.renderDefaultBg(stack, partialTicks, mouseX, mouseY);
 
-        int x = this.x;
-        int y = this.y;
+        int x = this.leftPos;
+        int y = this.topPos;
 
         if (this.getFuelItemValue() > 0) {
             int lol = this.getBurnLeftScaled(13);
-            this.drawTexture(matrices, x + 31, y + 52 - lol, 176, 12 - lol, 14, lol + 1);
+            this.blit(stack, x + 31, y + 52 - lol, 176, 12 - lol, 14, lol + 1);
         }
     }
 
     @Override
-    protected void drawMouseoverTooltip(MatrixStack stack, int mouseX, int mouseY) {
-        int x = this.x;
-        int y = this.y;
+    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
+        int x = this.leftPos;
+        int y = this.topPos;
 
-        super.drawMouseoverTooltip(stack, mouseX, mouseY);
+        super.renderTooltip(stack, mouseX, mouseY);
 
         if (mouseX > x + 30 && mouseX < x + 45 && mouseY > y + 39 && mouseY < y + 53) {
-            var text = Text.literal(Formatting.energy(this.getFuelLeft()).getString());
+            var text = Component.literal(number(this.getFuelLeft()) + " FE");
             this.renderTooltip(stack, text, mouseX, mouseY);
         }
     }
 
     private HarvesterBlockEntity getBlockEntity() {
-        var world = this.client.world;
+        var level = this.minecraft.level;
 
-        if (world != null) {
-            var block = world.getBlockEntity(this.getScreenHandler().getBlockPos());
+        if (level != null) {
+            var block = level.getBlockEntity(this.getMenu().getBlockPos());
 
             if (block instanceof HarvesterBlockEntity harvester) {
                 return harvester;

@@ -4,9 +4,6 @@ import com.alex.mysticalagriculture.enchantment.MysticalEnlightenmentEnchantment
 import com.alex.mysticalagriculture.enchantment.SoulSiphonerEnchant;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class ModEnchantments {

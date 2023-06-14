@@ -3,8 +3,8 @@ package com.alex.mysticalagriculture.container.slot;
 import com.alex.cucumber.forge.items.SlotItemHandler;
 import com.alex.cucumber.iface.ToggleableSlot;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
-import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.IAugmentProvider;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +45,7 @@ public class AugmentSlot extends SlotItemHandler implements ToggleableSlot {
         var tinkerableItem = stackInSlot.getItem();
         var augmentItem = stack.getItem();
 
-        if (tinkerableItem instanceof Tinkerable tinkerable && augmentItem instanceof AugmentProvider augmentProvider) {
+        if (tinkerableItem instanceof ITinkerable tinkerable && augmentItem instanceof IAugmentProvider augmentProvider) {
             var augment = augmentProvider.getAugment();
 
             return tinkerable.canApplyAugment(augment);
@@ -59,7 +59,7 @@ public class AugmentSlot extends SlotItemHandler implements ToggleableSlot {
         var stack = this.getItemHandler().getItem(0);
         var item = stack.getItem();
 
-        if (item instanceof Tinkerable tinkerable) {
+        if (item instanceof ITinkerable tinkerable) {
             return this.augmentSlot < tinkerable.getAugmentSlots();
         }
 

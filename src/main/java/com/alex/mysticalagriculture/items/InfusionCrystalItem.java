@@ -2,8 +2,6 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.cucumber.item.BaseReusableItem;
 import com.alex.mysticalagriculture.config.ModConfigs;
-import com.alex.mysticalagriculture.cucumber.item.BaseReusableItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.item.ItemStack;
 
 public class InfusionCrystalItem extends BaseReusableItem {

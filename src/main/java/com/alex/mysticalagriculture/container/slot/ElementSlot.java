@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.container.slot;
 import com.alex.cucumber.forge.items.SlotItemHandler;
 import com.alex.cucumber.iface.ToggleableSlot;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
-import com.alex.mysticalagriculture.api.tinkering.ElementalItem;
+import com.alex.mysticalagriculture.api.tinkering.IElementalItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -33,6 +33,6 @@ public class ElementSlot extends SlotItemHandler implements ToggleableSlot {
         var stack = this.getItemHandler().getItem(0);
         var item = stack.getItem();
 
-        return item instanceof ElementalItem;
+        return item instanceof IElementalItem;
     }
 }

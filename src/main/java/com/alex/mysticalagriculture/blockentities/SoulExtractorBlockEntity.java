@@ -8,7 +8,6 @@ import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
-import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import com.alex.mysticalagriculture.util.IUpgradeableMachine;

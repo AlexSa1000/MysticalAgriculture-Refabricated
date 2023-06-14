@@ -1,5 +1,7 @@
 package com.alex.mysticalagriculture.client.handler;
 
+import com.alex.cucumber.helper.ColorHelper;
+import com.alex.cucumber.iface.Colored;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.blocks.InfusedFarmlandBlock;
@@ -7,11 +9,9 @@ import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
-import com.alex.mysticalagriculture.cucumber.helper.ColorHelper;
-import com.alex.mysticalagriculture.cucumber.iface.Colored;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.renderer.RenderType;
 
 public class ColorHandler {
 
@@ -22,14 +22,14 @@ public class ColorHandler {
             if (crop.isFlowerColored() && crop.getCropBlock() != null)
                 ColorProviderRegistry.BLOCK.register((state, world, pos, tint) -> crop.getFlowerColor(), crop.getCropBlock());
 
-            BlockRenderLayerMap.INSTANCE.putBlock(crop.getCropBlock(), RenderLayer.getCutout());
+            BlockRenderLayerMap.INSTANCE.putBlock(crop.getCropBlock(), RenderType.cutout());
         }
     }
 
     public static void onItemColors() {
         ColorProviderRegistry.ITEM.register(new Colored.ItemBlockColors(), InfusedFarmlandBlock.FARMLANDS.toArray(new InfusedFarmlandBlock[0]));
         ColorProviderRegistry.ITEM.register((stack, tint) -> {
-            float damage = (float) (stack.getMaxDamage() - stack.getDamage()) / stack.getMaxDamage();
+            float damage = (float) (stack.getMaxDamage() - stack.getDamageValue()) / stack.getMaxDamage();
             return ColorHelper.saturate(0x00D9D9, damage);
         }, ModItems.INFUSION_CRYSTAL);
 

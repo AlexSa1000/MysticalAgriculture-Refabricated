@@ -1,6 +1,8 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.cucumber.item.tool.BaseSwordItem;
+import com.alex.mysticalagriculture.api.soul.ISoulSiphoningItem;
+import com.alex.mysticalagriculture.lib.ModItemTier;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -13,7 +15,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class SouliumDaggerItem extends BaseSwordItem implements SoulSiphoningItem {
+public class SouliumDaggerItem extends BaseSwordItem implements ISoulSiphoningItem {
     private final DaggerType type;
 
     public SouliumDaggerItem(Tier tier, DaggerType type) {
@@ -78,7 +80,7 @@ public class SouliumDaggerItem extends BaseSwordItem implements SoulSiphoningIte
         }
 
         private static boolean isPassive(LivingEntity entity) {
-            return entity.getClassification().isFriendly();
+            return entity.getType().getCategory().isFriendly();
         }
     }
 }

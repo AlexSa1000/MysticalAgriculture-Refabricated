@@ -1,13 +1,11 @@
 package com.alex.mysticalagriculture.items.armor;
 
-import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
-import com.alex.mysticalagriculture.api.util.AugmentUtils;
-import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.cucumber.item.BaseArmorItem;
 import com.alex.cucumber.util.Utils;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.api.tinkering.AugmentType;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
+import com.alex.mysticalagriculture.api.util.AugmentUtils;
+import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.google.common.collect.HashMultimap;
@@ -33,7 +31,6 @@ import net.minecraft.world.level.block.SugarCaneBlock;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class EssenceChestplateItem extends BaseArmorItem implements ITinkerable {
     public static final UUID[] ARMOR_MODIFIERS = new UUID[] { UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150") };

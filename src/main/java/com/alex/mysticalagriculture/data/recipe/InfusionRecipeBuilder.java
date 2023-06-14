@@ -6,13 +6,14 @@ import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class InfusionRecipeBuilder {
     private final JsonArray conditions = new JsonArray();
     private Ingredient input = Ingredient.EMPTY;
 
-    public InfusionRecipeBuilder(ItemConvertible output, int count) {
+    public InfusionRecipeBuilder(ItemLike output, int count) {
         this.result = output.asItem();
         this.count = count;
     }
@@ -34,8 +35,8 @@ public class InfusionRecipeBuilder {
         this.ingredients.add(ingredient);
     }
 
-    public void addIngredient(ItemConvertible ingredient) {
-        this.ingredients.add(Ingredient.ofItems(ingredient));
+    public void addIngredient(ItemLike ingredient) {
+        this.ingredients.add(Ingredient.of(ingredient));
     }
 
     public void addCondition(JsonObject condition) {
@@ -77,19 +78,19 @@ public class InfusionRecipeBuilder {
         return builder;
     }
 
-    public void build(Consumer<RecipeJsonProvider> consumer, Identifier id) {
+    public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
         consumer.accept(new InfusionRecipeBuilder.Result(id, this.result, this.count, this.input, this.ingredients, this.conditions));
     }
 
-    public static class Result implements RecipeJsonProvider {
-        private final Identifier id;
+    public static class Result implements FinishedRecipe {
+        private final ResourceLocation id;
         private final Item result;
         private final int count;
         private final Ingredient input;
         private final List<Ingredient> ingredients;
         private final JsonArray conditions;
 
-        public Result(Identifier id, Item result, int count, Ingredient input, List<Ingredient> ingredients, JsonArray conditions) {
+        public Result(ResourceLocation id, Item result, int count, Ingredient input, List<Ingredient> ingredients, JsonArray conditions) {
             this.id = id;
             this.result = result;
             this.count = count;
@@ -99,7 +100,7 @@ public class InfusionRecipeBuilder {
         }
 
         @Override
-        public void serialize(JsonObject json) {
+        public void serializeRecipeData(JsonObject json) {
             json.add("fabric:load_conditions", this.conditions);
 
             json.add("input", this.input.toJson());
@@ -113,7 +114,7 @@ public class InfusionRecipeBuilder {
 
             var result = new JsonObject();
 
-            result.addProperty("item", Registries.ITEM.getId(this.result).toString());
+            result.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
 
             if (this.count > 1) {
                 result.addProperty("count", this.count);
@@ -123,24 +124,24 @@ public class InfusionRecipeBuilder {
         }
 
         @Override
-        public Identifier getRecipeId() {
+        public ResourceLocation getId() {
             return this.id;
         }
 
         @Override
-        public RecipeSerializer<?> getSerializer() {
+        public RecipeSerializer<?> getType() {
             return ModRecipeSerializers.INFUSION;
         }
 
         @Nullable
         @Override
-        public JsonObject toAdvancementJson() {
+        public JsonObject serializeAdvancement() {
             return null;
         }
 
         @Nullable
         @Override
-        public Identifier getAdvancementId() {
+        public ResourceLocation getAdvancementId() {
             return null;
         }
     }

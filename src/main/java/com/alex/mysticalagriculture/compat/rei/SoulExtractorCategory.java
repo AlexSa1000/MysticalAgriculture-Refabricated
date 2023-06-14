@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.compat.rei;
 
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.crafting.recipe.SoulExtractionRecipe;
 import com.alex.mysticalagriculture.init.ModBlocks;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -17,8 +17,8 @@ import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +28,7 @@ import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class SoulExtractorCategory implements DisplayCategory<SoulExtractorCategory.RecipeDisplay> {
 
-    public static CategoryIdentifier<SoulExtractorCategory.RecipeDisplay> SOUL_EXTRACTOR = CategoryIdentifier.of(new Identifier(MOD_ID, "soul_extractor"));
+    public static CategoryIdentifier<SoulExtractorCategory.RecipeDisplay> SOUL_EXTRACTOR = CategoryIdentifier.of(new ResourceLocation(MOD_ID, "soul_extractor"));
 
     @Override
     public CategoryIdentifier<? extends RecipeDisplay> getCategoryIdentifier() {
@@ -36,7 +36,7 @@ public class SoulExtractorCategory implements DisplayCategory<SoulExtractorCateg
     }
 
     @Override
-    public Text getTitle() {
+    public Component getTitle() {
         return Localizable.of("rei.category.mysticalagriculture.soul_extractor").build();
     }
 
@@ -89,7 +89,7 @@ public class SoulExtractorCategory implements DisplayCategory<SoulExtractorCateg
 
         @Override
         public List<EntryIngredient> getOutputEntries() {
-            return Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess())));
+            return Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess())));
         }
 
         @Override

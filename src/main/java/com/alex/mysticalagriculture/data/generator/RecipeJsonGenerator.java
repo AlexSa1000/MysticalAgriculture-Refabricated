@@ -5,10 +5,8 @@ import com.alex.mysticalagriculture.data.recipe.ReprocessorRecipeBuilder;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
-import net.minecraft.data.server.recipe.RecipeProvider;
-import net.minecraft.util.Identifier;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Consumer;
 
@@ -18,16 +16,16 @@ public class RecipeJsonGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    public void generate(Consumer<RecipeJsonProvider> consumer) {
+    public void buildRecipes(Consumer<FinishedRecipe> exporter) {
         for (var crop : CropRegistry.getInstance().getCrops()) {
             //var craftingId = "seed/crafting/" + crop.getName();
             //CraftingRecipeBuilder.newSeedRecipe(crop).build(consumer, new Identifier(crop.getModId(), craftingId));
 
             var infusionId = "seed/infusion/" + crop.getName();
-            InfusionRecipeBuilder.newSeedRecipe(crop).build(consumer, new Identifier(crop.getModId(), infusionId));
+            InfusionRecipeBuilder.newSeedRecipe(crop).build(exporter, new ResourceLocation(crop.getModId(), infusionId));
 
             var reprocessorId = "seed/reprocessor/" + crop.getName();
-            ReprocessorRecipeBuilder.newSeedReprocessingRecipe(crop).build(consumer, new Identifier(crop.getModId(), reprocessorId));
+            ReprocessorRecipeBuilder.newSeedReprocessingRecipe(crop).build(exporter, new ResourceLocation(crop.getModId(), reprocessorId));
         }
     }
 }

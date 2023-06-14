@@ -1,11 +1,13 @@
 package com.alex.mysticalagriculture.items.tool;
 
-import com.alex.cucumber.item.tool.BaseHoeItem;
+import com.alex.cucumber.item.tool.BaseFishingRodItem;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -13,7 +15,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -25,13 +30,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EssenceHoeItem extends BaseHoeItem implements ITinkerable {
-    private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.HOE);
+public class EssenceFishingRodItem extends BaseFishingRodItem implements ITinkerable {
+    private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.FISHING_ROD);
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceHoeItem(Tier tier, int tinkerableTier, int slots) {
-        super(tier, 0, tinkerableTier - 1.0F, p -> p);
+    public EssenceFishingRodItem(Tier tier, int tinkerableTier, int slots) {
+        super(p -> p.durability(tier.getUses()));
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;
     }
@@ -66,7 +71,7 @@ public class EssenceHoeItem extends BaseHoeItem implements ITinkerable {
         if (success)
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 
-        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+        return super.use(level, player, hand);
     }
 
     @Override
@@ -113,6 +118,7 @@ public class EssenceHoeItem extends BaseHoeItem implements ITinkerable {
         AugmentUtils.getAugments(stack).forEach(a -> a.onInventoryTick(stack, level, entity, slot, isSelected));
     }
 
+
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
@@ -120,6 +126,19 @@ public class EssenceHoeItem extends BaseHoeItem implements ITinkerable {
         AugmentUtils.getAugments(stack).forEach(a -> {
             tooltip.add(a.getDisplayName().withStyle(ChatFormatting.GRAY));
         });
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> modifiers = HashMultimap.create();
+
+        if (slot == EquipmentSlot.MAINHAND) {
+            AugmentUtils.getAugments(stack).forEach(a -> {
+                a.addToolAttributeModifiers(modifiers, slot, stack);
+            });
+        }
+
+        return modifiers;
     }
 
     @Override

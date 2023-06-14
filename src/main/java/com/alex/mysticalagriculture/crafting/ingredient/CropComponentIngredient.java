@@ -6,12 +6,12 @@ import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.predicate.NbtPredicate;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class CropComponentIngredient implements CustomIngredient {
         this.type = type;
     }
 
-    public CropComponentIngredient(Crop crop, ComponentType type, Stream<Ingredient.Entry> itemList) {
+    public CropComponentIngredient(Crop crop, ComponentType type, Stream<Ingredient.Value> itemList) {
         this.base = new Ingredient(itemList);
         this.crop = crop;
         this.type = type;
@@ -46,13 +46,13 @@ public class CropComponentIngredient implements CustomIngredient {
         if (!base.test(input))
             return false;
 
-        return Arrays.stream(base.getMatchingStacks())
-                .anyMatch(s -> s.getDamage() == input.getDamage() && (!s.hasNbt() || new NbtPredicate(s.getNbt()).test(input)));
+        return Arrays.stream(base.getItems())
+                .anyMatch(s -> s.getDamageValue() == input.getDamageValue() && (!s.hasTag() || new NbtPredicate(s.getTag()).matches(input)));
     }
 
     @Override
     public List<ItemStack> getMatchingStacks() {
-        return Arrays.asList(base.getMatchingStacks());
+        return Arrays.asList(base.getItems());
     }
 
     @Override
@@ -72,19 +72,19 @@ public class CropComponentIngredient implements CustomIngredient {
     public static class Serializer implements CustomIngredientSerializer<CropComponentIngredient> {
 
         @Override
-        public Identifier getIdentifier() {
-            return new Identifier(MOD_ID, "crop_component");
+        public ResourceLocation getIdentifier() {
+            return new ResourceLocation(MOD_ID, "crop_component");
         }
 
         @Override
         public CropComponentIngredient read(JsonObject json) {
-            var cropId = JsonHelper.getString(json, "crop");
-            var typeName = JsonHelper.getString(json, "component");
-            var crop = CropRegistry.getInstance().getCropById(new Identifier(cropId));
+            var cropId = GsonHelper.getAsString(json, "crop");
+            var typeName = GsonHelper.getAsString(json, "component");
+            var crop = CropRegistry.getInstance().getCropById(new ResourceLocation(cropId));
             var type = ComponentType.fromName(typeName);
             var itemList = switch (type) {
-                case ESSENCE -> new Ingredient.StackEntry(new ItemStack(crop.getTier().getEssence()));
-                case SEED -> new Ingredient.StackEntry(new ItemStack(crop.getType().getCraftingSeed()));
+                case ESSENCE -> new Ingredient.ItemValue(new ItemStack(crop.getTier().getEssence()));
+                case SEED -> new Ingredient.ItemValue(new ItemStack(crop.getType().getCraftingSeed()));
                 case MATERIAL -> crop.getLazyIngredient().createValue();
             };
 
@@ -103,28 +103,28 @@ public class CropComponentIngredient implements CustomIngredient {
         }
 
         @Override
-        public CropComponentIngredient read(PacketByteBuf buffer) {
-            var crop = CropRegistry.getInstance().getCropById(new Identifier(buffer.readString()));
-            var type = ComponentType.fromName(buffer.readString());
+        public CropComponentIngredient read(FriendlyByteBuf buffer) {
+            var crop = CropRegistry.getInstance().getCropById(new ResourceLocation(buffer.readUtf()));
+            var type = ComponentType.fromName(buffer.readUtf());
 
-            Stream<Ingredient.Entry> itemList = Stream.generate(buffer::readItemStack)
+            Stream<Ingredient.Value> itemList = Stream.generate(buffer::readItem)
                     .limit(buffer.readVarInt())
-                    .map(Ingredient.StackEntry::new);
+                    .map(Ingredient.ItemValue::new);
 
             return new CropComponentIngredient(crop, type, itemList);
         }
 
         @Override
-        public void write(PacketByteBuf buffer, CropComponentIngredient ingredient) {
-            buffer.writeString(ingredient.crop.getId().toString());
-            buffer.writeString(ingredient.type.name);
+        public void write(FriendlyByteBuf buffer, CropComponentIngredient ingredient) {
+            buffer.writeUtf(ingredient.crop.getId().toString());
+            buffer.writeUtf(ingredient.type.name);
 
-            var items = ingredient.getMatchingStacks();
+            var items = ingredient.getBase().getItems();
 
-            buffer.writeVarInt(items.size());
+            buffer.writeVarInt(items.length);
 
             for (var item : items) {
-                buffer.writeItemStack(item);
+                buffer.writeItem(item);
             }
         }
     }

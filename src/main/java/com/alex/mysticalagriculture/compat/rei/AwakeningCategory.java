@@ -1,9 +1,9 @@
 package com.alex.mysticalagriculture.compat.rei;
 
+import com.alex.cucumber.helper.StackHelper;
+import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.crafting.recipe.AwakeningRecipe;
 import com.alex.mysticalagriculture.init.ModBlocks;
-import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -18,8 +18,8 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,7 +30,7 @@ import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class AwakeningCategory implements DisplayCategory<AwakeningCategory.RecipeDisplay> {
 
-    public static CategoryIdentifier<RecipeDisplay> AWAKENING = CategoryIdentifier.of(new Identifier(MOD_ID, "awakening"));
+    public static CategoryIdentifier<RecipeDisplay> AWAKENING = CategoryIdentifier.of(new ResourceLocation(MOD_ID, "awakening"));
 
     @Override
     public CategoryIdentifier<RecipeDisplay> getCategoryIdentifier() {
@@ -38,7 +38,7 @@ public class AwakeningCategory implements DisplayCategory<AwakeningCategory.Reci
     }
 
     @Override
-    public Text getTitle() {
+    public Component getTitle() {
         return Localizable.of("rei.category.mysticalagriculture.awakening").build();
     }
 
@@ -128,7 +128,7 @@ public class AwakeningCategory implements DisplayCategory<AwakeningCategory.Reci
 
         @Override
         public List<EntryIngredient> getOutputEntries() {
-            return Collections.singletonList(EntryIngredients.of(recipe.getOutput(BasicDisplay.registryAccess())));
+            return Collections.singletonList(EntryIngredients.of(recipe.getResultItem(BasicDisplay.registryAccess())));
         }
 
         @Override
@@ -141,15 +141,15 @@ public class AwakeningCategory implements DisplayCategory<AwakeningCategory.Reci
             var ingredients = recipe.getIngredients();
 
             return List.of(
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(0).getMatchingStacks())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(1).getMatchingStacks()[0], requirements.air(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(2).getMatchingStacks())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(3).getMatchingStacks()[0], requirements.earth(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(4).getMatchingStacks())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(5).getMatchingStacks()[0], requirements.water(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(6).getMatchingStacks())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(7).getMatchingStacks()[0], requirements.fire(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(8).getMatchingStacks()))
+                    EntryIngredients.ofItemStacks(List.of(ingredients.get(0).getItems())),
+                    EntryIngredients.of(StackHelper.withSize(ingredients.get(1).getItems()[0], requirements.air(), false)),
+                    EntryIngredients.ofItemStacks(List.of(ingredients.get(2).getItems())),
+                    EntryIngredients.of(StackHelper.withSize(ingredients.get(3).getItems()[0], requirements.earth(), false)),
+                    EntryIngredients.ofItemStacks(List.of(ingredients.get(4).getItems())),
+                    EntryIngredients.of(StackHelper.withSize(ingredients.get(5).getItems()[0], requirements.water(), false)),
+                    EntryIngredients.ofItemStacks(List.of(ingredients.get(6).getItems())),
+                    EntryIngredients.of(StackHelper.withSize(ingredients.get(7).getItems()[0], requirements.fire(), false)),
+                    EntryIngredients.ofItemStacks(List.of(ingredients.get(8).getItems()))
             );
         }
     }
