@@ -2,8 +2,8 @@ package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.api.crafting.IInfusionRecipe;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -56,12 +56,12 @@ public class InfusionRecipe implements SpecialRecipe, IInfusionRecipe {
 
     @Override
     public RecipeSerializer<InfusionRecipe> getSerializer() {
-        return RecipeSerializers.INFUSION;
+        return ModRecipeSerializers.INFUSION;
     }
 
     @Override
     public RecipeType<? extends IInfusionRecipe> getType() {
-        return RecipeTypes.INFUSION;
+        return ModRecipeTypes.INFUSION;
     }
 
     @Override

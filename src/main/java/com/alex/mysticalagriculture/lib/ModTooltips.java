@@ -2,10 +2,9 @@ package com.alex.mysticalagriculture.lib;
 
 import com.alex.cucumber.util.Tooltip;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
-import com.alex.mysticalagriculture.cucumber.util.Tooltip;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public class ModTooltips {
     public static final Tooltip EMPTY = new Tooltip("tooltip.mysticalagriculture.empty");
@@ -46,25 +45,13 @@ public class ModTooltips {
     public static final Tooltip UPGRADE_FUEL_RATE = new Tooltip("tooltip.mysticalagriculture.upgrade_fuel_rate");
     public static final Tooltip UPGRADE_FUEL_CAPACITY = new Tooltip("tooltip.mysticalagriculture.upgrade_fuel_capacity");
     public static final Tooltip UPGRADE_AREA = new Tooltip("tooltip.mysticalagriculture.upgrade_area");
-    public static final Tooltip MISSING_ESSENCES = new Tooltip("tooltip.mysticalagriculture.missing_essences", Formatting.WHITE);
+    public static final Tooltip MISSING_ESSENCES = new Tooltip("tooltip.mysticalagriculture.missing_essences", ChatFormatting.WHITE);
 
-
-    public static final Tooltip USES_LEFT = new Tooltip("tooltip.mysticalagriculture.uses_left");
-    public static final Tooltip ONE_USE_LEFT = new Tooltip("tooltip.mysticalagriculture.one_use_left");
-    public static final Tooltip UNLIMITED_USES = new Tooltip("tooltip.mysticalagriculture.unlimited_uses");
-    public static final Tooltip HOLD_SHIFT_FOR_INFO = new Tooltip("tooltip.mysticalagriculture.hold_shift_for_info");
-    public static final Tooltip BLOCK_TAGS = new Tooltip("tooltip.mysticalagriculture.block_tags", Formatting.DARK_GRAY);
-    public static final Tooltip ITEM_TAGS = new Tooltip("tooltip.mysticalagriculture.item_tags", Formatting.DARK_GRAY);
-    public static final Tooltip HOLD_CTRL_FOR_TAGS = new Tooltip("tooltip.mysticalagriculture.hold_ctrl_for_tags", Formatting.DARK_GRAY);
-    public static final Tooltip HOLD_ALT_FOR_NBT = new Tooltip("tooltip.mysticalagriculture.hold_alt_for_nbt", Formatting.DARK_GRAY);
-    public static final Tooltip FAILED_TO_LOAD_NBT = new Tooltip("tooltip.mysticalagriculture.failed_to_load_nbt", Formatting.DARK_GRAY);
-    public static final Tooltip NOT_YET_IMPLEMENTED = new Tooltip("tooltip.mysticalagriculture.not_yet_implemented");
-
-    public static Text getTooltipForTier(int tier) {
-        return TIER.args(AugmentUtils.getTooltipForTier(tier)).color(Formatting.GRAY).build();
+    public static Component getTooltipForTier(int tier) {
+        return TIER.args(AugmentUtils.getTooltipForTier(tier)).color(ChatFormatting.GRAY).build();
     }
 
-    public static Text getAddedByTooltip(String modid) {
+    public static Component getAddedByTooltip(String modid) {
         var name = FabricLoader.getInstance().getModContainer(modid).get().getMetadata().getName();
         return ModTooltips.ADDED_BY.args(name).build();
     }

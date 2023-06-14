@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.rei;
 
 import com.alex.mysticalagriculture.crafting.recipe.AwakeningRecipe;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import com.alex.mysticalagriculture.cucumber.helper.StackHelper;
 import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
@@ -44,7 +44,7 @@ public class AwakeningCategory implements DisplayCategory<AwakeningCategory.Reci
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(Blocks.AWAKENING_ALTAR);
+        return EntryStacks.of(ModBlocks.AWAKENING_ALTAR);
     }
 
     @Override

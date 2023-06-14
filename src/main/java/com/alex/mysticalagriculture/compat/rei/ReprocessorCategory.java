@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.rei;
 
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -42,7 +42,7 @@ public class ReprocessorCategory implements DisplayCategory<ReprocessorCategory.
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(Blocks.BASIC_REPROCESSOR);
+        return EntryStacks.of(ModBlocks.BASIC_REPROCESSOR);
     }
 
     @Override

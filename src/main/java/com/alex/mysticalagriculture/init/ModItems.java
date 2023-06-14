@@ -11,7 +11,7 @@ import com.alex.mysticalagriculture.items.armor.EssenceLeggingsItem;
 import com.alex.mysticalagriculture.items.tool.*;
 import com.alex.mysticalagriculture.lib.ModArmorMaterial;
 import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.lib.ModToolMaterial;
+import com.alex.mysticalagriculture.lib.ModItemTier;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
@@ -30,7 +30,7 @@ import java.util.Map;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public class Items {
+public class ModItems {
     public static final Map<ResourceLocation, Item> ITEMS = new LinkedHashMap<>();
 
     public static final Item PROSPERITY_SHARD = register("prosperity_shard");
@@ -69,10 +69,10 @@ public class Items {
     public static final Item SOULIUM_SEED_BASE = register("soulium_seed_base");
     public static final Item SOUL_DUST = register("soul_dust");
     public static final Item COGNIZANT_DUST = register("cognizant_dust");
-    public static final Item SOULIUM_DAGGER = register(new SouliumDaggerItem(ModToolMaterial.SOULIUM, SouliumDaggerItem.DaggerType.BASIC), "soulium_dagger");
-    public static final Item PASSIVE_SOULIUM_DAGGER = register(new SouliumDaggerItem(ModToolMaterial.SOULIUM, SouliumDaggerItem.DaggerType.PASSIVE), "passive_soulium_dagger");
-    public static final Item HOSTILE_SOULIUM_DAGGER = register(new SouliumDaggerItem(ModToolMaterial.SOULIUM, SouliumDaggerItem.DaggerType.HOSTILE), "hostile_soulium_dagger");
-    public static final Item CREATIVE_SOULIUM_DAGGER = register(new SouliumDaggerItem(ModToolMaterial.SOULIUM, SouliumDaggerItem.DaggerType.CREATIVE), "creative_soulium_dagger");
+    public static final Item SOULIUM_DAGGER = register(new SouliumDaggerItem(ModItemTier.SOULIUM, SouliumDaggerItem.DaggerType.BASIC), "soulium_dagger");
+    public static final Item PASSIVE_SOULIUM_DAGGER = register(new SouliumDaggerItem(ModItemTier.SOULIUM, SouliumDaggerItem.DaggerType.PASSIVE), "passive_soulium_dagger");
+    public static final Item HOSTILE_SOULIUM_DAGGER = register(new SouliumDaggerItem(ModItemTier.SOULIUM, SouliumDaggerItem.DaggerType.HOSTILE), "hostile_soulium_dagger");
+    public static final Item CREATIVE_SOULIUM_DAGGER = register(new SouliumDaggerItem(ModItemTier.SOULIUM, SouliumDaggerItem.DaggerType.CREATIVE), "creative_soulium_dagger");
     public static final Item INFUSION_CRYSTAL = register(new InfusionCrystalItem(), "infusion_crystal");
     public static final Item MASTER_INFUSION_CRYSTAL = register(new MasterInfusionCrystalItem(), "master_infusion_crystal");
     public static final Item FERTILIZED_ESSENCE = register(new FertilizedEssenceItem(), "fertilized_essence");
@@ -104,63 +104,63 @@ public class Items {
     public static final Item SUPREMIUM_UPGRADE = register(new MachineUpgradeItem(MachineUpgradeTier.SUPREMIUM), "supremium_upgrade");
     public static final Item AWAKENED_SUPREMIUM_UPGRADE = register(new MachineUpgradeItem(MachineUpgradeTier.AWAKENED_SUPREMIUM), "awakened_supremium_upgrade");
 
-    public static final Item INFERIUM_SWORD = register(new EssenceSwordItem(ModToolMaterial.INFERIUM, 1, 1), "inferium_sword");
-    public static final Item INFERIUM_PICKAXE = register(new EssencePickaxeItem(ModToolMaterial.INFERIUM, 1, 1), "inferium_pickaxe");
-    public static final Item INFERIUM_SHOVEL = register(new EssenceShovelItem(ModToolMaterial.INFERIUM, 1, 1), "inferium_shovel");
-    public static final Item INFERIUM_AXE = register(new EssenceAxeItem(ModToolMaterial.INFERIUM, 1, 1), "inferium_axe");
-    public static final Item INFERIUM_HOE = register(new EssenceHoeItem(ModToolMaterial.INFERIUM, 1, 1), "inferium_hoe");
+    public static final Item INFERIUM_SWORD = register(new EssenceSwordItem(ModItemTier.INFERIUM, 1, 1), "inferium_sword");
+    public static final Item INFERIUM_PICKAXE = register(new EssencePickaxeItem(ModItemTier.INFERIUM, 1, 1), "inferium_pickaxe");
+    public static final Item INFERIUM_SHOVEL = register(new EssenceShovelItem(ModItemTier.INFERIUM, 1, 1), "inferium_shovel");
+    public static final Item INFERIUM_AXE = register(new EssenceAxeItem(ModItemTier.INFERIUM, 1, 1), "inferium_axe");
+    public static final Item INFERIUM_HOE = register(new EssenceHoeItem(ModItemTier.INFERIUM, 1, 1), "inferium_hoe");
     public static final Item INFERIUM_WATERING_CAN = register(new EssenceWateringCanItem(3, 0.25, CropTier.ONE.getTextColor()), "inferium_watering_can");
-    public static final Item INFERIUM_BOW = register(new EssenceBowItem(ModToolMaterial.INFERIUM, 1, 1, 1.1F), "inferium_bow");
-    public static final Item INFERIUM_CROSSBOW = register(new EssenceCrossbowItem(ModToolMaterial.INFERIUM, 1, 1, 1.1F), "inferium_crossbow");
+    public static final Item INFERIUM_BOW = register(new EssenceBowItem(ModItemTier.INFERIUM, 1, 1, 1.1F), "inferium_bow");
+    public static final Item INFERIUM_CROSSBOW = register(new EssenceCrossbowItem(ModItemTier.INFERIUM, 1, 1, 1.1F), "inferium_crossbow");
     //public static final Item INFERIUM_SHEARS =
     //public static final Item INFERIUM_FISHING_ROD =
     //public static final Item INFERIUM_SICKLE =
     //public static final Item INFERIUM_SCYTHE =
 
-    public static final Item PRUDENTIUM_SWORD = register(new EssenceSwordItem(ModToolMaterial.PRUDENTIUM, 2, 1), "prudentium_sword");
-    public static final Item PRUDENTIUM_PICKAXE = register(new EssencePickaxeItem(ModToolMaterial.PRUDENTIUM, 2, 1), "prudentium_pickaxe");
-    public static final Item PRUDENTIUM_SHOVEL = register(new EssenceShovelItem(ModToolMaterial.PRUDENTIUM, 2, 1), "prudentium_shovel");
-    public static final Item PRUDENTIUM_AXE = register(new EssenceAxeItem(ModToolMaterial.PRUDENTIUM, 2, 1), "prudentium_axe");
-    public static final Item PRUDENTIUM_HOE = register(new EssenceHoeItem(ModToolMaterial.PRUDENTIUM, 2, 1), "prudentium_hoe");
+    public static final Item PRUDENTIUM_SWORD = register(new EssenceSwordItem(ModItemTier.PRUDENTIUM, 2, 1), "prudentium_sword");
+    public static final Item PRUDENTIUM_PICKAXE = register(new EssencePickaxeItem(ModItemTier.PRUDENTIUM, 2, 1), "prudentium_pickaxe");
+    public static final Item PRUDENTIUM_SHOVEL = register(new EssenceShovelItem(ModItemTier.PRUDENTIUM, 2, 1), "prudentium_shovel");
+    public static final Item PRUDENTIUM_AXE = register(new EssenceAxeItem(ModItemTier.PRUDENTIUM, 2, 1), "prudentium_axe");
+    public static final Item PRUDENTIUM_HOE = register(new EssenceHoeItem(ModItemTier.PRUDENTIUM, 2, 1), "prudentium_hoe");
     public static final Item PRUDENTIUM_WATERING_CAN = register(new EssenceWateringCanItem(5, 0.30, CropTier.TWO.getTextColor()), "prudentium_watering_can");
-    public static final Item PRUDENTIUM_BOW = register(new EssenceBowItem(ModToolMaterial.PRUDENTIUM, 2, 1, 1.2F), "prudentium_bow");
-    public static final Item PRUDENTIUM_CROSSBOW = register(new EssenceCrossbowItem(ModToolMaterial.PRUDENTIUM, 2, 1, 1.2F), "prudentium_crossbow");
+    public static final Item PRUDENTIUM_BOW = register(new EssenceBowItem(ModItemTier.PRUDENTIUM, 2, 1, 1.2F), "prudentium_bow");
+    public static final Item PRUDENTIUM_CROSSBOW = register(new EssenceCrossbowItem(ModItemTier.PRUDENTIUM, 2, 1, 1.2F), "prudentium_crossbow");
 
-    public static final Item TERTIUM_SWORD = register(new EssenceSwordItem(ModToolMaterial.TERTIUM, 3, 1), "tertium_sword");
-    public static final Item TERTIUM_PICKAXE = register(new EssencePickaxeItem(ModToolMaterial.TERTIUM, 3, 1), "tertium_pickaxe");
-    public static final Item TERTIUM_SHOVEL = register(new EssenceShovelItem(ModToolMaterial.TERTIUM, 3, 1), "tertium_shovel");
-    public static final Item TERTIUM_AXE = register(new EssenceAxeItem(ModToolMaterial.TERTIUM, 3, 1), "tertium_axe");
-    public static final Item TERTIUM_HOE = register(new EssenceHoeItem(ModToolMaterial.TERTIUM, 3, 1), "tertium_hoe");
+    public static final Item TERTIUM_SWORD = register(new EssenceSwordItem(ModItemTier.TERTIUM, 3, 1), "tertium_sword");
+    public static final Item TERTIUM_PICKAXE = register(new EssencePickaxeItem(ModItemTier.TERTIUM, 3, 1), "tertium_pickaxe");
+    public static final Item TERTIUM_SHOVEL = register(new EssenceShovelItem(ModItemTier.TERTIUM, 3, 1), "tertium_shovel");
+    public static final Item TERTIUM_AXE = register(new EssenceAxeItem(ModItemTier.TERTIUM, 3, 1), "tertium_axe");
+    public static final Item TERTIUM_HOE = register(new EssenceHoeItem(ModItemTier.TERTIUM, 3, 1), "tertium_hoe");
     public static final Item TERTIUM_WATERING_CAN = register(new EssenceWateringCanItem(7, 0.35, CropTier.THREE.getTextColor()), "tertium_watering_can");
-    public static final Item TERTIUM_BOW = register(new EssenceBowItem(ModToolMaterial.TERTIUM, 3, 1, 1.35F), "tertium_bow");
-    public static final Item TERTIUM_CROSSBOW = register(new EssenceCrossbowItem(ModToolMaterial.TERTIUM, 3, 1, 1.35F), "tertium_crossbow");
+    public static final Item TERTIUM_BOW = register(new EssenceBowItem(ModItemTier.TERTIUM, 3, 1, 1.35F), "tertium_bow");
+    public static final Item TERTIUM_CROSSBOW = register(new EssenceCrossbowItem(ModItemTier.TERTIUM, 3, 1, 1.35F), "tertium_crossbow");
 
-    public static final Item IMPERIUM_SWORD = register(new EssenceSwordItem(ModToolMaterial.IMPERIUM, 4, 1), "imperium_sword");
-    public static final Item IMPERIUM_PICKAXE = register(new EssencePickaxeItem(ModToolMaterial.IMPERIUM, 4, 1), "imperium_pickaxe");
-    public static final Item IMPERIUM_SHOVEL = register(new EssenceShovelItem(ModToolMaterial.IMPERIUM, 4, 1), "imperium_shovel");
-    public static final Item IMPERIUM_AXE = register(new EssenceAxeItem(ModToolMaterial.IMPERIUM, 4, 1), "imperium_axe");
-    public static final Item IMPERIUM_HOE = register(new EssenceHoeItem(ModToolMaterial.IMPERIUM, 4, 1), "imperium_hoe");
+    public static final Item IMPERIUM_SWORD = register(new EssenceSwordItem(ModItemTier.IMPERIUM, 4, 1), "imperium_sword");
+    public static final Item IMPERIUM_PICKAXE = register(new EssencePickaxeItem(ModItemTier.IMPERIUM, 4, 1), "imperium_pickaxe");
+    public static final Item IMPERIUM_SHOVEL = register(new EssenceShovelItem(ModItemTier.IMPERIUM, 4, 1), "imperium_shovel");
+    public static final Item IMPERIUM_AXE = register(new EssenceAxeItem(ModItemTier.IMPERIUM, 4, 1), "imperium_axe");
+    public static final Item IMPERIUM_HOE = register(new EssenceHoeItem(ModItemTier.IMPERIUM, 4, 1), "imperium_hoe");
     public static final Item IMPERIUM_WATERING_CAN = register(new EssenceWateringCanItem(9, 0.40, CropTier.FOUR.getTextColor()), "imperium_watering_can");
-    public static final Item IMPERIUM_BOW = register(new EssenceBowItem(ModToolMaterial.IMPERIUM, 4, 1, 1.55F), "imperium_bow");
-    public static final Item IMPERIUM_CROSSBOW = register(new EssenceCrossbowItem(ModToolMaterial.IMPERIUM, 4, 1, 1.55F), "imperium_crossbow");
+    public static final Item IMPERIUM_BOW = register(new EssenceBowItem(ModItemTier.IMPERIUM, 4, 1, 1.55F), "imperium_bow");
+    public static final Item IMPERIUM_CROSSBOW = register(new EssenceCrossbowItem(ModItemTier.IMPERIUM, 4, 1, 1.55F), "imperium_crossbow");
 
-    public static final Item SUPREMIUM_SWORD = register(new EssenceSwordItem(ModToolMaterial.SUPREMIUM, 5, 1), "supremium_sword");
-    public static final Item SUPREMIUM_PICKAXE = register(new EssencePickaxeItem(ModToolMaterial.SUPREMIUM, 5, 1), "supremium_pickaxe");
-    public static final Item SUPREMIUM_SHOVEL = register(new EssenceShovelItem(ModToolMaterial.SUPREMIUM, 5, 1), "supremium_shovel");
-    public static final Item SUPREMIUM_AXE = register(new EssenceAxeItem(ModToolMaterial.SUPREMIUM, 5, 1), "supremium_axe");
-    public static final Item SUPREMIUM_HOE = register(new EssenceHoeItem(ModToolMaterial.SUPREMIUM, 5, 1), "supremium_hoe");
+    public static final Item SUPREMIUM_SWORD = register(new EssenceSwordItem(ModItemTier.SUPREMIUM, 5, 1), "supremium_sword");
+    public static final Item SUPREMIUM_PICKAXE = register(new EssencePickaxeItem(ModItemTier.SUPREMIUM, 5, 1), "supremium_pickaxe");
+    public static final Item SUPREMIUM_SHOVEL = register(new EssenceShovelItem(ModItemTier.SUPREMIUM, 5, 1), "supremium_shovel");
+    public static final Item SUPREMIUM_AXE = register(new EssenceAxeItem(ModItemTier.SUPREMIUM, 5, 1), "supremium_axe");
+    public static final Item SUPREMIUM_HOE = register(new EssenceHoeItem(ModItemTier.SUPREMIUM, 5, 1), "supremium_hoe");
     public static final Item SUPREMIUM_WATERING_CAN = register(new EssenceWateringCanItem(11, 0.45, CropTier.FIVE.getTextColor()), "supremium_watering_can");
-    public static final Item SUPREMIUM_BOW = register(new EssenceBowItem(ModToolMaterial.SUPREMIUM, 5, 1, 1.80F), "supremium_bow");
-    public static final Item SUPREMIUM_CROSSBOW = register(new EssenceCrossbowItem(ModToolMaterial.SUPREMIUM, 5, 1, 1.80F), "supremium_crossbow");
+    public static final Item SUPREMIUM_BOW = register(new EssenceBowItem(ModItemTier.SUPREMIUM, 5, 1, 1.80F), "supremium_bow");
+    public static final Item SUPREMIUM_CROSSBOW = register(new EssenceCrossbowItem(ModItemTier.SUPREMIUM, 5, 1, 1.80F), "supremium_crossbow");
 
-    public static final Item AWAKENED_SUPREMIUM_SWORD = register(new EssenceSwordItem(ModToolMaterial.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_sword");
-    public static final Item AWAKENED_SUPREMIUM_PICKAXE = register(new EssencePickaxeItem(ModToolMaterial.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_pickaxe");
-    public static final Item AWAKENED_SUPREMIUM_SHOVEL = register(new EssenceShovelItem(ModToolMaterial.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_shovel");
-    public static final Item AWAKENED_SUPREMIUM_AXE = register(new EssenceAxeItem(ModToolMaterial.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_axe");
-    public static final Item AWAKENED_SUPREMIUM_HOE = register(new EssenceHoeItem(ModToolMaterial.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_hoe");
+    public static final Item AWAKENED_SUPREMIUM_SWORD = register(new EssenceSwordItem(ModItemTier.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_sword");
+    public static final Item AWAKENED_SUPREMIUM_PICKAXE = register(new EssencePickaxeItem(ModItemTier.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_pickaxe");
+    public static final Item AWAKENED_SUPREMIUM_SHOVEL = register(new EssenceShovelItem(ModItemTier.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_shovel");
+    public static final Item AWAKENED_SUPREMIUM_AXE = register(new EssenceAxeItem(ModItemTier.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_axe");
+    public static final Item AWAKENED_SUPREMIUM_HOE = register(new EssenceHoeItem(ModItemTier.AWAKENED_SUPREMIUM, 5, 2), "awakened_supremium_hoe");
     public static final Item AWAKENED_SUPREMIUM_WATERING_CAN = register(new EssenceWateringCanItem(13, 0.50, CropTier.FIVE.getTextColor()), "awakened_supremium_watering_can");
-    public static final Item AWAKENED_SUPREMIUM_BOW = register(new EssenceBowItem(ModToolMaterial.AWAKENED_SUPREMIUM, 5, 2, 2.10F), "awakened_supremium_bow");
-    public static final Item AWAKENED_SUPREMIUM_CROSSBOW = register(new EssenceCrossbowItem(ModToolMaterial.AWAKENED_SUPREMIUM,  5, 2, 2.10F), "awakened_supremium_crossbow");
+    public static final Item AWAKENED_SUPREMIUM_BOW = register(new EssenceBowItem(ModItemTier.AWAKENED_SUPREMIUM, 5, 2, 2.10F), "awakened_supremium_bow");
+    public static final Item AWAKENED_SUPREMIUM_CROSSBOW = register(new EssenceCrossbowItem(ModItemTier.AWAKENED_SUPREMIUM,  5, 2, 2.10F), "awakened_supremium_crossbow");
 
     public static final Item INFERIUM_HELMET = register(new EssenceHelmetItem(ModArmorMaterial.INFERIUM, 1, 1), "inferium_helmet");
     public static final Item INFERIUM_CHESTPLATE = register(new EssenceChestplateItem(ModArmorMaterial.INFERIUM, 1, 1), "inferium_chestplate");
@@ -207,22 +207,5 @@ public class Items {
         Identifier id = new Identifier(MOD_ID, name);
         ITEMS.put(id, item);
         return item;
-    }
-
-    public static void onColors() {
-        ColorProviderRegistry.ITEM.register((stack, tint) -> {
-                    MobSoulType type = MobSoulUtils.getType(stack);
-                    return tint == 1 && type != null ? type.getColor() : -1;
-                }, Items.SOUL_JAR);
-
-        ColorProviderRegistry.ITEM.register((stack, tint) -> {
-            float damage = (float) (stack.getMaxDamage() - stack.getDamage()) / stack.getMaxDamage();
-            return ColorHelper.saturate(0x00D9D9, damage);
-        }, Items.INFUSION_CRYSTAL);
-
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.AIR.getEssenceColor(), Items.AIR_AGGLOMERATIO);
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.EARTH.getEssenceColor(), Items.EARTH_AGGLOMERATIO);
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.WATER.getEssenceColor(), Items.WATER_AGGLOMERATIO);
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.FIRE.getEssenceColor(), Items.FIRE_AGGLOMERATIO);
     }
 }

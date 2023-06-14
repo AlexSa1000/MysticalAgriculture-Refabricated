@@ -2,8 +2,8 @@ package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.api.crafting.IReprocessorRecipe;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -54,12 +54,12 @@ public class ReprocessorRecipe implements SpecialRecipe, IReprocessorRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializers.REPROCESSOR;
+        return ModRecipeSerializers.REPROCESSOR;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeTypes.REPROCESSOR;
+        return ModRecipeTypes.REPROCESSOR;
     }
 
     @Override

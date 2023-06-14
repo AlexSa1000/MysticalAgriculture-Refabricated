@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.blockentities;
 
 import com.alex.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.util.FurnaceTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -169,7 +169,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     public static class Inferium extends EssenceFurnaceBlockEntity {
         public Inferium(BlockPos pos, BlockState state) {
-            super(BlockEntities.INFERIUM_FURNACE, pos, state);
+            super(ModBlockEntities.INFERIUM_FURNACE, pos, state);
         }
 
         @Override
@@ -180,7 +180,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     public static class Prudentium extends EssenceFurnaceBlockEntity {
         public Prudentium(BlockPos pos, BlockState state) {
-            super(BlockEntities.PRUDENTIUM_FURNACE, pos, state);
+            super(ModBlockEntities.PRUDENTIUM_FURNACE, pos, state);
         }
 
         @Override
@@ -191,7 +191,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     public static class Tertium extends EssenceFurnaceBlockEntity {
         public Tertium(BlockPos pos, BlockState state) {
-            super(BlockEntities.TERTIUM_FURNACE, pos, state);
+            super(ModBlockEntities.TERTIUM_FURNACE, pos, state);
         }
 
         @Override
@@ -202,7 +202,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     public static class Imperium extends EssenceFurnaceBlockEntity {
         public Imperium(BlockPos pos, BlockState state) {
-            super(BlockEntities.IMPERIUM_FURNACE, pos, state);
+            super(ModBlockEntities.IMPERIUM_FURNACE, pos, state);
         }
 
         @Override
@@ -213,7 +213,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     public static class Supremium extends EssenceFurnaceBlockEntity {
         public Supremium(BlockPos pos, BlockState state) {
-            super(BlockEntities.SUPREMIUM_FURNACE, pos, state);
+            super(ModBlockEntities.SUPREMIUM_FURNACE, pos, state);
         }
 
         @Override
@@ -224,7 +224,7 @@ public abstract class EssenceFurnaceBlockEntity extends AbstractFurnaceBlockEnti
 
     public static class AwakenedSupremium extends EssenceFurnaceBlockEntity {
         public AwakenedSupremium(BlockPos pos, BlockState state) {
-            super(BlockEntities.AWAKENED_SUPREMIUM_FURNACE, pos, state);
+            super(ModBlockEntities.AWAKENED_SUPREMIUM_FURNACE, pos, state);
         }
 
         @Override

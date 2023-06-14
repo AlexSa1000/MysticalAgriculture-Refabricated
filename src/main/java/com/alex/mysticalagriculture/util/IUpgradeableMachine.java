@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.util;
 
+import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
-import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
 import net.minecraft.world.item.ItemStack;
 
 public interface IUpgradeableMachine {

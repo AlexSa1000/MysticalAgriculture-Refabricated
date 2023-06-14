@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.data.recipe;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.crafting.ingredient.CropComponentIngredient;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -129,7 +129,7 @@ public class InfusionRecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getSerializer() {
-            return RecipeSerializers.INFUSION;
+            return ModRecipeSerializers.INFUSION;
         }
 
         @Nullable

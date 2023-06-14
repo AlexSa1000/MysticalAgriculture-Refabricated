@@ -1,20 +1,21 @@
 package com.alex.mysticalagriculture.registry;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
+import com.alex.mysticalagriculture.api.registry.IAugmentRegistry;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.items.AugmentItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AugmentRegistry implements com.alex.mysticalagriculture.api.registry.AugmentRegistry {
+public class AugmentRegistry implements IAugmentRegistry {
     private static final AugmentRegistry INSTANCE = new AugmentRegistry();
 
-    private final Map<Identifier, Augment> augments = new LinkedHashMap<>();
+    private final Map<ResourceLocation, Augment> augments = new LinkedHashMap<>();
 
     @Override
     public void register(Augment augment) {
@@ -31,7 +32,7 @@ public class AugmentRegistry implements com.alex.mysticalagriculture.api.registr
     }
 
     @Override
-    public Augment getAugmentById(Identifier id) {
+    public Augment getAugmentById(ResourceLocation id) {
         return this.augments.get(id);
     }
 
@@ -45,7 +46,7 @@ public class AugmentRegistry implements com.alex.mysticalagriculture.api.registr
         this.augments.forEach((id, a) -> {
             var item = new AugmentItem(a);
 
-            Registry.register(Registries.ITEM, new Identifier(MysticalAgriculture.MOD_ID, a.getNameWithSuffix("augment")), item);
+            Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(MysticalAgriculture.MOD_ID, a.getNameWithSuffix("augment")), item);
         });
 
         PluginRegistry.getInstance().forEach((plugin, config) -> plugin.onPostRegisterAugments(this));

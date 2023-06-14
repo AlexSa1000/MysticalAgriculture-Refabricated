@@ -1,18 +1,19 @@
 package com.alex.mysticalagriculture.registry;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
+import com.alex.mysticalagriculture.api.registry.IMobSoulTypeRegistry;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MobSoulTypeRegistry implements com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry {
+public class MobSoulTypeRegistry implements IMobSoulTypeRegistry {
     private static final MobSoulTypeRegistry INSTANCE = new MobSoulTypeRegistry();
 
-    private final Map<Identifier, MobSoulType> mobSoulTypes = new LinkedHashMap<>();
-    private final Set<Identifier> usedEntityIds = new HashSet<>();
+    private final Map<ResourceLocation, MobSoulType> mobSoulTypes = new LinkedHashMap<>();
+    private final Set<ResourceLocation> usedEntityIds = new HashSet<>();
 
     @Override
     public void register(MobSoulType mobSoulType) {
@@ -36,7 +37,7 @@ public class MobSoulTypeRegistry implements com.alex.mysticalagriculture.api.reg
     }
 
     @Override
-    public MobSoulType getMobSoulTypeById(Identifier id) {
+    public MobSoulType getMobSoulTypeById(ResourceLocation id) {
         return this.mobSoulTypes.get(id);
     }
 
@@ -46,12 +47,12 @@ public class MobSoulTypeRegistry implements com.alex.mysticalagriculture.api.reg
     }
 
     @Override
-    public Set<Identifier> getUsedEntityIds() {
+    public Set<ResourceLocation> getUsedEntityIds() {
         return Collections.unmodifiableSet(this.usedEntityIds);
     }
 
     @Override
-    public boolean addEntityTo(MobSoulType type, Identifier entity) {
+    public boolean addEntityTo(MobSoulType type, ResourceLocation entity) {
         if (!this.usedEntityIds.contains(entity)) {
             this.usedEntityIds.add(entity);
 
@@ -64,7 +65,7 @@ public class MobSoulTypeRegistry implements com.alex.mysticalagriculture.api.reg
     }
 
     @Override
-    public boolean removeEntityFrom(MobSoulType type, Identifier entity) {
+    public boolean removeEntityFrom(MobSoulType type, ResourceLocation entity) {
         if (type.getEntityIds().contains(entity)) {
             type.getEntityIds().remove(entity);
 

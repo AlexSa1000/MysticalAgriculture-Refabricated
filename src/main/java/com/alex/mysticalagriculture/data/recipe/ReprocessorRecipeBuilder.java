@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.data.recipe;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
@@ -88,7 +88,7 @@ public class ReprocessorRecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getSerializer() {
-            return RecipeSerializers.REPROCESSOR;
+            return ModRecipeSerializers.REPROCESSOR;
         }
 
         @Nullable

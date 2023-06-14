@@ -4,8 +4,8 @@ import com.alex.cucumber.forge.common.util.LazyOptional;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.container.SoulExtractorContainer;
 import com.alex.mysticalagriculture.crafting.recipe.SoulExtractionRecipe;
-import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.screenhandler.inventory.UpgradeItemStackHandler;
@@ -53,7 +53,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
     private MachineUpgradeTier tier;
 
     public SoulExtractorBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.SOUL_EXTRACTOR, pos, state);
+        super(ModBlockEntities.SOUL_EXTRACTOR, pos, state);
         this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
         this.upgradeInventory = new UpgradeItemStackHandler();
         this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirtyAndDispatch);
@@ -136,7 +136,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
         }
 
         if (block.recipe == null || !block.recipe.matches(block.inventory)) {
-            var recipe = level.getRecipeManager().getRecipeFor(RecipeTypes.SOUL_EXTRACTION, block.inventory/*.toInventory()*/, level).orElse(null);
+            var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.SOUL_EXTRACTION, block.inventory/*.toInventory()*/, level).orElse(null);
             block.recipe = recipe instanceof SoulExtractionRecipe ? (SoulExtractionRecipe) recipe : null;
         }
 
@@ -234,7 +234,7 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
         if (direction == null)
             return true;
         if (slot == 0 && direction == Direction.UP)
-            return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.SOUL_EXTRACTION);
+            return RecipeIngredientCache.INSTANCE.isValidInput(stack, ModRecipeTypes.SOUL_EXTRACTION);
         if (slot == 1 && direction == Direction.NORTH)
             return AbstractFurnaceBlockEntity.isFuel(stack);
         if (slot == 2 && direction == Direction.NORTH)

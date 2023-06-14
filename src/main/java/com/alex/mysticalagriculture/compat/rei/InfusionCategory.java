@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.rei;
 
 import com.alex.mysticalagriculture.crafting.recipe.InfusionRecipe;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import com.alex.mysticalagriculture.cucumber.util.Localizable;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -41,7 +41,7 @@ public class InfusionCategory implements DisplayCategory<InfusionCategory.Recipe
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(Blocks.INFUSION_ALTAR);
+        return EntryStacks.of(ModBlocks.INFUSION_ALTAR);
     }
 
     @Override

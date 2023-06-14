@@ -4,6 +4,8 @@ import com.alex.cucumber.forge.event.entity.living.LivingFallEvent;
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +23,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.EnumSet;
+
+import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 
 /**
@@ -104,6 +108,9 @@ public class Augment {
         return this.tier;
     }
 
+    public Item getItem() {
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(MOD_ID, this.getName() + "_augment"));
+    }
 
     /**
      * The primary color of this augment (for the lighter middle areas of the augment)

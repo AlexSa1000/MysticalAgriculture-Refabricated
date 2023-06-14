@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.util;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.cucumber.helper.RecipeHelper;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.google.common.base.Stopwatch;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +31,8 @@ public class RecipeIngredientCache implements SimpleSynchronousResourceReloadLis
 
         this.caches.clear();
 
-        cache(RecipeTypes.REPROCESSOR);
-        cache(RecipeTypes.SOUL_EXTRACTION);
+        cache(ModRecipeTypes.REPROCESSOR);
+        cache(ModRecipeTypes.SOUL_EXTRACTION);
 
         MysticalAgriculture.LOGGER.info("Recipe ingredient caching done in {} ms", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
     }

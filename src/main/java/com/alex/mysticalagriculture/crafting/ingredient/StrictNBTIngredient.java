@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.crafting.ingredient;
 
-import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
@@ -49,7 +49,7 @@ public class StrictNBTIngredient implements CustomIngredient {
 
     @Override
     public CustomIngredientSerializer<?> getSerializer() {
-        return RecipeSerializers.CROP_COMPONENT_INGREDIENT;
+        return ModRecipeSerializers.CROP_COMPONENT_INGREDIENT;
     }
 
     public Ingredient getBase() {

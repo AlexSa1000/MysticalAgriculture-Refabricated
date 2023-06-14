@@ -1,34 +1,33 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.init.Items;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Lazy;
+import com.alex.mysticalagriculture.init.ModItems;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 
 public enum ModArmorMaterial implements ArmorMaterial {
-    INFERIUM("inferium", 40, new int[]{3, 6, 8, 4}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2.0F, 0.0F, () -> {
-        return Ingredient.ofItems(Items.INFERIUM_INGOT);
+    INFERIUM("mysticalagriculture:inferium", 40, new int[]{3, 6, 8, 4}, 12, SoundEvents.ARMOR_EQUIP_GOLD, 2.0F, 0.0F, () -> {
+        return Ingredient.of(ModItems.INFERIUM_INGOT);
     }),
-    PRUDENTIUM("prudentium", 60, new int[]{4, 7, 8, 4}, 14, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2.25F, 0.0F, () -> {
-        return Ingredient.ofItems(Items.PRUDENTIUM_INGOT);
+    PRUDENTIUM("mysticalagriculture:prudentium", 60, new int[]{4, 7, 8, 4}, 14, SoundEvents.ARMOR_EQUIP_GOLD, 2.25F, 0.0F, () -> {
+        return Ingredient.of(ModItems.PRUDENTIUM_INGOT);
     }),
-    TERTIUM("tertium", 80, new int[]{4, 8, 9, 5}, 16, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2.5F, 0.0F, () -> {
-        return Ingredient.ofItems(Items.TERTIUM_INGOT);
+    TERTIUM("mysticalagriculture:tertium", 80, new int[]{4, 8, 9, 5}, 16, SoundEvents.ARMOR_EQUIP_GOLD, 2.5F, 0.0F, () -> {
+        return Ingredient.of(ModItems.TERTIUM_INGOT);
     }),
-    IMPERIUM("imperium", 140, new int[]{5, 8, 9, 5}, 18, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2.75F, 0.0F, () -> {
-        return Ingredient.ofItems(Items.IMPERIUM_INGOT);
+    IMPERIUM("mysticalagriculture:imperium", 140, new int[]{5, 8, 9, 5}, 18, SoundEvents.ARMOR_EQUIP_GOLD, 2.75F, 0.0F, () -> {
+        return Ingredient.of(ModItems.IMPERIUM_INGOT);
     }),
-    SUPREMIUM("supremium", 280, new int[]{5, 8, 10, 6}, 20, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 3.0F, 0.0F, () -> {
-        return Ingredient.ofItems(Items.SUPREMIUM_INGOT);
+    SUPREMIUM("mysticalagriculture:supremium", 280, new int[]{5, 8, 10, 6}, 20, SoundEvents.ARMOR_EQUIP_GOLD, 3.0F, 0.0F, () -> {
+        return Ingredient.of(ModItems.SUPREMIUM_INGOT);
     }),
-    AWAKENED_SUPREMIUM("mysticalagriculture:awakened_supremium", 320, new int[] { 6, 12, 10, 8 }, 22, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 3.5F, 0.1F, () -> {
-        return Ingredient.ofItems(Items.AWAKENED_SUPREMIUM_INGOT);
+    AWAKENED_SUPREMIUM("mysticalagriculture:awakened_supremium", 320, new int[] { 6, 12, 10, 8 }, 22, SoundEvents.ARMOR_EQUIP_GOLD, 3.5F, 0.1F, () -> {
+        return Ingredient.of(ModItems.AWAKENED_SUPREMIUM_INGOT);
     });
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
@@ -39,7 +38,7 @@ public enum ModArmorMaterial implements ArmorMaterial {
     private final SoundEvent soundEvent;
     private final float toughness;
     private final float knockbackResistance;
-    private final Lazy<Ingredient> repairMaterial;
+    private final LazyLoadedValue<Ingredient> repairMaterial;
 
     ModArmorMaterial(String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, float knockbackResistance, Supplier<Ingredient> repairMaterial) {
         this.name = name;
@@ -49,21 +48,21 @@ public enum ModArmorMaterial implements ArmorMaterial {
         this.soundEvent = soundEvent;
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
-        this.repairMaterial = new Lazy<>(repairMaterial);
+        this.repairMaterial = new LazyLoadedValue<>(repairMaterial);
     }
 
     @Override
-    public int getDurability(ArmorItem.Type type) {
+    public int getDurabilityForType(ArmorItem.Type type) {
         return MAX_DAMAGE_ARRAY[type.ordinal()] * this.maxDamageFactor;
     }
 
     @Override
-    public int getProtection(ArmorItem.Type type) {
+    public int getDefenseForType(ArmorItem.Type type) {
         return this.damageReductionAmountArray[type.ordinal()];
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return this.enchantability;
     }
 

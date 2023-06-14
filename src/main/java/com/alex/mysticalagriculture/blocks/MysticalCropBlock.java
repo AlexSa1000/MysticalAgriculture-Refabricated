@@ -5,7 +5,7 @@ import com.alex.mysticalagriculture.api.crop.CropProvider;
 import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -96,7 +96,7 @@ public class MysticalCropBlock extends CropBlock implements ICropProvider {
         drops.add(new ItemStack(this.getBaseSeedId(), seed));
 
         if (fertilizer > 0)
-            drops.add(new ItemStack(Items.FERTILIZED_ESSENCE));
+            drops.add(new ItemStack(ModItems.FERTILIZED_ESSENCE));
 
         return drops;
     }

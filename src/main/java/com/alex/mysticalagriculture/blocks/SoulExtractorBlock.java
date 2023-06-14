@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.lib.Tooltips;
 import com.alex.cucumber.util.Formatting;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -105,6 +105,6 @@ public class SoulExtractorBlock extends BaseEntityBlock {
 
     @Override
     protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTicker(type, BlockEntities.SOUL_EXTRACTOR, SoulExtractorBlockEntity::tick);
+        return createTicker(type, ModBlockEntities.SOUL_EXTRACTOR, SoulExtractorBlockEntity::tick);
     }
 }

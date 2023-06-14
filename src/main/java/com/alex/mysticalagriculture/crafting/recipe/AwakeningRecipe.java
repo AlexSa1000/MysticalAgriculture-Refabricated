@@ -3,8 +3,8 @@ package com.alex.mysticalagriculture.crafting.recipe;
 import com.alex.mysticalagriculture.api.crafting.IAwakeningRecipe;
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.cucumber.crafting.SpecialRecipe;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
@@ -70,12 +70,12 @@ public class AwakeningRecipe implements SpecialRecipe, IAwakeningRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializers.AWAKENING;
+        return ModRecipeSerializers.AWAKENING;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeTypes.AWAKENING;
+        return ModRecipeTypes.AWAKENING;
     }
 
     @Override

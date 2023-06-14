@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.client.handler;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.blocks.InfusedFarmlandBlock;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
@@ -31,17 +31,17 @@ public class ColorHandler {
         ColorProviderRegistry.ITEM.register((stack, tint) -> {
             float damage = (float) (stack.getMaxDamage() - stack.getDamage()) / stack.getMaxDamage();
             return ColorHelper.saturate(0x00D9D9, damage);
-        }, Items.INFUSION_CRYSTAL);
+        }, ModItems.INFUSION_CRYSTAL);
 
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.AIR.getEssenceColor(), Items.AIR_AGGLOMERATIO);
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.EARTH.getEssenceColor(), Items.EARTH_AGGLOMERATIO);
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.WATER.getEssenceColor(), Items.WATER_AGGLOMERATIO);
-        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.FIRE.getEssenceColor(), Items.FIRE_AGGLOMERATIO);
+        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.AIR.getEssenceColor(), ModItems.AIR_AGGLOMERATIO);
+        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.EARTH.getEssenceColor(), ModItems.EARTH_AGGLOMERATIO);
+        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.WATER.getEssenceColor(), ModItems.WATER_AGGLOMERATIO);
+        ColorProviderRegistry.ITEM.register((stack, tint) -> ModCrops.FIRE.getEssenceColor(), ModItems.FIRE_AGGLOMERATIO);
 
         ColorProviderRegistry.ITEM.register((stack, tint) -> {
             MobSoulType type = MobSoulUtils.getType(stack);
             return tint == 1 && type != null ? type.getColor() : -1;
-        }, Items.SOUL_JAR);
+        }, ModItems.SOUL_JAR);
 
         for (var crop : CropRegistry.getInstance().getCrops()) {
             if (crop.isEssenceColored() && crop.getEssenceItem() != null)

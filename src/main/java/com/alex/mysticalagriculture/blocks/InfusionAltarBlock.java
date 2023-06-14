@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.blockentities.InfusionAltarBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.util.VoxelShapeBuilder;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.items.WandItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.core.BlockPos;
@@ -120,6 +120,6 @@ public class InfusionAltarBlock extends BaseEntityBlock {
 
     @Override
     protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTicker(type, BlockEntities.INFUSION_ALTAR, InfusionAltarBlockEntity::tick);
+        return createTicker(type, ModBlockEntities.INFUSION_ALTAR, InfusionAltarBlockEntity::tick);
     }
 }

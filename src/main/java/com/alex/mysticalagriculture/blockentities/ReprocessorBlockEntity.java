@@ -9,8 +9,8 @@ import com.alex.cucumber.inventory.SidedItemStackHandler;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.container.ReprocessorContainer;
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
-import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import com.alex.mysticalagriculture.util.ReprocessorTier;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -124,7 +124,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
 
             if (!input.isEmpty()) {
                 if (block.recipe == null || !block.recipe.matches(block.inventory)) {
-                    var recipe = level.getRecipeManager().getRecipeFor(RecipeTypes.REPROCESSOR, block.inventory, level).orElse(null);
+                    var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.REPROCESSOR, block.inventory, level).orElse(null);
                     block.recipe = recipe instanceof ReprocessorRecipe ? (ReprocessorRecipe) recipe : null;
                 }
 
@@ -205,7 +205,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         if (direction == null)
             return true;
         if (slot == 0 && direction == Direction.UP)
-            return RecipeIngredientCache.INSTANCE.isValidInput(stack, RecipeTypes.REPROCESSOR);
+            return RecipeIngredientCache.INSTANCE.isValidInput(stack, ModRecipeTypes.REPROCESSOR);
         if (slot == 1 && direction == Direction.NORTH)
             return FurnaceBlockEntity.isFuel(stack);
 
@@ -219,38 +219,38 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
 
     public static class Basic extends ReprocessorBlockEntity {
         public Basic(BlockPos pos, BlockState state) {
-            super(BlockEntities.BASIC_REPROCESSOR, ReprocessorTier.BASIC, pos, state);
+            super(ModBlockEntities.BASIC_REPROCESSOR, ReprocessorTier.BASIC, pos, state);
         }
     }
     public static class Inferium extends ReprocessorBlockEntity {
         public Inferium(BlockPos pos, BlockState state) {
-            super(BlockEntities.INFERIUM_REPROCESSOR, ReprocessorTier.INFERIUM, pos, state);
+            super(ModBlockEntities.INFERIUM_REPROCESSOR, ReprocessorTier.INFERIUM, pos, state);
         }
     }
     public static class Prudentium extends ReprocessorBlockEntity {
         public Prudentium(BlockPos pos, BlockState state) {
-            super(BlockEntities.PRUDENTIUM_REPROCESSOR, ReprocessorTier.PRUDENTIUM, pos, state);
+            super(ModBlockEntities.PRUDENTIUM_REPROCESSOR, ReprocessorTier.PRUDENTIUM, pos, state);
         }
     }
     public static class Tertium extends ReprocessorBlockEntity {
         public Tertium(BlockPos pos, BlockState state) {
-            super(BlockEntities.TERTIUM_REPROCESSOR, ReprocessorTier.TERTIUM, pos, state);
+            super(ModBlockEntities.TERTIUM_REPROCESSOR, ReprocessorTier.TERTIUM, pos, state);
         }
     }
     public static class Imperium extends ReprocessorBlockEntity {
         public Imperium(BlockPos pos, BlockState state) {
-            super(BlockEntities.IMPERIUM_REPROCESSOR, ReprocessorTier.IMPERIUM, pos, state);
+            super(ModBlockEntities.IMPERIUM_REPROCESSOR, ReprocessorTier.IMPERIUM, pos, state);
         }
     }
     public static class Supremium extends ReprocessorBlockEntity {
         public Supremium(BlockPos pos, BlockState state) {
-            super(BlockEntities.SUPREMIUM_REPROCESSOR, ReprocessorTier.SUPREMIUM, pos, state);
+            super(ModBlockEntities.SUPREMIUM_REPROCESSOR, ReprocessorTier.SUPREMIUM, pos, state);
         }
     }
 
     public static class AwakenedSupremium extends ReprocessorBlockEntity {
         public AwakenedSupremium(BlockPos pos, BlockState state) {
-            super(BlockEntities.AWAKENED_SUPREMIUM_REPROCESSOR, ReprocessorTier.AWAKENED_SUPREMIUM, pos, state);
+            super(ModBlockEntities.AWAKENED_SUPREMIUM_REPROCESSOR, ReprocessorTier.AWAKENED_SUPREMIUM, pos, state);
         }
     }
 }

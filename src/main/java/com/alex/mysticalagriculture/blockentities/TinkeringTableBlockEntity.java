@@ -6,7 +6,7 @@ import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.api.tinkering.IAugmentProvider;
 import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.container.TinkeringTableContainer;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.core.BlockPos;
@@ -22,7 +22,7 @@ public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implemen
     private final BaseItemStackHandler inventory;
 
     public TinkeringTableBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.TINKERING_TABLE, pos, state);
+        super(ModBlockEntities.TINKERING_TABLE, pos, state);
         this.inventory = createInventoryHandler(() -> {
             if (this.getLevel() != null && !this.getLevel().isClientSide()) {
                 this.markDirtyAndDispatch();

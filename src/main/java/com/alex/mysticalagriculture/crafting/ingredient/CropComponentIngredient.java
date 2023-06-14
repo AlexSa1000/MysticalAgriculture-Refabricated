@@ -1,8 +1,7 @@
 package com.alex.mysticalagriculture.crafting.ingredient;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.lib.ModCrops;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
@@ -63,7 +62,7 @@ public class CropComponentIngredient implements CustomIngredient {
 
     @Override
     public CustomIngredientSerializer<?> getSerializer() {
-        return RecipeSerializers.CROP_COMPONENT_INGREDIENT;
+        return ModRecipeSerializers.CROP_COMPONENT_INGREDIENT;
     }
 
     public Ingredient getBase() {
