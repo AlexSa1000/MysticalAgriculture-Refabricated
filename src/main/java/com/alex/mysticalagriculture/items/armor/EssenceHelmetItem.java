@@ -7,9 +7,15 @@ import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.lib.ModTooltips;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -51,6 +57,27 @@ public class EssenceHelmetItem extends BaseArmorItem implements ITinkerable {
             tooltip.add(a.getDisplayName().withStyle(ChatFormatting.GRAY));
         });
     }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> modifiers = HashMultimap.create();
+
+        if (slot == this.type.getSlot()) {
+            var material = this.getMaterial();
+
+            modifiers.put(Attributes.ARMOR, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor modifier", material.getDefenseForType(this.type), AttributeModifier.Operation.ADDITION));
+            modifiers.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor toughness", material.getToughness(), AttributeModifier.Operation.ADDITION));
+
+            if (material.getKnockbackResistance() > 0) {
+                modifiers.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ARMOR_MODIFIERS[slot.getIndex()], "Armor knockback resistance", material.getKnockbackResistance(), AttributeModifier.Operation.ADDITION));
+            }
+
+            AugmentUtils.getAugments(stack).forEach(a -> {
+                a.addArmorAttributeModifiers(modifiers, slot, stack);
+            });
+        }
+
+        return modifiers;    }
 
     @Override
     public int getAugmentSlots() {
