@@ -147,7 +147,7 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
 
             blockEntity.tier = tier;
             blockEntity.direction = direction;
-            blockEntity.positions = getWorkingArea(center, range);
+            blockEntity.positions = getWorkingArea(center, range, direction);
 
             if (tier == null) {
                 blockEntity.energy.resetMaxEnergyStorage();
@@ -271,12 +271,37 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
         return (int) (FUEL_USAGE * this.tier.getFuelUsageMultiplier());
     }
 
-    private static List<BlockPos> getWorkingArea(BlockPos center, int range) {
+    private static List<BlockPos> getWorkingArea(BlockPos center, int range, Direction direction) {
         var positions = new ArrayList<BlockPos>();
 
-        for (int x = -range; x < range + 1; x++) {
-            for (int z = -range; z < range + 1; z++) {
-                positions.add(new BlockPos(center.getX() + x, center.getY(), center.getZ() + z));
+        switch (direction) {
+            case NORTH -> {
+                for (int x = -range; x < range + 1; x++) {
+                    for (int z = -range; z < range + 1; z++) {
+                        positions.add(new BlockPos(center.getX() + x, center.getY(), center.getZ() + z));
+                    }
+                }
+            }
+            case SOUTH -> {
+                for (int x = range; x > -range - 1; x--) {
+                    for (int z = range; z > -range - 1; z--) {
+                        positions.add(new BlockPos(center.getX() + x, center.getY(), center.getZ() + z));
+                    }
+                }
+            }
+            case EAST -> {
+                for (int z = -range; z < range + 1; z++) {
+                    for (int x = range; x > -range - 1; x--) {
+                        positions.add(new BlockPos(center.getX() + x, center.getY(), center.getZ() + z));
+                    }
+                }
+            }
+            case WEST -> {
+                for (int z = range; z > -range - 1; z--) {
+                    for (int x = -range; x < range + 1; x++) {
+                        positions.add(new BlockPos(center.getX() + x, center.getY(), center.getZ() + z));
+                    }
+                }
             }
         }
 
