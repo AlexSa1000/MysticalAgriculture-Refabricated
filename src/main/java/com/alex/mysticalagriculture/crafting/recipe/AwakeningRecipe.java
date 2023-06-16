@@ -23,12 +23,13 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
     private final NonNullList<Ingredient> inputs;
     private final AwakeningRecipe.EssenceVesselRequirements essences;
     private final ItemStack output;
-
-    public AwakeningRecipe(ResourceLocation recipeId, NonNullList<Ingredient> inputs, AwakeningRecipe.EssenceVesselRequirements essences, ItemStack output) {
+    private final boolean transferNBT;
+    public AwakeningRecipe(ResourceLocation recipeId, NonNullList<Ingredient> inputs, AwakeningRecipe.EssenceVesselRequirements essences, ItemStack output, boolean transferNBT) {
         this.recipeId = recipeId;
         this.inputs = NonNullList.withSize(9, Ingredient.EMPTY);
         this.essences = essences;
         this.output = output;
+        this.transferNBT = transferNBT;
 
         this.inputs.set(0, inputs.get(0));
         this.inputs.set(1, createEssenceIngredient(ModCrops.AIR));
@@ -43,7 +44,20 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
 
     @Override
     public ItemStack assemble(Container inventory) {
-        return this.output.copy();
+        var stack = inventory.getItem(0);
+        var result = this.output.copy();
+
+        if (this.transferNBT) {
+            var tag = stack.getTag();
+
+            if (tag != null) {
+                result.setTag(tag.copy());
+
+                return result;
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -110,8 +124,9 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
             );
 
             var result = ShapedRecipe.itemStackFromJson(json.getAsJsonObject("result"));
+            var transferNBT = GsonHelper.getAsBoolean(json, "transfer_nbt", false);
 
-            return new AwakeningRecipe(recipeId, inputs, essenceRequirements, result);
+            return new AwakeningRecipe(recipeId, inputs, essenceRequirements, result, transferNBT);
         }
 
         @Override
@@ -130,9 +145,10 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
                     buffer.readVarInt()
             );
 
-            ItemStack output = buffer.readItem();
+            var output = buffer.readItem();
+            var transferNBT = buffer.readBoolean();
 
-            return new AwakeningRecipe(recipeId, inputs, essences, output);
+            return new AwakeningRecipe(recipeId, inputs, essences, output, transferNBT);
         }
 
         @Override
@@ -150,6 +166,7 @@ public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagricult
             buffer.writeVarInt(recipe.essences.fire());
 
             buffer.writeItem(recipe.output);
+            buffer.writeBoolean(recipe.transferNBT);
         }
     }
 }

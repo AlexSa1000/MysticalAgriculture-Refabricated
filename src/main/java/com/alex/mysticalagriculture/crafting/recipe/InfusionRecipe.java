@@ -20,16 +20,31 @@ public class InfusionRecipe implements SpecialRecipe, com.alex.mysticalagricultu
     private final ResourceLocation recipeId;
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
+    private final boolean transferNBT;
 
-    public InfusionRecipe(ResourceLocation recipeId, NonNullList<Ingredient> inputs, ItemStack output) {
+    public InfusionRecipe(ResourceLocation recipeId, NonNullList<Ingredient> inputs, ItemStack output, boolean transferNBT) {
         this.recipeId = recipeId;
         this.inputs = inputs;
         this.output = output;
+        this.transferNBT = transferNBT;
     }
 
     @Override
     public ItemStack assemble(Container inventory) {
-        return this.output.copy();
+        var stack = inventory.getItem(0);
+        var result = this.output.copy();
+
+        if (this.transferNBT) {
+            var tag = stack.getTag();
+
+            if (tag != null) {
+                result.setTag(tag.copy());
+
+                return result;
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -83,8 +98,9 @@ public class InfusionRecipe implements SpecialRecipe, com.alex.mysticalagricultu
             }
 
             var result = ShapedRecipe.itemStackFromJson(json.getAsJsonObject("result"));
+            var transferNBT = GsonHelper.getAsBoolean(json, "transfer_nbt", false);
 
-            return new InfusionRecipe(recipeId, inputs, result);
+            return new InfusionRecipe(recipeId, inputs, result, transferNBT);
         }
 
         @Override
@@ -96,9 +112,10 @@ public class InfusionRecipe implements SpecialRecipe, com.alex.mysticalagricultu
                 inputs.set(i, Ingredient.fromNetwork(buffer));
             }
 
-            ItemStack output = buffer.readItem();
+            var output = buffer.readItem();
+            var transferNBT = buffer.readBoolean();
 
-            return new InfusionRecipe(recipeId, inputs, output);
+            return new InfusionRecipe(recipeId, inputs, output, transferNBT);
         }
 
         @Override
@@ -110,6 +127,7 @@ public class InfusionRecipe implements SpecialRecipe, com.alex.mysticalagricultu
             }
 
             buffer.writeItem(recipe.output);
+            buffer.writeBoolean(recipe.transferNBT);
         }
     }
 }
