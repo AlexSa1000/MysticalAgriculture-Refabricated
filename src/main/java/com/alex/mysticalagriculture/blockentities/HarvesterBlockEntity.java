@@ -310,12 +310,12 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
                 return;
             }
 
-            var insertSize = Math.min(remaining, stackInSlot.getMaxStackSize() - stackInSlot.getCount());
-
-            remaining -= insertSize;
-
             if (StackHelper.areStacksEqual(stackInSlot, stack)) {
+                var insertSize = Math.min(remaining, stackInSlot.getMaxStackSize() - stackInSlot.getCount());
+
                 this.inventory.setStackInSlot(i, StackHelper.grow(stackInSlot, insertSize));
+
+                remaining -= insertSize;
             }
 
             if (remaining == 0)
