@@ -16,7 +16,7 @@
       "item": "mysticalagriculture:certus_quartz_essence"
     },
     "M": {
-      "tag": "forge:ingots/gold"
+      "tag": "c:gold_ingots"
     }
   },
   "result": {
