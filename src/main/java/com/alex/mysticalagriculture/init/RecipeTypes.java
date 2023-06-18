@@ -1,16 +1,18 @@
 package com.alex.mysticalagriculture.init;
 
-import com.alex.mysticalagriculture.api.crafting.SoulExtractionRecipe;
-import com.alex.mysticalagriculture.crafting.recipe.*;
+import com.alex.mysticalagriculture.api.crafting.IAwakeningRecipe;
+import com.alex.mysticalagriculture.api.crafting.IInfusionRecipe;
+import com.alex.mysticalagriculture.api.crafting.IReprocessorRecipe;
+import com.alex.mysticalagriculture.api.crafting.ISoulExtractionRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public class RecipeTypes {
-    public static final RecipeType<com.alex.mysticalagriculture.api.crafting.InfusionRecipe> INFUSION = new RecipeType<com.alex.mysticalagriculture.api.crafting.InfusionRecipe>() {};
-    public static final RecipeType<com.alex.mysticalagriculture.api.crafting.AwakeningRecipe> AWAKENING = new RecipeType<com.alex.mysticalagriculture.api.crafting.AwakeningRecipe>() {};
-    public static final RecipeType<com.alex.mysticalagriculture.api.crafting.ReprocessorRecipe> REPROCESSOR = new RecipeType<com.alex.mysticalagriculture.api.crafting.ReprocessorRecipe>() {};
-    public static final RecipeType<com.alex.mysticalagriculture.api.crafting.SoulExtractionRecipe> SOUL_EXTRACTION = new RecipeType<SoulExtractionRecipe>() {};
+    public static final RecipeType<IInfusionRecipe> INFUSION = new RecipeType<IInfusionRecipe>() {};
+    public static final RecipeType<IAwakeningRecipe> AWAKENING = new RecipeType<IAwakeningRecipe>() {};
+    public static final RecipeType<IReprocessorRecipe> REPROCESSOR = new RecipeType<IReprocessorRecipe>() {};
+    public static final RecipeType<ISoulExtractionRecipe> SOUL_EXTRACTION = new RecipeType<ISoulExtractionRecipe>() {};
 
     //public static final RecipeType<InfusionCrystalRecipe> INFUSION_CRYSTAL = new RecipeType<InfusionCrystalRecipe>() {};
 

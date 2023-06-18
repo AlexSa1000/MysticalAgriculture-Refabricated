@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.blockentities;
 
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.init.BlockEntities;
@@ -35,7 +35,7 @@ public class EssenceVesselBlockEntity extends BaseInventoryBlockEntity {
     }
 
     private static boolean canInsertStack(ItemStack stack) {
-        if (stack.getItem() instanceof CropProvider provider) {
+        if (stack.getItem() instanceof ICropProvider provider) {
             return EssenceVesselType.fromCrop(provider) != null;
         }
 

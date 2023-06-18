@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.List;
 import java.util.Set;
 
-public interface MobSoulTypeRegistry {
+public interface IMobSoulTypeRegistry {
     /**
      * Register a mob soul type in the mob soul type registry
      * @param type the mob soul type to register

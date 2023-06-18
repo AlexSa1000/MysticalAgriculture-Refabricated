@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.jei.category;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.crafting.AwakeningRecipe;
+import com.alex.mysticalagriculture.api.crafting.IAwakeningRecipe;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Blocks;
@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class AwakeningCategory implements IRecipeCategory<AwakeningRecipe> {
+public class AwakeningCategory implements IRecipeCategory<IAwakeningRecipe> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MysticalAgriculture.MOD_ID, "textures/gui/jei/infusion.png");
-    public static final RecipeType<AwakeningRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "awakening", AwakeningRecipe.class);
+    public static final RecipeType<IAwakeningRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "awakening", IAwakeningRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -32,7 +32,7 @@ public class AwakeningCategory implements IRecipeCategory<AwakeningRecipe> {
     }
 
     @Override
-    public RecipeType<AwakeningRecipe> getRecipeType() {
+    public RecipeType<IAwakeningRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -52,7 +52,7 @@ public class AwakeningCategory implements IRecipeCategory<AwakeningRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AwakeningRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, IAwakeningRecipe recipe, IFocusGroup focuses) {
         var inputs = toItemStackLists(recipe);
         var output = recipe.getResultItem();
 
@@ -69,7 +69,7 @@ public class AwakeningCategory implements IRecipeCategory<AwakeningRecipe> {
         builder.addSlot(RecipeIngredientRole.OUTPUT, 123, 33).addItemStack(output);
     }
 
-    private static List<List<ItemStack>> toItemStackLists(AwakeningRecipe recipe) {
+    private static List<List<ItemStack>> toItemStackLists(IAwakeningRecipe recipe) {
         var requirements = recipe.getEssenceRequirements();
         var ingredients = recipe.getIngredients();
 

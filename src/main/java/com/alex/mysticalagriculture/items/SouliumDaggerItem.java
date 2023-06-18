@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.api.soul.SoulSiphoningItem;
+import com.alex.mysticalagriculture.api.soul.ISoulSiphoningItem;
 import com.alex.cucumber.item.tool.BaseSwordItem;
 import com.alex.mysticalagriculture.lib.ModItemTier;
 import com.alex.mysticalagriculture.lib.ModTooltips;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class SouliumDaggerItem extends BaseSwordItem implements SoulSiphoningItem {
+public class SouliumDaggerItem extends BaseSwordItem implements ISoulSiphoningItem {
     private final DaggerType type;
 
     public SouliumDaggerItem(Tier tier, DaggerType type, Function<Properties, Properties> properties) {

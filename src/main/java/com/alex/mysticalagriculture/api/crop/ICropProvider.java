@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.api.crop;
 
-public interface CropProvider {
+public interface ICropProvider {
     /**
      * Gets the crop from this object
      * @return the crop

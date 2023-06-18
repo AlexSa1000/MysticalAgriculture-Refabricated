@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.jei.category;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.crafting.ReprocessorRecipe;
+import com.alex.mysticalagriculture.api.crafting.IReprocessorRecipe;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,9 +19,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class ReprocessorCategory implements IRecipeCategory<ReprocessorRecipe> {
+public class ReprocessorCategory implements IRecipeCategory<IReprocessorRecipe> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MysticalAgriculture.MOD_ID, "textures/gui/jei/reprocessor.png");
-    public static final RecipeType<ReprocessorRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "reprocessor", ReprocessorRecipe.class);
+    public static final RecipeType<IReprocessorRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "reprocessor", IReprocessorRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -37,7 +37,7 @@ public class ReprocessorCategory implements IRecipeCategory<ReprocessorRecipe> {
     }
 
     @Override
-    public RecipeType<ReprocessorRecipe> getRecipeType() {
+    public RecipeType<IReprocessorRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -57,12 +57,12 @@ public class ReprocessorCategory implements IRecipeCategory<ReprocessorRecipe> {
     }
 
     @Override
-    public void draw(ReprocessorRecipe recipe, IRecipeSlotsView slots, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(IReprocessorRecipe recipe, IRecipeSlotsView slots, PoseStack stack, double mouseX, double mouseY) {
         this.arrow.draw(stack, 24, 4);
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ReprocessorRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, IReprocessorRecipe recipe, IFocusGroup focuses) {
         var inputs = recipe.getIngredients();
         var output = recipe.getResultItem();
 

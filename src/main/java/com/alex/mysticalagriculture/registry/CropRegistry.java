@@ -5,6 +5,7 @@ import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.crop.CropType;
 import com.alex.mysticalagriculture.api.lib.PluginConfig;
+import com.alex.mysticalagriculture.api.registry.ICropRegistry;
 import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
 import com.alex.mysticalagriculture.items.MysticalEssenceItem;
 import com.alex.mysticalagriculture.items.MysticalSeedItem;
@@ -15,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CropRegistry implements com.alex.mysticalagriculture.api.registry.CropRegistry {
+public class CropRegistry implements ICropRegistry {
     private static final CropRegistry INSTANCE = new CropRegistry();
 
     private Map<ResourceLocation, Crop> crops = new LinkedHashMap<>();

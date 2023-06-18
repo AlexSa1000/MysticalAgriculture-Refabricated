@@ -1,25 +1,25 @@
 package com.alex.mysticalagriculture.api.util;
 
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class TinkerableUtils {
     /**
-     * Gets the {@link Tinkerable} instance from the provided item stack if applicable
+     * Gets the {@link ITinkerable} instance from the provided item stack if applicable
      * @param stack the item
-     * @return the {@link Tinkerable} or null
+     * @return the {@link ITinkerable} or null
      */
-    public static Tinkerable getTinkerable(ItemStack stack) {
+    public static ITinkerable getTinkerable(ItemStack stack) {
         var item = stack.getItem();
-        return item instanceof Tinkerable tinkerable ? tinkerable : null;
+        return item instanceof ITinkerable tinkerable ? tinkerable : null;
     }
 
     /**
-     * Gets the minimum {@link Tinkerable} tier for the player's equipped armor
+     * Gets the minimum {@link ITinkerable} tier for the player's equipped armor
      * @param player the player
-     * @return the minimum {@link Tinkerable} tier, or -1 if not wearing a full set
+     * @return the minimum {@link ITinkerable} tier, or -1 if not wearing a full set
      */
     public static int getArmorSetMinimumTier(Player player) {
         int tier = -1;
@@ -36,9 +36,9 @@ public class TinkerableUtils {
     }
 
     /**
-     * Checks if the provided player has a full set of the minimum {@link Tinkerable} tier equipped
+     * Checks if the provided player has a full set of the minimum {@link ITinkerable} tier equipped
      * @param player the player
-     * @param tier the {@link Tinkerable} tier
+     * @param tier the {@link ITinkerable} tier
      * @return has the minimum tier equipped
      */
     public static boolean hasArmorSetMinimumTier(Player player, int tier) {

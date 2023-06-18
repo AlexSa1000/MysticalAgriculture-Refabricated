@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.cucumber.iface.Enableable;
 import com.alex.cucumber.item.BaseItem;
 import com.alex.cucumber.util.Localizable;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.function.Function;
 
-public class MysticalEssenceItem extends BaseItem implements CropProvider, Enableable {
+public class MysticalEssenceItem extends BaseItem implements ICropProvider, Enableable {
     private final Crop crop;
 
     public MysticalEssenceItem(Crop crop, Function<Properties, Properties> properties) {

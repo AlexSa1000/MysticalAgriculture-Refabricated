@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.api.farmland.EssenceFarmLand;
+import com.alex.mysticalagriculture.api.farmland.IEssenceFarmLand;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +34,7 @@ public class InferiumCropBlock extends MysticalCropBlock {
                 var pos = new BlockPos((int) vec.x, (int) vec.y, (int) vec.z);
                 var below = world.getBlockState(pos.below()).getBlock();
 
-                if (below instanceof EssenceFarmLand farmland) {
+                if (below instanceof IEssenceFarmLand farmland) {
                     int tier = farmland.getTier().getValue();
                     crop = (int) ((0.5D * tier) + 0.5D);
 

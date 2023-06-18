@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public interface AugmentRegistry {
+public interface IAugmentRegistry {
     /**
      * Register an augment in the augment registry
      * @param augment the augment to register

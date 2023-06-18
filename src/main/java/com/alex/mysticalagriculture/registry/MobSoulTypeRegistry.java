@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.registry;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
+import com.alex.mysticalagriculture.api.registry.IMobSoulTypeRegistry;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MobSoulTypeRegistry implements com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry {
+public class MobSoulTypeRegistry implements IMobSoulTypeRegistry {
     private static final MobSoulTypeRegistry INSTANCE = new MobSoulTypeRegistry();
 
     private final Map<ResourceLocation, MobSoulType> mobSoulTypes = new LinkedHashMap<>();

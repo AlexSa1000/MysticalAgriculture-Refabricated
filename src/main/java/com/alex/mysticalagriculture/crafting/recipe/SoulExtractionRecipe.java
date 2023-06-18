@@ -1,5 +1,6 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
+import com.alex.mysticalagriculture.api.crafting.ISoulExtractionRecipe;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.cucumber.crafting.SpecialRecipe;
@@ -11,7 +12,6 @@ import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -21,7 +21,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public class SoulExtractionRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.SoulExtractionRecipe {
+public class SoulExtractionRecipe implements SpecialRecipe, ISoulExtractionRecipe {
     private final ResourceLocation recipeId;
     private final NonNullList<Ingredient> inputs;
     private final MobSoulType type;

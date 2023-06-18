@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.tinkering.Augment;
-import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
+import com.alex.mysticalagriculture.api.tinkering.IAugmentProvider;
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
 import com.alex.cucumber.iface.Enableable;
 import com.alex.cucumber.item.BaseItem;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class AugmentItem extends BaseItem implements AugmentProvider, Enableable {
+public class AugmentItem extends BaseItem implements IAugmentProvider, Enableable {
     private final Augment augment;
 
     public AugmentItem(Augment augment, Function<Properties, Properties> properties) {

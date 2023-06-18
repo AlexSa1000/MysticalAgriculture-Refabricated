@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.api.registry.AugmentRegistry;
+import com.alex.mysticalagriculture.api.registry.IAugmentRegistry;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.augment.*;
 import net.minecraft.resources.ResourceLocation;
@@ -56,7 +56,7 @@ public class ModAugments {
     public static final Augment ATTACK_AOE_III = new AttackAOEAugment(new ResourceLocation(MOD_ID, "attack_aoe_iii"), 5, 3);
     public static final Augment TILLING_AOE_IV = new TillingAOEAugment(new ResourceLocation(MOD_ID, "tilling_aoe_iv"), 5, 4);
 
-    public static void onRegisterAugments(AugmentRegistry registry) {
+    public static void onRegisterAugments(IAugmentRegistry registry) {
         registry.register(ABSORPTION_I);
         registry.register(HEALTH_BOOST_I);
         registry.register(PATHING_AOE_I);

@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.jei.category;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.crafting.SoulExtractionRecipe;
+import com.alex.mysticalagriculture.api.crafting.ISoulExtractionRecipe;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Blocks;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,9 +19,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class SoulExtractorCategory implements IRecipeCategory<SoulExtractionRecipe> {
+public class SoulExtractorCategory implements IRecipeCategory<ISoulExtractionRecipe> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MysticalAgriculture.MOD_ID, "textures/gui/jei/reprocessor.png");
-    public static final RecipeType<SoulExtractionRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "soul_extractor", SoulExtractionRecipe.class);
+    public static final RecipeType<ISoulExtractionRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "soul_extractor", ISoulExtractionRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -37,7 +37,7 @@ public class SoulExtractorCategory implements IRecipeCategory<SoulExtractionReci
     }
 
     @Override
-    public RecipeType<SoulExtractionRecipe> getRecipeType() {
+    public RecipeType<ISoulExtractionRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -57,12 +57,12 @@ public class SoulExtractorCategory implements IRecipeCategory<SoulExtractionReci
     }
 
     @Override
-    public void draw(SoulExtractionRecipe recipe, IRecipeSlotsView slots, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(ISoulExtractionRecipe recipe, IRecipeSlotsView slots, PoseStack stack, double mouseX, double mouseY) {
         this.arrow.draw(stack, 24, 4);
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, SoulExtractionRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, ISoulExtractionRecipe recipe, IFocusGroup focuses) {
         var inputs = recipe.getIngredients();
         var output = recipe.getResultItem();
 

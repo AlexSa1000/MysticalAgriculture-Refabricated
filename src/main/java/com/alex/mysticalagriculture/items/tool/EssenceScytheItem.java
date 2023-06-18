@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items.tool;
 
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.cucumber.item.tool.BaseScytheItem;
@@ -32,7 +32,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Function;
 
-public class EssenceScytheItem extends BaseScytheItem implements Tinkerable {
+public class EssenceScytheItem extends BaseScytheItem implements ITinkerable {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.TOOL, AugmentType.WEAPON, AugmentType.SCYTHE);
     private final int range;
     private final ChatFormatting textColor;

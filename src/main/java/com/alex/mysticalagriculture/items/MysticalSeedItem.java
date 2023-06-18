@@ -2,14 +2,13 @@ package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.cucumber.iface.Enableable;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.function.Function;
 
-public class MysticalSeedItem extends ItemNameBlockItem implements CropProvider, Enableable {
+public class MysticalSeedItem extends ItemNameBlockItem implements ICropProvider, Enableable {
     private final Crop crop;
 
     public MysticalSeedItem(Crop crop, Function<Properties, Properties> properties) {

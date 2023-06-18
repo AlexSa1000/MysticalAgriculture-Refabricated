@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public interface CropRegistry {
+public interface ICropRegistry {
     /**
      * Register a crop in the crop registry
      * @param crop the crop to register

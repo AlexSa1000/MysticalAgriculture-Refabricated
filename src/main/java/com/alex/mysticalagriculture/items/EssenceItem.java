@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.mysticalagriculture.api.crop.CropTier;
-import com.alex.mysticalagriculture.api.crop.CropTierProvider;
+import com.alex.mysticalagriculture.api.crop.ICropTierProvider;
 import com.alex.mysticalagriculture.api.farmland.FarmlandConverter;
 import com.alex.mysticalagriculture.api.farmland.IFarmlandConverter;
 import com.alex.mysticalagriculture.config.ModConfigs;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.function.Function;
 
-public class EssenceItem extends BaseItem implements IFarmlandConverter, CropTierProvider {
+public class EssenceItem extends BaseItem implements IFarmlandConverter, ICropTierProvider {
     private final CropTier tier;
 
     public EssenceItem(CropTier tier, Function<Properties, Properties> properties) {

@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.compat.jei.category;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.crafting.InfusionRecipe;
+import com.alex.mysticalagriculture.api.crafting.IInfusionRecipe;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Blocks;
 import mezz.jei.api.constants.VanillaTypes;
@@ -16,9 +16,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class InfusionCategory implements IRecipeCategory<InfusionRecipe> {
+public class InfusionCategory implements IRecipeCategory<IInfusionRecipe> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MysticalAgriculture.MOD_ID, "textures/gui/jei/infusion.png");
-    public static final RecipeType<InfusionRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "infusion", InfusionRecipe.class);
+    public static final RecipeType<IInfusionRecipe> RECIPE_TYPE = RecipeType.create(MysticalAgriculture.MOD_ID, "infusion", IInfusionRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -29,7 +29,7 @@ public class InfusionCategory implements IRecipeCategory<InfusionRecipe> {
     }
 
     @Override
-    public RecipeType<InfusionRecipe> getRecipeType() {
+    public RecipeType<IInfusionRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -49,7 +49,7 @@ public class InfusionCategory implements IRecipeCategory<InfusionRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, InfusionRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, IInfusionRecipe recipe, IFocusGroup focuses) {
         var inputs = recipe.getIngredients();
         var output = recipe.getResultItem();
 

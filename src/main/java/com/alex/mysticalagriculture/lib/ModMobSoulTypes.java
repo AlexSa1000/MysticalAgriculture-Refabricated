@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.api.registry.MobSoulTypeRegistry;
+import com.alex.mysticalagriculture.api.registry.IMobSoulTypeRegistry;
 import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.google.common.collect.Sets;
 import net.fabricmc.loader.api.FabricLoader;
@@ -42,7 +42,7 @@ public class ModMobSoulTypes {
     public static final MobSoulType ENDERMAN = new MobSoulType(new ResourceLocation(MOD_ID, "enderman"), new ResourceLocation("minecraft:enderman"), 8, 1447446);
     public static final MobSoulType WITHER = new MobSoulType(new ResourceLocation(MOD_ID, "wither_skeleton"), new ResourceLocation("minecraft:wither_skeleton"), 8, 1315860);
 
-    public static void onRegisterMobSoulTypes(MobSoulTypeRegistry registry) {
+    public static void onRegisterMobSoulTypes(IMobSoulTypeRegistry registry) {
         registry.register(PIG);
         registry.register(CHICKEN);
         registry.register(COW);

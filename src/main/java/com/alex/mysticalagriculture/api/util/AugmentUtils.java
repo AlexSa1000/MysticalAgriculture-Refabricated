@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.api.util;
 import com.alex.mysticalagriculture.api.MysticalAgricultureAPI;
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +19,7 @@ public class AugmentUtils {
     public static void addAugment(ItemStack stack, Augment augment, int slot) {
         var item = stack.getItem();
 
-        if (item instanceof Tinkerable tinkerable) {
+        if (item instanceof ITinkerable tinkerable) {
             if (slot < tinkerable.getAugmentSlots() && tinkerable.getTinkerableTier() >= augment.getTier()) {
                 var nbt = stack.getTag();
 
@@ -40,7 +40,7 @@ public class AugmentUtils {
 
         var item = stack.getItem();
 
-        if (item instanceof Tinkerable tinkerable) {
+        if (item instanceof ITinkerable tinkerable) {
             if (slot < tinkerable.getAugmentSlots() && nbt.contains("Augment-" + slot)) {
                 nbt.remove("Augment-" + slot);
             }
@@ -54,7 +54,7 @@ public class AugmentUtils {
 
         var item = stack.getItem();
 
-        if (item instanceof Tinkerable tinkerable) {
+        if (item instanceof ITinkerable tinkerable) {
             if (slot < tinkerable.getAugmentSlots() && nbt.contains("Augment-" + slot)) {
                 var name = nbt.getString("Augment-" + slot);
                 return MysticalAgricultureAPI.getAugmentRegistry().getAugmentById(new ResourceLocation(name));
@@ -73,7 +73,7 @@ public class AugmentUtils {
 
         var item = stack.getItem();
 
-        if (item instanceof Tinkerable tinkerable) {
+        if (item instanceof ITinkerable tinkerable) {
             int slots = tinkerable.getAugmentSlots();
 
             for (int i = 0; i < slots; i++) {

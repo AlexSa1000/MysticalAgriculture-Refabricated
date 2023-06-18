@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.util;
 
-public interface Activatable {
+public interface IActivatable {
     boolean isActive();
     void activate();
 }

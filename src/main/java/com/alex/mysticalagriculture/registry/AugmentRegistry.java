@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.registry;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
+import com.alex.mysticalagriculture.api.registry.IAugmentRegistry;
 import com.alex.mysticalagriculture.api.tinkering.Augment;
 import com.alex.mysticalagriculture.items.AugmentItem;
 import net.minecraft.core.Registry;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.CREATIVE_TAB;
 
-public class AugmentRegistry implements com.alex.mysticalagriculture.api.registry.AugmentRegistry {
+public class AugmentRegistry implements IAugmentRegistry {
     private static final AugmentRegistry INSTANCE = new AugmentRegistry();
 
     private final Map<ResourceLocation, Augment> augments = new LinkedHashMap<>();

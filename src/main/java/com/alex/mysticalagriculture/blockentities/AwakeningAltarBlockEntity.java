@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.blockentities;
 
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.crafting.recipe.AwakeningRecipe;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.helper.StackHelper;
@@ -9,7 +9,7 @@ import com.alex.cucumber.util.MultiblockPositions;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
-import com.alex.mysticalagriculture.util.Activatable;
+import com.alex.mysticalagriculture.util.IActivatable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implements Activatable/*implements SidedInventory*/ {
+public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implements IActivatable {
     private final MultiblockPositions PEDESTAL_LOCATIONS = new MultiblockPositions.Builder()
             .pos(3, 0, 0).pos(2, 0, 2).pos(-3, 0, 0).pos(-2, 0, -2)
             .pos(0, 0, 3).pos(2, 0, -2).pos(0, 0, -3).pos(-2, 0, 2).build();
@@ -235,7 +235,7 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implemen
             var stack = this.recipeInventory.getItem(i);
             var item = stack.getItem();
 
-            if (item instanceof CropProvider provider) {
+            if (item instanceof ICropProvider provider) {
                 var crop = provider.getCrop();
                 var count = stack.getCount();
 
@@ -252,7 +252,7 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implemen
     private static void decrementVesselInventory(BaseItemStackHandler inventory, AwakeningRecipe.EssenceVesselRequirements requirements) {
         var item = inventory.getItem(0).getItem();
 
-        if (item instanceof CropProvider provider) {
+        if (item instanceof ICropProvider provider) {
             var crop = provider.getCrop();
 
             if (crop == ModCrops.AIR) inventory.setStackInSlot(0, StackHelper.shrink(inventory.getItem(0), requirements.air(), false));

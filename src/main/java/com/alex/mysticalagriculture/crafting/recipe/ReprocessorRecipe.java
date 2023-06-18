@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.cucumber.crafting.SpecialRecipe;
+import com.alex.mysticalagriculture.api.crafting.IReprocessorRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.google.gson.JsonObject;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.ReprocessorRecipe {
+public class ReprocessorRecipe implements SpecialRecipe, IReprocessorRecipe {
     private final ResourceLocation recipeId;
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;

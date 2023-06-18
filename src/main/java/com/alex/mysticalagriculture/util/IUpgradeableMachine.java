@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
 import net.minecraft.world.item.ItemStack;
 
-public interface UpgradeableMachine {
+public interface IUpgradeableMachine {
 
     UpgradeItemStackHandler getUpgradeInventory();
 

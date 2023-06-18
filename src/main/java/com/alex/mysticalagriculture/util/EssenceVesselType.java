@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.util;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import net.minecraft.world.item.Item;
 
@@ -50,7 +50,7 @@ public enum EssenceVesselType {
         return LOOKUP.get(crop.getName());
     }
 
-    public static EssenceVesselType fromCrop(CropProvider provider) {
+    public static EssenceVesselType fromCrop(ICropProvider provider) {
         return fromCrop(provider.getCrop());
     }
 }

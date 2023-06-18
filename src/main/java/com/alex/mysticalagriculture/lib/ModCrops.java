@@ -5,7 +5,7 @@ import com.alex.mysticalagriculture.api.crop.CropTextures;
 import com.alex.mysticalagriculture.api.crop.CropTier;
 import com.alex.mysticalagriculture.api.crop.CropType;
 import com.alex.mysticalagriculture.api.lib.LazyIngredient;
-import com.alex.mysticalagriculture.api.registry.CropRegistry;
+import com.alex.mysticalagriculture.api.registry.ICropRegistry;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.init.Blocks;
@@ -200,7 +200,7 @@ public class ModCrops {
         });
     }
 
-    public static void onRegisterCrops(CropRegistry registry) {
+    public static void onRegisterCrops(ICropRegistry registry) {
         INFERIUM.getTextures().setEssenceTexture(new ResourceLocation(MOD_ID, "item/inferium_essence"));
         INFERIUM.setCropBlock(() -> (CropBlock) Blocks.INFERIUM_CROP)
                 .setEssenceItem(() -> Items.INFERIUM_ESSENCE);

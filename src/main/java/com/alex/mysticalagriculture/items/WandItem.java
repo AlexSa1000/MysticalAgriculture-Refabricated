@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.items;
 
 import com.alex.cucumber.item.BaseItem;
-import com.alex.mysticalagriculture.util.Activatable;
+import com.alex.mysticalagriculture.util.IActivatable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 
@@ -18,7 +18,7 @@ public class WandItem extends BaseItem {
         var pos = context.getClickedPos();
 
         var tile = level.getBlockEntity(pos);
-        if (tile instanceof Activatable activatable) {
+        if (tile instanceof IActivatable activatable) {
             activatable.activate();
 
             return InteractionResult.SUCCESS;

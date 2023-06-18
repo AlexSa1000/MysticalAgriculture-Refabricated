@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.api.crop.Crop;
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.cucumber.util.Localizable;
 import com.alex.mysticalagriculture.init.Items;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysticalCropBlock extends CropBlock implements CropProvider {
+public class MysticalCropBlock extends CropBlock implements ICropProvider {
     private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
     private final Crop crop;
 

@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Implement this interface on items that give mob souls when used to kill mobs
  */
-public interface SoulSiphoningItem {
+public interface ISoulSiphoningItem {
     /**
      * Get the amount of souls obtained from killing this entity with this item
      * @param stack the item used to kill this entity

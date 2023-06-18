@@ -10,7 +10,7 @@ import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
-import com.alex.mysticalagriculture.util.UpgradeableMachine;
+import com.alex.mysticalagriculture.util.IUpgradeableMachine;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.energy.DynamicEnergyStorage;
 import com.alex.cucumber.helper.StackHelper;
@@ -35,7 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, UpgradeableMachine {
+public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, IUpgradeableMachine {
     private static final int FUEL_TICK_MULTIPLIER = 20;
     public static final int OPERATION_TIME = 100;
     public static final int FUEL_USAGE = 40;

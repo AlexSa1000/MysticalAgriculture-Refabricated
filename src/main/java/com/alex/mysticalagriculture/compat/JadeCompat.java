@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.compat;
 
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.api.crop.CropProvider;
-import com.alex.mysticalagriculture.api.farmland.EssenceFarmLand;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
+import com.alex.mysticalagriculture.api.farmland.IEssenceFarmLand;
 import com.alex.mysticalagriculture.blocks.InferiumCropBlock;
 import com.alex.mysticalagriculture.blocks.InfusedFarmlandBlock;
 import com.alex.mysticalagriculture.blocks.MysticalCropBlock;
@@ -25,7 +25,7 @@ public class JadeCompat implements IWailaPlugin {
             @Override
             public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
                 var block = accessor.getBlock();
-                var crop = ((CropProvider) block).getCrop();
+                var crop = ((ICropProvider) block).getCrop();
 
                 tooltip.add(ModTooltips.TIER.args(crop.getTier().getDisplayName()).build());
 
@@ -69,12 +69,12 @@ public class JadeCompat implements IWailaPlugin {
             @Override
             public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
                 var block = accessor.getBlock();
-                var crop = ((CropProvider) block).getCrop();
+                var crop = ((ICropProvider) block).getCrop();
                 var downPos = accessor.getPosition().below();
                 var belowBlock = accessor.getLevel().getBlockState(downPos).getBlock();
 
                 int output = 100;
-                if (belowBlock instanceof EssenceFarmLand farmland) {
+                if (belowBlock instanceof IEssenceFarmLand farmland) {
                     int tier = farmland.getTier().getValue();
                     output = (tier * 50) + 50;
                 }
@@ -94,7 +94,7 @@ public class JadeCompat implements IWailaPlugin {
             @Override
             public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
                 var block = accessor.getBlock();
-                var farmland = (EssenceFarmLand) block;
+                var farmland = (IEssenceFarmLand) block;
 
                 tooltip.add(ModTooltips.TIER.args(farmland.getTier().getDisplayName()).build());
             }

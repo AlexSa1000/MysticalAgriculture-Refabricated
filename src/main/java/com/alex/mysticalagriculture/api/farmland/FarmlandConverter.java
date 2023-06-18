@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.api.farmland;
 
-import com.alex.mysticalagriculture.api.crop.CropTierProvider;
+import com.alex.mysticalagriculture.api.crop.ICropTierProvider;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,10 +27,10 @@ public final class FarmlandConverter {
             stack.shrink(1);
 
             return InteractionResult.SUCCESS;
-        } else if (block instanceof EssenceFarmLand farmland) {
+        } else if (block instanceof IEssenceFarmLand farmland) {
             var item = stack.getItem();
 
-            if (item instanceof CropTierProvider provider) {
+            if (item instanceof ICropTierProvider provider) {
                 var tier = provider.getTier();
 
                 if (tier != farmland.getTier()) {

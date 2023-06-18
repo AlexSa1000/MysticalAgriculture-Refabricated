@@ -4,7 +4,7 @@ import com.alex.cucumber.item.BaseItem;
 import com.alex.cucumber.lib.Tooltips;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
-import com.alex.mysticalagriculture.util.UpgradeableMachine;
+import com.alex.mysticalagriculture.util.IUpgradeableMachine;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +32,7 @@ public class MachineUpgradeItem extends BaseItem {
         var pos = context.getClickedPos();
         var tile = level.getBlockEntity(pos);
 
-        if (tile instanceof UpgradeableMachine machine && machine.canApplyUpgrade(this.tier)) {
+        if (tile instanceof IUpgradeableMachine machine && machine.canApplyUpgrade(this.tier)) {
             var stack = context.getItemInHand();
             var remaining = machine.applyUpgrade(this);
 

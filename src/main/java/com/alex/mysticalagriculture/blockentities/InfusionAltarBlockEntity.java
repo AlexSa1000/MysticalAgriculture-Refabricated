@@ -6,7 +6,7 @@ import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.util.MultiblockPositions;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.util.Activatable;
+import com.alex.mysticalagriculture.util.IActivatable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Activatable {
+public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements IActivatable {
     private final BaseItemStackHandler inventory;
     private final BaseItemStackHandler recipeInventory;
     private final MultiblockPositions pedestalLocations = new MultiblockPositions.Builder()

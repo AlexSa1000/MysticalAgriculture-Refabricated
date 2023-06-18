@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.items;
 
-import com.alex.mysticalagriculture.api.crop.CropProvider;
+import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.core.BlockPos;
@@ -77,7 +77,7 @@ public class FertilizedEssenceItem extends BoneMealItem {
     }
 
     private static boolean canGrowRepointerCrops(BonemealableBlock growable) {
-        return growable instanceof CropProvider && ((CropProvider) growable).getCrop().getTier().isFertilizable();
+        return growable instanceof ICropProvider && ((ICropProvider) growable).getCrop().getTier().isFertilizable();
     }
 
     public static class DispenserBehavior extends OptionalDispenseItemBehavior {

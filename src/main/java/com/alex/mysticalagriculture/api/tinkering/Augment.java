@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
-import com.alex.cucumber.forge.common.ForgeHooks;
 import com.alex.cucumber.forge.event.entity.living.LivingFallEvent;
 import com.alex.cucumber.util.Utils;
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
@@ -139,7 +138,7 @@ public class Augment {
         return Component.translatable(String.format("augment.%s.%s", this.getModId(), this.getName()));
     }
 
-    public static ItemStack getEssenceForTinkerable(Tinkerable tinkerable, int min, int max) {
+    public static ItemStack getEssenceForTinkerable(ITinkerable tinkerable, int min, int max) {
         switch (tinkerable.getTinkerableTier()) {
             case 1: return new ItemStack(Items.INFERIUM_ESSENCE, Utils.randInt(min, max));
             case 2: return new ItemStack(Items.PRUDENTIUM_ESSENCE, Utils.randInt(min, max));

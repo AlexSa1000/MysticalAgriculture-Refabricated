@@ -12,7 +12,7 @@ import com.alex.mysticalagriculture.container.HarvesterContainer;
 import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
-import com.alex.mysticalagriculture.util.UpgradeableMachine;
+import com.alex.mysticalagriculture.util.IUpgradeableMachine;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -36,7 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, UpgradeableMachine {
+public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, IUpgradeableMachine {
     private static final int FUEL_TICK_MULTIPLIER = 20;
     public static final int OPERATION_TIME = 100;
     public static final int FUEL_USAGE = 40;

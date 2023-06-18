@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.api.tinkering;
 
-public interface AugmentProvider {
+public interface IAugmentProvider {
 
     Augment getAugment();
 }

@@ -1,5 +1,6 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
+import com.alex.mysticalagriculture.api.crafting.IAwakeningRecipe;
 import com.alex.mysticalagriculture.api.crop.Crop;
 import com.alex.cucumber.crafting.SpecialRecipe;
 import com.alex.mysticalagriculture.init.RecipeSerializers;
@@ -17,7 +18,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-public class AwakeningRecipe implements SpecialRecipe, com.alex.mysticalagriculture.api.crafting.AwakeningRecipe {
+public class AwakeningRecipe implements SpecialRecipe, IAwakeningRecipe {
     public static final int RECIPE_SIZE = 9;
     private final ResourceLocation recipeId;
     private final NonNullList<Ingredient> inputs;

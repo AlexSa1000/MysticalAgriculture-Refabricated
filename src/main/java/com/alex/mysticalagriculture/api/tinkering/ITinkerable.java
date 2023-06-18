@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.api.tinkering;
 
 import java.util.EnumSet;
 
-public interface Tinkerable {
+public interface ITinkerable {
 
     int getAugmentSlots();
 

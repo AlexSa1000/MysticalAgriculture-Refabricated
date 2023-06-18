@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.items.tool;
 
 import com.alex.mysticalagriculture.api.tinkering.AugmentType;
-import com.alex.mysticalagriculture.api.tinkering.ElementalItem;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.IElementalItem;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.cucumber.item.BaseItem;
 import com.alex.cucumber.lib.Tooltips;
 import com.alex.mysticalagriculture.lib.ModTooltips;
@@ -18,7 +18,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Function;
 
-public class EssenceStaffItem extends BaseItem implements Tinkerable, ElementalItem {
+public class EssenceStaffItem extends BaseItem implements ITinkerable, IElementalItem {
     private static final EnumSet<AugmentType> TYPES = EnumSet.of(AugmentType.STAFF);
     private final int tinkerableTier;
     private final int slots;

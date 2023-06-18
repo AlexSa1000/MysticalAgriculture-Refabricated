@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.blockentities;
 
-import com.alex.mysticalagriculture.api.tinkering.AugmentProvider;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.IAugmentProvider;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.container.TinkeringTableContainer;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
@@ -60,8 +60,8 @@ public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implemen
             builder.setCanInsert((slot, stack) -> {
                 var item = stack.getItem();
                 return switch (slot) {
-                    case 0 -> item instanceof Tinkerable;
-                    case 1, 2 -> item instanceof AugmentProvider;
+                    case 0 -> item instanceof ITinkerable;
+                    case 1, 2 -> item instanceof IAugmentProvider;
                     case 3 -> item == ModCrops.AIR.getEssenceItem();
                     case 4 -> item == ModCrops.EARTH.getEssenceItem();
                     case 5 -> item == ModCrops.WATER.getEssenceItem();

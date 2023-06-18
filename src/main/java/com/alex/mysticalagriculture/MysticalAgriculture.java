@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.helper.ConfigHelper;
 import com.alex.mysticalagriculture.api.MysticalAgricultureAPI;
-import com.alex.mysticalagriculture.api.tinkering.Tinkerable;
+import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
 import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
@@ -13,18 +13,15 @@ import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.registry.PluginRegistry;
-import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -60,7 +57,7 @@ public class MysticalAgriculture implements ModInitializer {
                 var held = player.getMainHandItem();
                 var item = held.getItem();
 
-                if (item instanceof Tinkerable tinkerable) {
+                if (item instanceof ITinkerable tinkerable) {
 
                     boolean witherDropsEssence = ModConfigs.WITHER_DROPS_ESSENCE.get();
 
