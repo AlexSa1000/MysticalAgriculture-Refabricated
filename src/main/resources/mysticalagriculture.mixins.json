@@ -12,7 +12,6 @@
     "PlayerListMixin",
     "PlayerMixin",
     "ReloadableServerResourcesMixin",
-    "ServerPlayerGameModeMixin",
     "SheepMixin",
     "SnowGolemMixin"
   ],
@@ -22,7 +21,6 @@
     "FishingHookRendererMixin",
     "ItemInHandRendererMixin",
     "ModelManagerMixin",
-    "MultiPlayerGameModeMixin",
     "PlayerRendererMixin",
     "TextureAtlasMixin"
   ],

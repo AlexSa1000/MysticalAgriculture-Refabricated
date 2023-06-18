@@ -18,34 +18,70 @@ import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.alex.mysticalagriculture.items.tool.EssenceBowItem;
 import com.alex.mysticalagriculture.items.tool.EssenceCrossbowItem;
 import com.alex.mysticalagriculture.items.tool.EssenceFishingRodItem;
+import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
 
-import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.alex.mysticalagriculture.handler.ExperienceCapsuleHandler.EXPERIENCE_CAPSULE_PICKUP;
+import static com.alex.mysticalagriculture.util.RecipeIngredientCache.RELOAD_INGREDIENT_CACHE;
 
 public class MysticalAgricultureClient implements ClientModInitializer {
-
     @Override
     public void onInitializeClient() {
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setAltarOverlay);
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setEssenceVesselOverlay);
 
-        ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(MOD_ID, "experience_capsule_pickup"), (client, handler, buf, responseSender) -> client.execute(() -> {
+        ClientPlayNetworking.registerGlobalReceiver(EXPERIENCE_CAPSULE_PICKUP, (client, handler, buffer, responseSender) -> client.execute(() -> {
             var player = client.player;
 
             if (player != null) {
                 player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, (Utils.RANDOM.nextFloat() - Utils.RANDOM.nextFloat()) * 0.35F + 0.9F);
             }
         }));
+
+        ClientPlayNetworking.registerGlobalReceiver(RELOAD_INGREDIENT_CACHE, (client, handler, buffer, responseSender) -> {
+            var caches = new HashMap<RecipeType<?>, Map<Item, List<Ingredient>>>();
+            var types = buffer.readVarInt();
+
+            for (var i = 0; i < types; i++) {
+                var type = Registry.RECIPE_TYPE.get(buffer.readResourceLocation());
+                var items = buffer.readVarInt();
+
+                caches.put(type, new HashMap<>());
+
+                for (var j = 0; j < items; j++) {
+                    var item = Registry.ITEM.get(buffer.readResourceLocation());
+                    var ingredients = buffer.readVarInt();
+
+                    for (var k = 0; k < ingredients; k++) {
+                        var cache = caches.get(type).computeIfAbsent(item, l -> new ArrayList<>());
+
+                        cache.add(Ingredient.fromNetwork(buffer));
+                    }
+                }
+            }
+
+            client.execute(() -> {
+                RecipeIngredientCache.INSTANCE.setCaches(caches);
+            });
+        });
 
         ModelHandler.onRegisterAdditionalModels();
 

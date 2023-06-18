@@ -106,7 +106,7 @@ public class MysticalCropBlock extends CropBlock implements CropProvider {
     }*/
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.getBlock() instanceof FarmBlock;
     }
 
