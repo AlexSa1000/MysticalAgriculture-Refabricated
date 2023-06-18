@@ -11,13 +11,13 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public class BiomeModifiers {
+public class ModBiomeModifiers {
 
     public static ResourceKey<PlacedFeature> INFERIUM_ORE_KEY;
     public static ResourceKey<PlacedFeature> PROSPERITY_ORE_KEY;
     public static ResourceKey<PlacedFeature> SOULSTONE_KEY;
 
-    public static void registerBiomeModifiers() {
+    public static void registerModBiomeModifiers() {
         INFERIUM_ORE_KEY = ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, new ResourceLocation(MOD_ID,"inferium_ore"));
         PROSPERITY_ORE_KEY = ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, new ResourceLocation(MOD_ID,"prosperity_ore"));
         SOULSTONE_KEY = ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, new ResourceLocation(MOD_ID,"soulstone"));

@@ -5,7 +5,7 @@ import com.alex.mysticalagriculture.api.tinkering.ITinkerable;
 import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.cucumber.item.BaseArmorItem;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -50,7 +50,7 @@ public class EssenceBootsItem extends BaseArmorItem implements ITinkerable {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
 
-        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.is(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
+        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.is(ModItems.AWAKENED_SUPREMIUM_CHESTPLATE)) {
             tooltip.add(ModTooltips.SET_BONUS.args(ModTooltips.AWAKENED_SUPREMIUM_SET_BONUS.build()).build());
         }
 

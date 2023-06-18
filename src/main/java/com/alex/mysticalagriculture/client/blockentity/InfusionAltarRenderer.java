@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.client.blockentity;
 
 import com.alex.mysticalagriculture.blockentities.InfusionAltarBlockEntity;
 import com.alex.cucumber.client.ModRenderTypes;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
@@ -44,7 +44,7 @@ public class InfusionAltarRenderer implements BlockEntityRenderer<InfusionAltarB
             if (level != null && level.isEmptyBlock(aoePos)) {
                 matrix.pushPose();
                 matrix.translate(aoePos.getX(), aoePos.getY(), aoePos.getZ());
-                minecraft.getBlockRenderer().renderBatched(Blocks.INFUSION_PEDESTAL.defaultBlockState(), aoePos, level, matrix, builder, false, level.getRandom());
+                minecraft.getBlockRenderer().renderBatched(ModBlocks.INFUSION_PEDESTAL.defaultBlockState(), aoePos, level, matrix, builder, false, level.getRandom());
                 matrix.popPose();
             }
         });

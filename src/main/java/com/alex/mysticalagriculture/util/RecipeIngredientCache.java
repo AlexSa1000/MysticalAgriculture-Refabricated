@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.util;
 
 import com.alex.cucumber.helper.RecipeHelper;
 import com.alex.mysticalagriculture.MysticalAgriculture;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.google.common.base.Stopwatch;
 import io.github.fabricators_of_create.porting_lib.event.common.TagsUpdatedCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -79,8 +79,8 @@ public class RecipeIngredientCache implements ServerLifecycleEvents.SyncDataPack
 
         this.caches.clear();
 
-        cache(RecipeTypes.REPROCESSOR);
-        cache(RecipeTypes.SOUL_EXTRACTION);
+        cache(ModRecipeTypes.REPROCESSOR);
+        cache(ModRecipeTypes.SOUL_EXTRACTION);
 
         MysticalAgriculture.LOGGER.info("Recipe ingredient caching done in {} ms", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
     }

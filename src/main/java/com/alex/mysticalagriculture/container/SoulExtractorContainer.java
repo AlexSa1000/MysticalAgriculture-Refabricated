@@ -5,9 +5,9 @@ import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.cucumber.container.BaseContainerMenu;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.inventory.slot.BaseItemStackHandlerSlot;
-import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
+import com.alex.mysticalagriculture.init.ModItems;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
+import com.alex.mysticalagriculture.init.ModContainerTypes;
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import net.minecraft.core.BlockPos;
@@ -56,13 +56,13 @@ public class SoulExtractorContainer extends BaseContainerMenu {
                     if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (itemstack1.getItem() == Items.SOUL_JAR) {
+                } else if (itemstack1.getItem() == ModItems.SOUL_JAR) {
                     if (!this.moveItemStackTo(itemstack1, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (SoulExtractorBlockEntity.getFuelTime(itemstack1) > 0) {
                     if (!this.moveItemStackTo(itemstack1, 2, 3, false)) {
-                        if (RecipeIngredientCache.INSTANCE.isValidInput(itemstack1, RecipeTypes.SOUL_EXTRACTION)) {
+                        if (RecipeIngredientCache.INSTANCE.isValidInput(itemstack1, ModRecipeTypes.SOUL_EXTRACTION)) {
                             if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
                                 return ItemStack.EMPTY;
                             }
@@ -70,7 +70,7 @@ public class SoulExtractorContainer extends BaseContainerMenu {
                             return ItemStack.EMPTY;
                         }
                     }
-                } else if (RecipeIngredientCache.INSTANCE.isValidInput(itemstack1, RecipeTypes.SOUL_EXTRACTION)) {
+                } else if (RecipeIngredientCache.INSTANCE.isValidInput(itemstack1, ModRecipeTypes.SOUL_EXTRACTION)) {
                     if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -102,10 +102,10 @@ public class SoulExtractorContainer extends BaseContainerMenu {
     }
 
     public static SoulExtractorContainer create(int windowId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
-        return new SoulExtractorContainer(ScreenHandlerTypes.SOUL_EXTRACTOR, windowId, playerInventory, packetByteBuf);
+        return new SoulExtractorContainer(ModContainerTypes.SOUL_EXTRACTOR, windowId, playerInventory, packetByteBuf);
     }
 
     public static SoulExtractorContainer create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, UpgradeItemStackHandler upgradeInventory, BlockPos pos) {
-        return new SoulExtractorContainer(ScreenHandlerTypes.SOUL_EXTRACTOR, windowId, playerInventory, inventory, upgradeInventory, pos);
+        return new SoulExtractorContainer(ModContainerTypes.SOUL_EXTRACTOR, windowId, playerInventory, inventory, upgradeInventory, pos);
     }
 }

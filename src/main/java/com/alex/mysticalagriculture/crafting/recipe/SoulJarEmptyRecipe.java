@@ -3,8 +3,8 @@ package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.crafting.ingredient.FilledSoulJarIngredient;
-import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.init.ModItems;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
@@ -49,7 +49,7 @@ public class SoulJarEmptyRecipe extends ShapelessRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializers.CRAFTING_SOUL_JAR_EMPTY;
+        return ModRecipeSerializers.CRAFTING_SOUL_JAR_EMPTY;
     }
 
     public static class Serializer implements RecipeSerializer<SoulJarEmptyRecipe> {
@@ -57,14 +57,14 @@ public class SoulJarEmptyRecipe extends ShapelessRecipe {
         public SoulJarEmptyRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             NonNullList<Ingredient> ingredients = NonNullList.withSize(1, new FilledSoulJarIngredient());
 
-            return new SoulJarEmptyRecipe(recipeId, "", new ItemStack(Items.SOUL_JAR), ingredients);
+            return new SoulJarEmptyRecipe(recipeId, "", new ItemStack(ModItems.SOUL_JAR), ingredients);
         }
 
         @Override
         public SoulJarEmptyRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             NonNullList<Ingredient> ingredients = NonNullList.withSize(1, new FilledSoulJarIngredient());
 
-            return new SoulJarEmptyRecipe(recipeId, "", new ItemStack(Items.SOUL_JAR), ingredients);
+            return new SoulJarEmptyRecipe(recipeId, "", new ItemStack(ModItems.SOUL_JAR), ingredients);
         }
 
         @Override

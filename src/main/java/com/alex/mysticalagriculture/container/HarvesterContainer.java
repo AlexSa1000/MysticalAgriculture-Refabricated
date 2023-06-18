@@ -5,7 +5,7 @@ import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.cucumber.container.BaseContainerMenu;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.inventory.slot.BaseItemStackHandlerSlot;
-import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
+import com.alex.mysticalagriculture.init.ModContainerTypes;
 import com.alex.mysticalagriculture.items.MachineUpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -89,10 +89,10 @@ public class HarvesterContainer extends BaseContainerMenu {
     }
 
     public static HarvesterContainer create(int windowId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
-        return new HarvesterContainer(ScreenHandlerTypes.HARVESTER, windowId, playerInventory, packetByteBuf);
+        return new HarvesterContainer(ModContainerTypes.HARVESTER, windowId, playerInventory, packetByteBuf);
     }
 
     public static HarvesterContainer create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, UpgradeItemStackHandler upgradeInventory, BlockPos pos) {
-        return new HarvesterContainer(ScreenHandlerTypes.HARVESTER, windowId, playerInventory, inventory, upgradeInventory, pos);
+        return new HarvesterContainer(ModContainerTypes.HARVESTER, windowId, playerInventory, inventory, upgradeInventory, pos);
     }
 }

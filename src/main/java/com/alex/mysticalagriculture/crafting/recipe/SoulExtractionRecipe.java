@@ -5,9 +5,9 @@ import com.alex.mysticalagriculture.api.soul.MobSoulType;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.cucumber.crafting.SpecialRecipe;
 import com.alex.cucumber.helper.StackHelper;
-import com.alex.mysticalagriculture.init.Items;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModItems;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -33,7 +33,7 @@ public class SoulExtractionRecipe implements SpecialRecipe, ISoulExtractionRecip
         this.inputs = NonNullList.of(Ingredient.EMPTY, input);
         this.type = type;
         this.souls = souls;
-        this.output = MobSoulUtils.getSoulJar(type, souls, Items.SOUL_JAR);
+        this.output = MobSoulUtils.getSoulJar(type, souls, ModItems.SOUL_JAR);
     }
 
     @Override
@@ -68,12 +68,12 @@ public class SoulExtractionRecipe implements SpecialRecipe, ISoulExtractionRecip
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializers.SOUL_EXTRACTION;
+        return ModRecipeSerializers.SOUL_EXTRACTION;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeTypes.SOUL_EXTRACTION;
+        return ModRecipeTypes.SOUL_EXTRACTION;
     }
 
     @Override

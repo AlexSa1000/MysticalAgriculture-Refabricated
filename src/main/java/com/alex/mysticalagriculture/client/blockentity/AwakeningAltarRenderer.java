@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.client.blockentity;
 
 import com.alex.mysticalagriculture.blockentities.AwakeningAltarBlockEntity;
 import com.alex.cucumber.client.ModRenderTypes;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
@@ -50,8 +50,8 @@ public class AwakeningAltarRenderer implements BlockEntityRenderer<AwakeningAlta
                 matrix.translate(aoePos.getX(), aoePos.getY(), aoePos.getZ());
 
                 var state = i % 2 == 0
-                        ? Blocks.AWAKENING_PEDESTAL.defaultBlockState()
-                        : Blocks.ESSENCE_VESSEL.defaultBlockState();
+                        ? ModBlocks.AWAKENING_PEDESTAL.defaultBlockState()
+                        : ModBlocks.ESSENCE_VESSEL.defaultBlockState();
 
                 minecraft.getBlockRenderer().renderBatched(state, aoePos, level, matrix, builder, false, level.getRandom());
 

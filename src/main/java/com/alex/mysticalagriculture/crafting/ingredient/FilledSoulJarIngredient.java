@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.ingredient;
 
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.items.SoulJarItem;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.google.gson.JsonArray;
@@ -77,7 +77,7 @@ public class FilledSoulJarIngredient extends Ingredient {
 
     private void initMatchingStacks() {
         this.stacks = MobSoulTypeRegistry.getInstance().getMobSoulTypes().stream()
-                .map(type -> MobSoulUtils.getFilledSoulJar(type, Items.SOUL_JAR))
+                .map(type -> MobSoulUtils.getFilledSoulJar(type, ModItems.SOUL_JAR))
                 .toArray(ItemStack[]::new);
     }
 

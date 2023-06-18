@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
-import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;

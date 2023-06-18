@@ -4,14 +4,13 @@ import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.cucumber.container.BaseContainerMenu;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.inventory.slot.BaseItemStackHandlerSlot;
-import com.alex.mysticalagriculture.init.RecipeTypes;
-import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
+import com.alex.mysticalagriculture.init.ModContainerTypes;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -56,7 +55,7 @@ public class ReprocessorContainer extends BaseContainerMenu {
 
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (RecipeIngredientCache.INSTANCE.isValidInput(itemstack1, RecipeTypes.REPROCESSOR)) {
+                if (RecipeIngredientCache.INSTANCE.isValidInput(itemstack1, ModRecipeTypes.REPROCESSOR)) {
                     if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -96,10 +95,10 @@ public class ReprocessorContainer extends BaseContainerMenu {
     }
 
     public static ReprocessorContainer create(int windowId, Inventory playerInventory, FriendlyByteBuf packetByteBuf) {
-        return new ReprocessorContainer(ScreenHandlerTypes.REPROCESSOR, windowId, playerInventory, packetByteBuf.readBlockPos());
+        return new ReprocessorContainer(ModContainerTypes.REPROCESSOR, windowId, playerInventory, packetByteBuf.readBlockPos());
     }
 
     public static ReprocessorContainer create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos) {
-        return new ReprocessorContainer(ScreenHandlerTypes.REPROCESSOR, windowId, playerInventory, inventory, pos);
+        return new ReprocessorContainer(ModContainerTypes.REPROCESSOR, windowId, playerInventory, inventory, pos);
     }
 }

@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.api.tinkering;
 import com.alex.cucumber.forge.event.entity.living.LivingFallEvent;
 import com.alex.cucumber.util.Utils;
 import com.alex.mysticalagriculture.api.lib.AbilityCache;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -140,11 +140,11 @@ public class Augment {
 
     public static ItemStack getEssenceForTinkerable(ITinkerable tinkerable, int min, int max) {
         switch (tinkerable.getTinkerableTier()) {
-            case 1: return new ItemStack(Items.INFERIUM_ESSENCE, Utils.randInt(min, max));
-            case 2: return new ItemStack(Items.PRUDENTIUM_ESSENCE, Utils.randInt(min, max));
-            case 3: return new ItemStack(Items.TERTIUM_ESSENCE, Utils.randInt(min, max));
-            case 4: return new ItemStack(Items.IMPERIUM_ESSENCE, Utils.randInt(min, max));
-            case 5: return new ItemStack(Items.SUPREMIUM_ESSENCE, Utils.randInt(min, max));
+            case 1: return new ItemStack(ModItems.INFERIUM_ESSENCE, Utils.randInt(min, max));
+            case 2: return new ItemStack(ModItems.PRUDENTIUM_ESSENCE, Utils.randInt(min, max));
+            case 3: return new ItemStack(ModItems.TERTIUM_ESSENCE, Utils.randInt(min, max));
+            case 4: return new ItemStack(ModItems.IMPERIUM_ESSENCE, Utils.randInt(min, max));
+            case 5: return new ItemStack(ModItems.SUPREMIUM_ESSENCE, Utils.randInt(min, max));
             default: return ItemStack.EMPTY;
         }
     }

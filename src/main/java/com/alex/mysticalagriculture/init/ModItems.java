@@ -26,7 +26,7 @@ import java.util.Map;
 import static com.alex.mysticalagriculture.MysticalAgriculture.CREATIVE_TAB;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public class Items {
+public class ModItems {
     public static final Map<ResourceLocation, Item> ITEMS = new LinkedHashMap<>();
     public static final Map<ResourceLocation, Item> GEAR_ITEMS = new LinkedHashMap<>();
 
@@ -217,7 +217,7 @@ public class Items {
     public static final Item AWAKENED_SUPREMIUM_LEGGINGS = registerGear(new EssenceLeggingsItem(ModArmorMaterial.AWAKENED_SUPREMIUM, 5, 2, p -> p.tab(CREATIVE_TAB)), "awakened_supremium_leggings");
     public static final Item AWAKENED_SUPREMIUM_BOOTS = registerGear(new EssenceBootsItem(ModArmorMaterial.AWAKENED_SUPREMIUM, 5, 2, p -> p.tab(CREATIVE_TAB)), "awakened_supremium_boots");
 
-    public static void registerItems() {
+    public static void registerModItems() {
         ITEMS.forEach((id, item) -> Registry.register(Registry.ITEM, id, item));
 
         CropRegistry.getInstance().onRegisterItems();

@@ -8,8 +8,8 @@ import com.alex.mysticalagriculture.api.lib.PluginConfig;
 import com.alex.mysticalagriculture.api.registry.IAugmentRegistry;
 import com.alex.mysticalagriculture.api.registry.ICropRegistry;
 import com.alex.mysticalagriculture.api.registry.IMobSoulTypeRegistry;
-import com.alex.mysticalagriculture.init.Blocks;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModBlocks;
+import com.alex.mysticalagriculture.init.ModItems;
 
 public class ModCorePlugin implements IMysticalAgriculturePlugin {
     @Override
@@ -37,15 +37,15 @@ public class ModCorePlugin implements IMysticalAgriculturePlugin {
 
     @Override
     public void onPostRegisterCrops(ICropRegistry registry) {
-        CropTier.ELEMENTAL.setFarmland(() -> Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.INFERIUM_ESSENCE);
-        CropTier.ONE.setFarmland(() -> Blocks.INFERIUM_FARMLAND).setEssence(() -> Items.INFERIUM_ESSENCE);
-        CropTier.TWO.setFarmland(() -> Blocks.PRUDENTIUM_FARMLAND).setEssence(() -> Items.PRUDENTIUM_ESSENCE);
-        CropTier.THREE.setFarmland(() -> Blocks.TERTIUM_FARMLAND).setEssence(() -> Items.TERTIUM_ESSENCE);
-        CropTier.FOUR.setFarmland(() -> Blocks.IMPERIUM_FARMLAND).setEssence(() -> Items.IMPERIUM_ESSENCE);
-        CropTier.FIVE.setFarmland(() -> Blocks.SUPREMIUM_FARMLAND).setEssence(() -> Items.SUPREMIUM_ESSENCE);
+        CropTier.ELEMENTAL.setFarmland(() -> ModBlocks.INFERIUM_FARMLAND).setEssence(() -> ModItems.INFERIUM_ESSENCE);
+        CropTier.ONE.setFarmland(() -> ModBlocks.INFERIUM_FARMLAND).setEssence(() -> ModItems.INFERIUM_ESSENCE);
+        CropTier.TWO.setFarmland(() -> ModBlocks.PRUDENTIUM_FARMLAND).setEssence(() -> ModItems.PRUDENTIUM_ESSENCE);
+        CropTier.THREE.setFarmland(() -> ModBlocks.TERTIUM_FARMLAND).setEssence(() -> ModItems.TERTIUM_ESSENCE);
+        CropTier.FOUR.setFarmland(() -> ModBlocks.IMPERIUM_FARMLAND).setEssence(() -> ModItems.IMPERIUM_ESSENCE);
+        CropTier.FIVE.setFarmland(() -> ModBlocks.SUPREMIUM_FARMLAND).setEssence(() -> ModItems.SUPREMIUM_ESSENCE);
 
-        CropType.RESOURCE.setCraftingSeed(Items.PROSPERITY_SEED_BASE);
-        CropType.MOB.setCraftingSeed(Items.SOULIUM_SEED_BASE);
+        CropType.RESOURCE.setCraftingSeed(ModItems.PROSPERITY_SEED_BASE);
+        CropType.MOB.setCraftingSeed(ModItems.SOULIUM_SEED_BASE);
     }
 
     @Override

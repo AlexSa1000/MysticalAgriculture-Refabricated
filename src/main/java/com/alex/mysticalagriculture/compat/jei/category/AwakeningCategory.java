@@ -4,7 +4,7 @@ import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crafting.IAwakeningRecipe;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -28,7 +28,7 @@ public class AwakeningCategory implements IRecipeCategory<IAwakeningRecipe> {
 
     public AwakeningCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 144, 81);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Blocks.AWAKENING_ALTAR));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.AWAKENING_ALTAR));
     }
 
     @Override

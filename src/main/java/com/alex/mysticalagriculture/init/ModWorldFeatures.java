@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public final class WorldFeatures {
+public final class ModWorldFeatures {
     public static final Map<Feature<OreConfiguration>, ResourceLocation> FEATURES = new LinkedHashMap<>();
 
     public static final Feature<OreConfiguration> SOULSTONE = register(new SoulstoneFeature(OreConfiguration.CODEC), "soulstone");
@@ -22,7 +22,7 @@ public final class WorldFeatures {
         return feature;
     }
 
-    public static void registerFeatures() {
+    public static void registerModFeatures() {
         FEATURES.forEach((feature, id) -> {
             Registry.register(Registry.FEATURE, id, feature);
         });

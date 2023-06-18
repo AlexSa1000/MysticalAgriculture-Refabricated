@@ -1,7 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.cucumber.util.Utils;
-import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.init.ModRecipeSerializers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -43,7 +43,7 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializers.CRAFTING_FARMLAND_TILL;
+        return ModRecipeSerializers.CRAFTING_FARMLAND_TILL;
     }
 
     public static class Serializer implements RecipeSerializer<FarmlandTillRecipe> {

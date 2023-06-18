@@ -2,7 +2,7 @@ package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.EssenceFurnaceBlockEntity;
 import com.alex.cucumber.util.Formatting;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.FurnaceTier;
 import net.minecraft.core.BlockPos;
@@ -88,7 +88,7 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         }
 
         protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
-            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.INFERIUM_FURNACE, EssenceFurnaceBlockEntity.Inferium::tick);
+            return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.INFERIUM_FURNACE, EssenceFurnaceBlockEntity.Inferium::tick);
         }
     }
 
@@ -104,7 +104,7 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         }
 
         protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
-            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.PRUDENTIUM_FURNACE, EssenceFurnaceBlockEntity.Prudentium::tick);
+            return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.PRUDENTIUM_FURNACE, EssenceFurnaceBlockEntity.Prudentium::tick);
         }
     }
 
@@ -120,7 +120,7 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         }
 
         protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
-            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.TERTIUM_FURNACE, EssenceFurnaceBlockEntity.Tertium::tick);
+            return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.TERTIUM_FURNACE, EssenceFurnaceBlockEntity.Tertium::tick);
         }
     }
 
@@ -136,7 +136,7 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         }
 
         protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
-            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.IMPERIUM_FURNACE, EssenceFurnaceBlockEntity.Imperium::tick);
+            return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.IMPERIUM_FURNACE, EssenceFurnaceBlockEntity.Imperium::tick);
         }
     }
 
@@ -152,7 +152,7 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         }
 
         protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
-            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.Supremium::tick);
+            return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.Supremium::tick);
         }
     }
 
@@ -168,7 +168,7 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         }
 
         protected <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type) {
-            return level.isClientSide ? null : createTickerHelper(type, BlockEntities.AWAKENED_SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.AwakenedSupremium::tick);
+            return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.AWAKENED_SUPREMIUM_FURNACE, EssenceFurnaceBlockEntity.AwakenedSupremium::tick);
         }
     }
 }

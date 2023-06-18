@@ -7,14 +7,14 @@ import com.alex.mysticalagriculture.container.TinkeringTableContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.core.Registry;
 
-public class ScreenHandlerTypes {
+public class ModContainerTypes {
 
     public static final ExtendedScreenHandlerType<ReprocessorContainer> REPROCESSOR = new ExtendedScreenHandlerType<>(ReprocessorContainer::create);
     public static final ExtendedScreenHandlerType<TinkeringTableContainer> TINKERING_TABLE = new ExtendedScreenHandlerType<>(TinkeringTableContainer::create);
     public static final ExtendedScreenHandlerType<SoulExtractorContainer> SOUL_EXTRACTOR = new ExtendedScreenHandlerType<>(SoulExtractorContainer::create);
     public static final ExtendedScreenHandlerType<HarvesterContainer> HARVESTER = new ExtendedScreenHandlerType<>(HarvesterContainer::create);
 
-    public static void registerScreenHandlerTypes() {
+    public static void registerModContainerTypes() {
         Registry.register(Registry.MENU, "reprocessor", REPROCESSOR);
         Registry.register(Registry.MENU, "tinkering_table", TINKERING_TABLE);
         Registry.register(Registry.MENU, "soul_extractor", SOUL_EXTRACTOR);

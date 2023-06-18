@@ -5,18 +5,13 @@ import com.alex.mysticalagriculture.crafting.condition.CraftingConditionsImpl;
 import com.alex.mysticalagriculture.crafting.ingredient.CropComponentIngredient;
 import com.alex.mysticalagriculture.crafting.ingredient.StrictNBTIngredient;
 import com.alex.mysticalagriculture.crafting.recipe.*;
-import com.alex.cucumber.crafting.recipe.ShapedNoMirrorRecipe;
-import com.alex.cucumber.crafting.recipe.ShapedTagRecipe;
-import com.alex.cucumber.crafting.recipe.ShapedTransferDamageRecipe;
-import com.alex.cucumber.crafting.recipe.ShapelessTagRecipe;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
-import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class RecipeSerializers {
+public class ModRecipeSerializers {
 
     public static final RecipeSerializer<FarmlandTillRecipe> CRAFTING_FARMLAND_TILL = new FarmlandTillRecipe.Serializer();
     public static final RecipeSerializer<InfusionRecipe> INFUSION = new InfusionRecipe.Serializer();
@@ -31,7 +26,7 @@ public class RecipeSerializers {
     public static final ResourceLocation CROP_ENABLED = new ResourceLocation(MysticalAgriculture.MOD_ID, "crop_enabled");
     public static final ResourceLocation CROP_HAS_MATERIAL = new ResourceLocation(MysticalAgriculture.MOD_ID, "crop_has_material");
 
-    public static void registerRecipeSerializers() {
+    public static void registerModRecipeSerializers() {
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation("mysticalagriculture:farmland_till"), CRAFTING_FARMLAND_TILL);
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation("mysticalagriculture:infusion"), INFUSION);
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation("mysticalagriculture:awakening"), AWAKENING);

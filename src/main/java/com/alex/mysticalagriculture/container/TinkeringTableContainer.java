@@ -8,7 +8,7 @@ import com.alex.mysticalagriculture.container.slot.ElementSlot;
 import com.alex.mysticalagriculture.container.slot.TinkerableSlot;
 import com.alex.cucumber.container.BaseContainerMenu;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
-import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
+import com.alex.mysticalagriculture.init.ModContainerTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -112,10 +112,10 @@ public class TinkeringTableContainer extends BaseContainerMenu {
     }
 
     public static TinkeringTableContainer create(int windowId, Inventory playerInventory, FriendlyByteBuf buffer) {
-        return new TinkeringTableContainer(ScreenHandlerTypes.TINKERING_TABLE, windowId, playerInventory, buffer);
+        return new TinkeringTableContainer(ModContainerTypes.TINKERING_TABLE, windowId, playerInventory, buffer);
     }
 
     public static TinkeringTableContainer create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos) {
-        return new TinkeringTableContainer(ScreenHandlerTypes.TINKERING_TABLE, windowId, playerInventory, inventory, pos);
+        return new TinkeringTableContainer(ModContainerTypes.TINKERING_TABLE, windowId, playerInventory, inventory, pos);
     }
 }

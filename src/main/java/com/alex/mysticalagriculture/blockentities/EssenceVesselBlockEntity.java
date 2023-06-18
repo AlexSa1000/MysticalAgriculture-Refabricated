@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.blockentities;
 import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.util.EssenceVesselType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +14,7 @@ public class EssenceVesselBlockEntity extends BaseInventoryBlockEntity {
     private final BaseItemStackHandler inventory;
 
     public EssenceVesselBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.ESSENCE_VESSEL, pos, state);
+        super(ModBlockEntities.ESSENCE_VESSEL, pos, state);
         this.inventory = BaseItemStackHandler.create(1, this::markDirtyAndDispatch, handler -> {
             handler.setDefaultSlotLimit(MAX_STACK_SIZE);
             handler.setCanInsert((slot, stack) -> canInsertStack(stack));

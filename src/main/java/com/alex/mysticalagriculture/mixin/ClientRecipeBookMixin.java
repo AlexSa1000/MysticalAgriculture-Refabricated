@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.mixin;
 
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.world.item.crafting.Recipe;
@@ -14,7 +14,7 @@ public class ClientRecipeBookMixin {
 
     @Inject(method = "getCategory", at = @At(value = "HEAD"), cancellable = true)
     private static void addRecipeGroups(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookCategories> cir) {
-        if (recipe.getType() == RecipeTypes.INFUSION || recipe.getType() == RecipeTypes.AWAKENING || recipe.getType() == RecipeTypes.REPROCESSOR || recipe.getType() == RecipeTypes.SOUL_EXTRACTION /*|| recipe.getType() == RecipeTypes.INFUSION_CRYSTAL*/) {
+        if (recipe.getType() == ModRecipeTypes.INFUSION || recipe.getType() == ModRecipeTypes.AWAKENING || recipe.getType() == ModRecipeTypes.REPROCESSOR || recipe.getType() == ModRecipeTypes.SOUL_EXTRACTION /*|| recipe.getType() == RecipeTypes.INFUSION_CRYSTAL*/) {
             cir.setReturnValue(RecipeBookCategories.UNKNOWN);
         }
     }

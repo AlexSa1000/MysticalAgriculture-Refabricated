@@ -8,8 +8,8 @@ import com.alex.mysticalagriculture.api.lib.LazyIngredient;
 import com.alex.mysticalagriculture.api.registry.ICropRegistry;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
-import com.alex.mysticalagriculture.init.Blocks;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModBlocks;
+import com.alex.mysticalagriculture.init.ModItems;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -202,8 +202,8 @@ public class ModCrops {
 
     public static void onRegisterCrops(ICropRegistry registry) {
         INFERIUM.getTextures().setEssenceTexture(new ResourceLocation(MOD_ID, "item/inferium_essence"));
-        INFERIUM.setCropBlock(() -> (CropBlock) Blocks.INFERIUM_CROP)
-                .setEssenceItem(() -> Items.INFERIUM_ESSENCE);
+        INFERIUM.setCropBlock(() -> (CropBlock) ModBlocks.INFERIUM_CROP)
+                .setEssenceItem(() -> ModItems.INFERIUM_ESSENCE);
 
         registry.register(AIR);
         registry.register(EARTH);

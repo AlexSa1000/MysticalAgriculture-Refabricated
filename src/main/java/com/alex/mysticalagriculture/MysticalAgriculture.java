@@ -42,7 +42,7 @@ public class MysticalAgriculture implements ModInitializer {
     public static final String MOD_ID = "mysticalagriculture";
     public static final String NAME = "MysticalAgriculture: Refabricated";
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
-    public static final CreativeModeTab CREATIVE_TAB = FabricItemGroupBuilder.build(new ResourceLocation(MOD_ID), () -> new ItemStack(Items.INFERIUM_ESSENCE));
+    public static final CreativeModeTab CREATIVE_TAB = FabricItemGroupBuilder.build(new ResourceLocation(MOD_ID), () -> new ItemStack(ModItems.INFERIUM_ESSENCE));
 
     @Override
     public void onInitialize() {
@@ -50,7 +50,7 @@ public class MysticalAgriculture implements ModInitializer {
         ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((world, entity, killedEntity) -> {
             double inferiumDropChance = ModConfigs.INFERIUM_DROP_CHANCE.get();
             if (killedEntity instanceof PathfinderMob && Math.random() < inferiumDropChance) {
-                world.addFreshEntityWithPassengers(new ItemEntity(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), new ItemStack(Items.INFERIUM_ESSENCE)));
+                world.addFreshEntityWithPassengers(new ItemEntity(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), new ItemStack(ModItems.INFERIUM_ESSENCE)));
             }
 
             if (entity instanceof ServerPlayer player) {
@@ -77,13 +77,13 @@ public class MysticalAgriculture implements ModInitializer {
                             world.addFreshEntityWithPassengers(new ItemEntity(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack));
                     }
 
-                    var enlightenmentLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MYSTICAL_ENLIGHTENMENT, held);
+                    var enlightenmentLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MYSTICAL_ENLIGHTENMENT, held);
 
                     if (enlightenmentLevel > 0) {
                         boolean witherDropsCognizant = ModConfigs.WITHER_DROPS_COGNIZANT.get();
 
                         if (witherDropsCognizant && killedEntity instanceof WitherBoss) {
-                            var stack = new ItemStack(Items.COGNIZANT_DUST, 4 + (enlightenmentLevel - 1));
+                            var stack = new ItemStack(ModItems.COGNIZANT_DUST, 4 + (enlightenmentLevel - 1));
 
                             world.addFreshEntityWithPassengers(new ItemEntity(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack));
                         }
@@ -91,7 +91,7 @@ public class MysticalAgriculture implements ModInitializer {
                         boolean dragonDropsCognizant = ModConfigs.DRAGON_DROPS_COGNIZANT.get();
 
                         if (dragonDropsCognizant && killedEntity instanceof EnderDragon) {
-                            var stack = new ItemStack(Items.COGNIZANT_DUST, 4 + (enlightenmentLevel * 2));
+                            var stack = new ItemStack(ModItems.COGNIZANT_DUST, 4 + (enlightenmentLevel * 2));
 
                             world.addFreshEntityWithPassengers(new ItemEntity(world, killedEntity.getX(), killedEntity.getY(), killedEntity.getZ(), stack));
                         }
@@ -112,16 +112,16 @@ public class MysticalAgriculture implements ModInitializer {
 
         PluginRegistry.getInstance().loadPlugins();
 
-        Blocks.registerBlocks();
-        Items.registerItems();
-        BlockEntities.registerBlockEntities();
-        RecipeTypes.registerRecipeTypes();
-        RecipeSerializers.registerRecipeSerializers();
-        ScreenHandlerTypes.registerScreenHandlerTypes();
-        Enchantments.registerEnchantments();
+        ModBlocks.registerModBlocks();
+        ModItems.registerModItems();
+        ModBlockEntities.registerModBlockEntities();
+        ModRecipeTypes.registerModRecipeTypes();
+        ModRecipeSerializers.registerModRecipeSerializers();
+        ModContainerTypes.registerModContainerTypes();
+        ModEnchantments.registerModEnchantments();
 
-        WorldFeatures.registerFeatures();
-        BiomeModifiers.registerBiomeModifiers();
+        ModWorldFeatures.registerModFeatures();
+        ModBiomeModifiers.registerModBiomeModifiers();
 
         EnergyStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof HarvesterBlockEntity harvester) {
@@ -129,7 +129,7 @@ public class MysticalAgriculture implements ModInitializer {
             } else {
                 return EnergyStorage.EMPTY;
             }
-        }, Blocks.HARVESTER);
+        }, ModBlocks.HARVESTER);
 
         EnergyStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof SoulExtractorBlockEntity extractor) {
@@ -137,7 +137,7 @@ public class MysticalAgriculture implements ModInitializer {
             } else {
                 return EnergyStorage.EMPTY;
             }
-        }, Blocks.SOUL_EXTRACTOR);
+        }, ModBlocks.SOUL_EXTRACTOR);
 
         EnergyStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof ReprocessorBlockEntity reprocessor) {
@@ -145,7 +145,7 @@ public class MysticalAgriculture implements ModInitializer {
             } else {
                 return EnergyStorage.EMPTY;
             }
-        }, Blocks.BASIC_REPROCESSOR, Blocks.INFERIUM_REPROCESSOR, Blocks.PRUDENTIUM_REPROCESSOR, Blocks.TERTIUM_REPROCESSOR, Blocks.IMPERIUM_REPROCESSOR, Blocks.SUPREMIUM_REPROCESSOR, Blocks.AWAKENED_SUPREMIUM_REPROCESSOR);
+        }, ModBlocks.BASIC_REPROCESSOR, ModBlocks.INFERIUM_REPROCESSOR, ModBlocks.PRUDENTIUM_REPROCESSOR, ModBlocks.TERTIUM_REPROCESSOR, ModBlocks.IMPERIUM_REPROCESSOR, ModBlocks.SUPREMIUM_REPROCESSOR, ModBlocks.AWAKENED_SUPREMIUM_REPROCESSOR);
 
         ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof BaseInventoryBlockEntity inventory) {
@@ -153,7 +153,7 @@ public class MysticalAgriculture implements ModInitializer {
             } else {
                 return Storage.empty();
             }
-        }, Blocks.AWAKENING_ALTAR, Blocks.AWAKENING_PEDESTAL, Blocks.ESSENCE_VESSEL, Blocks.HARVESTER, Blocks.INFUSION_ALTAR, Blocks.INFUSION_PEDESTAL);
+        }, ModBlocks.AWAKENING_ALTAR, ModBlocks.AWAKENING_PEDESTAL, ModBlocks.ESSENCE_VESSEL, ModBlocks.HARVESTER, ModBlocks.INFUSION_ALTAR, ModBlocks.INFUSION_PEDESTAL);
 
         ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof ReprocessorBlockEntity reprocessor) {
@@ -168,7 +168,7 @@ public class MysticalAgriculture implements ModInitializer {
                 }
             }
             return Storage.empty();
-                }, Blocks.BASIC_REPROCESSOR, Blocks.INFERIUM_REPROCESSOR, Blocks.PRUDENTIUM_REPROCESSOR, Blocks.TERTIUM_REPROCESSOR, Blocks.IMPERIUM_REPROCESSOR, Blocks.SUPREMIUM_REPROCESSOR, Blocks.AWAKENED_SUPREMIUM_REPROCESSOR);
+                }, ModBlocks.BASIC_REPROCESSOR, ModBlocks.INFERIUM_REPROCESSOR, ModBlocks.PRUDENTIUM_REPROCESSOR, ModBlocks.TERTIUM_REPROCESSOR, ModBlocks.IMPERIUM_REPROCESSOR, ModBlocks.SUPREMIUM_REPROCESSOR, ModBlocks.AWAKENED_SUPREMIUM_REPROCESSOR);
 
         ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof SoulExtractorBlockEntity extractor) {
@@ -183,9 +183,9 @@ public class MysticalAgriculture implements ModInitializer {
                 }
             }
             return Storage.empty();
-        }, Blocks.SOUL_EXTRACTOR);
+        }, ModBlocks.SOUL_EXTRACTOR);
 
-        ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> Storage.empty(), Blocks.TINKERING_TABLE);
+        ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> Storage.empty(), ModBlocks.TINKERING_TABLE);
     }
     private static void initAPI() throws NoSuchFieldException, IllegalAccessException {
         var api = MysticalAgricultureAPI.class;

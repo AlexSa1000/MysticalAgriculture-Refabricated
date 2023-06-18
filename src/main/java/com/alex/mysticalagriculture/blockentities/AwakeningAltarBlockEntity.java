@@ -6,8 +6,8 @@ import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.util.MultiblockPositions;
-import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import com.alex.mysticalagriculture.util.IActivatable;
 import net.minecraft.core.BlockPos;
@@ -35,7 +35,7 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implemen
     private boolean active;
 
     public AwakeningAltarBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.AWAKENING_ALTAR, pos, state);
+        super(ModBlockEntities.AWAKENING_ALTAR, pos, state);
         this.inventory = BaseItemStackHandler.create(2, this::markDirtyAndDispatch, handler -> {
             handler.setDefaultSlotLimit(1);
             handler.setCanInsert((slot, stack) -> handler.getItem(1).isEmpty());
@@ -148,7 +148,7 @@ public class AwakeningAltarBlockEntity extends BaseInventoryBlockEntity implemen
 
         if (this.recipe == null || !this.recipe.matches(this.recipeInventory)) {
             var recipe = this.level.getRecipeManager()
-                    .getRecipeFor(RecipeTypes.AWAKENING, this.recipeInventory, this.level)
+                    .getRecipeFor(ModRecipeTypes.AWAKENING, this.recipeInventory, this.level)
                     .orElse(null);
 
             this.recipe = recipe instanceof AwakeningRecipe ? (AwakeningRecipe) recipe : null;

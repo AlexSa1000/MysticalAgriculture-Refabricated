@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.compat.jei.category;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crafting.IInfusionRecipe;
 import com.alex.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -25,7 +25,7 @@ public class InfusionCategory implements IRecipeCategory<IInfusionRecipe> {
 
     public InfusionCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 144, 81);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Blocks.INFUSION_ALTAR));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.INFUSION_ALTAR));
     }
 
     @Override

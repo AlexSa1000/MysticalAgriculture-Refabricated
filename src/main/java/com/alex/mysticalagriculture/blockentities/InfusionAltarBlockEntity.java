@@ -4,8 +4,8 @@ import com.alex.mysticalagriculture.crafting.recipe.InfusionRecipe;
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.util.MultiblockPositions;
-import com.alex.mysticalagriculture.init.BlockEntities;
-import com.alex.mysticalagriculture.init.RecipeTypes;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
+import com.alex.mysticalagriculture.init.ModRecipeTypes;
 import com.alex.mysticalagriculture.util.IActivatable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -31,7 +31,7 @@ public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity implement
     private boolean active;
 
     public InfusionAltarBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.INFUSION_ALTAR, pos, state);
+        super(ModBlockEntities.INFUSION_ALTAR, pos, state);
         this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
         this.recipeInventory = BaseItemStackHandler.create(9);
     }
@@ -137,7 +137,7 @@ public class InfusionAltarBlockEntity extends BaseInventoryBlockEntity implement
 
         if (this.recipe == null || !this.recipe.matches(this.recipeInventory)) {
             var recipe = this.level.getRecipeManager()
-                    .getRecipeFor(RecipeTypes.INFUSION, this.recipeInventory, this.level)
+                    .getRecipeFor(ModRecipeTypes.INFUSION, this.recipeInventory, this.level)
                     .orElse(null);
 
             this.recipe = recipe instanceof InfusionRecipe ? (InfusionRecipe) recipe : null;

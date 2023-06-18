@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -10,25 +10,25 @@ import java.util.function.Supplier;
 public enum ModItemTier implements Tier {
 
     INFERIUM(3, 2000, 9.0F, 4.0F, 12, () -> {
-        return Ingredient.of(Items.INFERIUM_INGOT);
+        return Ingredient.of(ModItems.INFERIUM_INGOT);
     }),
     PRUDENTIUM(3, 2800, 11.0F, 6.0F, 14, () -> {
-        return Ingredient.of(Items.PRUDENTIUM_INGOT);
+        return Ingredient.of(ModItems.PRUDENTIUM_INGOT);
     }),
     TERTIUM(4, 4000, 14.0F, 9.0F, 16, () -> {
-        return Ingredient.of(Items.TERTIUM_INGOT);
+        return Ingredient.of(ModItems.TERTIUM_INGOT);
     }),
     IMPERIUM(4, 6000, 19.0F, 13.0F, 18, () -> {
-        return Ingredient.of(Items.IMPERIUM_INGOT);
+        return Ingredient.of(ModItems.IMPERIUM_INGOT);
     }),
     SUPREMIUM(5, -1, 25.0F, 20.0F, 20, () -> {
-        return Ingredient.of(Items.SUPREMIUM_INGOT);
+        return Ingredient.of(ModItems.SUPREMIUM_INGOT);
     }),
     AWAKENED_SUPREMIUM(5, -1, 30.0F, 25.0F, 22, () -> {
-        return Ingredient.of(Items.AWAKENED_SUPREMIUM_INGOT);
+        return Ingredient.of(ModItems.AWAKENED_SUPREMIUM_INGOT);
     }),
     SOULIUM(0, 400, 5.0F, 3.0F, 15, () -> {
-        return Ingredient.of(Items.SOULIUM_INGOT);
+        return Ingredient.of(ModItems.SOULIUM_INGOT);
     });
 
     private final int harvestLevel;

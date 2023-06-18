@@ -20,7 +20,7 @@ import java.util.Map;
 import static com.alex.mysticalagriculture.MysticalAgriculture.CREATIVE_TAB;
 import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
-public class Blocks {
+public class ModBlocks {
     public static final Map<ResourceLocation, Block> BLOCKS = new LinkedHashMap<>();
     public static final Map<ResourceLocation, BlockItem> BLOCK_ITEMS = new LinkedHashMap<>();
 
@@ -107,7 +107,7 @@ public class Blocks {
 
     public static final Block INFERIUM_CROP = registerNoItem(new InferiumCropBlock(ModCrops.INFERIUM),"inferium_crop");
 
-    public static void registerBlocks() {
+    public static void registerModBlocks() {
         BLOCKS.forEach((id, block) -> {
             Registry.register(Registry.BLOCK, id, block);
         });

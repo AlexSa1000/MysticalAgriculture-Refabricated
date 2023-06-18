@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.compat.jei.category;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crafting.ISoulExtractionRecipe;
 import com.alex.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -29,7 +29,7 @@ public class SoulExtractorCategory implements IRecipeCategory<ISoulExtractionRec
 
     public SoulExtractorCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 82, 26);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Blocks.SOUL_EXTRACTOR));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SOUL_EXTRACTOR));
 
         var arrow = helper.createDrawable(TEXTURE, 85, 0, 24, 17);
 

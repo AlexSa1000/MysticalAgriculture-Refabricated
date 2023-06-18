@@ -6,7 +6,7 @@ import com.alex.mysticalagriculture.api.util.AugmentUtils;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.cucumber.item.BaseArmorItem;
 import com.alex.cucumber.util.Utils;
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -60,7 +60,7 @@ public class EssenceChestplateItem extends BaseArmorItem implements ITinkerable 
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(ModTooltips.getTooltipForTier(this.tinkerableTier));
 
-        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.is(Items.AWAKENED_SUPREMIUM_CHESTPLATE)) {
+        if (ModConfigs.AWAKENED_SUPREMIUM_SET_BONUS.get() && stack.is(ModItems.AWAKENED_SUPREMIUM_CHESTPLATE)) {
             tooltip.add(ModTooltips.SET_BONUS.args(ModTooltips.AWAKENED_SUPREMIUM_SET_BONUS.build()).build());
         }
 
@@ -107,10 +107,10 @@ public class EssenceChestplateItem extends BaseArmorItem implements ITinkerable 
     }
 
     private static boolean hasAwakenedSupremiumSet(Player player) {
-        var helmet = player.getItemBySlot(EquipmentSlot.HEAD).is(Items.AWAKENED_SUPREMIUM_HELMET);
-        var chestplate = player.getItemBySlot(EquipmentSlot.CHEST).is(Items.AWAKENED_SUPREMIUM_CHESTPLATE);
-        var leggings = player.getItemBySlot(EquipmentSlot.LEGS).is(Items.AWAKENED_SUPREMIUM_LEGGINGS);
-        var boots = player.getItemBySlot(EquipmentSlot.FEET).is(Items.AWAKENED_SUPREMIUM_BOOTS);
+        var helmet = player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.AWAKENED_SUPREMIUM_HELMET);
+        var chestplate = player.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.AWAKENED_SUPREMIUM_CHESTPLATE);
+        var leggings = player.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.AWAKENED_SUPREMIUM_LEGGINGS);
+        var boots = player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.AWAKENED_SUPREMIUM_BOOTS);
 
         return helmet && chestplate && leggings && boots;
     }

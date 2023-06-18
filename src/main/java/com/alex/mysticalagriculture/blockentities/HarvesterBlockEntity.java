@@ -10,7 +10,7 @@ import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.blocks.HarvesterBlock;
 import com.alex.mysticalagriculture.container.HarvesterContainer;
 import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
-import com.alex.mysticalagriculture.init.BlockEntities;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.IUpgradeableMachine;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -58,7 +58,7 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
 
 
     public HarvesterBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.HARVESTER, pos, state);
+        super(ModBlockEntities.HARVESTER, pos, state);
         this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
         this.upgradeInventory = new UpgradeItemStackHandler();
         this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirtyAndDispatch);

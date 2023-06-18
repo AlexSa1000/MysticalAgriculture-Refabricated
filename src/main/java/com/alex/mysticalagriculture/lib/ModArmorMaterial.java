@@ -1,6 +1,6 @@
 package com.alex.mysticalagriculture.lib;
 
-import com.alex.mysticalagriculture.init.Items;
+import com.alex.mysticalagriculture.init.ModItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
@@ -12,22 +12,22 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterial implements ArmorMaterial {
     INFERIUM("mysticalagriculture:inferium", 40, new int[]{3, 6, 8, 4}, 12, SoundEvents.ARMOR_EQUIP_GOLD, 2.0F, 0.0F, () -> {
-        return Ingredient.of(Items.INFERIUM_INGOT);
+        return Ingredient.of(ModItems.INFERIUM_INGOT);
     }),
     PRUDENTIUM("mysticalagriculture:prudentium", 60, new int[]{4, 7, 8, 4}, 14, SoundEvents.ARMOR_EQUIP_GOLD, 2.25F, 0.0F, () -> {
-        return Ingredient.of(Items.PRUDENTIUM_INGOT);
+        return Ingredient.of(ModItems.PRUDENTIUM_INGOT);
     }),
     TERTIUM("mysticalagriculture:tertium", 80, new int[]{4, 8, 9, 5}, 16, SoundEvents.ARMOR_EQUIP_GOLD, 2.5F, 0.0F, () -> {
-        return Ingredient.of(Items.TERTIUM_INGOT);
+        return Ingredient.of(ModItems.TERTIUM_INGOT);
     }),
     IMPERIUM("mysticalagriculture:imperium", 140, new int[]{5, 8, 9, 5}, 18, SoundEvents.ARMOR_EQUIP_GOLD, 2.75F, 0.0F, () -> {
-        return Ingredient.of(Items.IMPERIUM_INGOT);
+        return Ingredient.of(ModItems.IMPERIUM_INGOT);
     }),
     SUPREMIUM("mysticalagriculture:supremium", 280, new int[]{5, 8, 10, 6}, 20, SoundEvents.ARMOR_EQUIP_GOLD, 3.0F, 0.0F, () -> {
-        return Ingredient.of(Items.SUPREMIUM_INGOT);
+        return Ingredient.of(ModItems.SUPREMIUM_INGOT);
     }),
     AWAKENED_SUPREMIUM("mysticalagriculture:awakened_supremium", 320, new int[] { 6, 12, 10, 8 }, 22, SoundEvents.ARMOR_EQUIP_GOLD, 3.5F, 0.1F, () -> {
-        return Ingredient.of(Items.AWAKENED_SUPREMIUM_INGOT);
+        return Ingredient.of(ModItems.AWAKENED_SUPREMIUM_INGOT);
     });
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};

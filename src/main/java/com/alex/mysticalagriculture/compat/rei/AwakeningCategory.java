@@ -3,7 +3,7 @@ package com.alex.mysticalagriculture.compat.rei;
 import com.alex.mysticalagriculture.crafting.recipe.AwakeningRecipe;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.util.Localizable;
-import com.alex.mysticalagriculture.init.Blocks;
+import com.alex.mysticalagriculture.init.ModBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -43,7 +43,7 @@ public class AwakeningCategory implements DisplayCategory<AwakeningCategory.Reci
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(Blocks.AWAKENING_ALTAR);
+        return EntryStacks.of(ModBlocks.AWAKENING_ALTAR);
     }
 
     @Override
