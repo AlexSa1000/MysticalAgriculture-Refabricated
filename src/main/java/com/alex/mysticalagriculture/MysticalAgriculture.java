@@ -70,8 +70,6 @@ public class MysticalAgriculture implements ModInitializer {
         ModWorldFeatures.registerFeatures();
         ModBiomeModifiers.registerBiomeModifiers();
 
-        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(RecipeIngredientCache.INSTANCE);
-
         EnergyStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof HarvesterBlockEntity harvester) {
                 return harvester.getEnergy();
