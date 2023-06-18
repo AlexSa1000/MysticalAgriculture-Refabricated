@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExperienceCapsuleHandler {
+    public static ResourceLocation EXPERIENCE_CAPSULE_PICKUP = new ResourceLocation(MysticalAgriculture.MOD_ID, "experience_capsule_pickup");
+
     public static boolean onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
         var orb = event.getOrb();
         var player = event.getEntity();
@@ -31,7 +33,7 @@ public class ExperienceCapsuleHandler {
                     if (remaining == 0) {
                         orb.discard();
 
-                        ServerPlayNetworking.send((ServerPlayer) player, new ResourceLocation(MysticalAgriculture.MOD_ID, "experience_capsule_pickup"), PacketByteBufs.empty());
+                        ServerPlayNetworking.send((ServerPlayer) player, EXPERIENCE_CAPSULE_PICKUP, PacketByteBufs.empty());
 
                         return true;
                     }

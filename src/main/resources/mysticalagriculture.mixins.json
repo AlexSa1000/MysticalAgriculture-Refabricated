@@ -10,7 +10,6 @@
     "LivingEntityMixin",
     "MushroomCowMixin",
     "ReloadableServerResourcesMixin",
-    "ServerPlayerGameModeMixin",
     "SheepMixin",
     "SnowGolemMixin"
   ],

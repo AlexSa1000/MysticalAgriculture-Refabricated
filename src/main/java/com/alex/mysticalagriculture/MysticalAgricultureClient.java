@@ -29,6 +29,8 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
+import static com.alex.mysticalagriculture.handler.ExperienceCapsuleHandler.EXPERIENCE_CAPSULE_PICKUP;
+
 public class MysticalAgricultureClient implements ClientModInitializer {
 
     @Override
@@ -38,7 +40,7 @@ public class MysticalAgricultureClient implements ClientModInitializer {
 
         ModelHandler.onRegisterAdditionalModels();
 
-        ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(MysticalAgriculture.MOD_ID, "experience_capsule_pickup"), (client, handler, buf, responseSender) -> client.execute(() -> {
+        ClientPlayNetworking.registerGlobalReceiver(EXPERIENCE_CAPSULE_PICKUP, (client, handler, buf, responseSender) -> client.execute(() -> {
             var player = client.player;
 
             if (player != null) {
