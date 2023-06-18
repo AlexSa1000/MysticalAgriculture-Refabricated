@@ -1,5 +1,6 @@
 package com.alex.mysticalagriculture;
 
+import com.alex.cucumber.util.Utils;
 import com.alex.mysticalagriculture.client.ModelHandler;
 import com.alex.mysticalagriculture.client.blockentity.*;
 import com.alex.mysticalagriculture.client.handler.ColorHandler;
@@ -19,12 +20,17 @@ import com.alex.mysticalagriculture.items.tool.EssenceCrossbowItem;
 import com.alex.mysticalagriculture.items.tool.EssenceFishingRodItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+
+import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class MysticalAgricultureClient implements ClientModInitializer {
 
@@ -32,6 +38,14 @@ public class MysticalAgricultureClient implements ClientModInitializer {
     public void onInitializeClient() {
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setAltarOverlay);
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setEssenceVesselOverlay);
+
+        ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(MOD_ID, "experience_capsule_pickup"), (client, handler, buf, responseSender) -> client.execute(() -> {
+            var player = client.player;
+
+            if (player != null) {
+                player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, (Utils.RANDOM.nextFloat() - Utils.RANDOM.nextFloat()) * 0.35F + 0.9F);
+            }
+        }));
 
         ModelHandler.onRegisterAdditionalModels();
 

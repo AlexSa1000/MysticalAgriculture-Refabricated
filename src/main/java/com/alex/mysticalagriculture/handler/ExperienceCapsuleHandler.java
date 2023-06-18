@@ -3,11 +3,18 @@ package com.alex.mysticalagriculture.handler;
 import com.alex.cucumber.forge.event.entity.player.PlayerXpEvent;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.items.ExperienceCapsuleItem;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
 
 public class ExperienceCapsuleHandler {
     public static boolean onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
@@ -27,6 +34,7 @@ public class ExperienceCapsuleHandler {
                         orb.discard();
 
                         //NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ExperienceCapsulePickupMessage());
+                        ServerPlayNetworking.send((ServerPlayer) player, new ResourceLocation(MOD_ID, "experience_capsule_pickup"), PacketByteBufs.empty());
 
                         return true;
                     }
