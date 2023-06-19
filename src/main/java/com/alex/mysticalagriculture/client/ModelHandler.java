@@ -1,7 +1,5 @@
 package com.alex.mysticalagriculture.client;
 
-import com.alex.cucumber.client.model.RetextureableBlockModelWrapper;
-import com.alex.cucumber.client.model.RetextureableItemModelWrapper;
 import com.alex.cucumber.forge.client.event.ModelEvent;
 import com.alex.cucumber.forge.client.event.TextureStitchEvent;
 import com.alex.mysticalagriculture.MysticalAgriculture;
@@ -9,25 +7,14 @@ import com.alex.mysticalagriculture.api.crop.CropTextures;
 import com.alex.mysticalagriculture.config.ModConfigs;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.renderer.block.model.ItemModelGenerator;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 
 public class ModelHandler {
     private static final ResourceLocation MISSING_NO = new ResourceLocation("minecraft", "missingno");
