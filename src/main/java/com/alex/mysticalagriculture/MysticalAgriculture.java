@@ -16,16 +16,16 @@ import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.registry.PluginRegistry;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import io.github.fabricators_of_create.porting_lib.event.common.TagsUpdatedCallback;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.config.ModConfig;
@@ -69,6 +69,9 @@ public class MysticalAgriculture implements ModInitializer {
 
         ModWorldFeatures.registerFeatures();
         ModBiomeModifiers.registerBiomeModifiers();
+
+        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register(RecipeIngredientCache.INSTANCE::onSyncDataPackContents);
+        TagsUpdatedCallback.EVENT.register(RecipeIngredientCache.INSTANCE::onTagsUpdated);
 
         EnergyStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof HarvesterBlockEntity harvester) {
