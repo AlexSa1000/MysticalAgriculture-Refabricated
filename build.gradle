@@ -127,7 +127,7 @@ dependencies {
 
 	modImplementation "curse.maven:jade-324717:${project.jade_version}"
 
-	modImplementation("com.alex.cucumber:Cucumber-Refabricated:1.0.4")
+	modImplementation("com.alex.cucumber:Cucumber-Refabricated:1.0.5")
 
 	implementation "com.electronwill.night-config:core:${project.nightconfig_version}"
 	implementation "com.electronwill.night-config:toml:${project.nightconfig_version}"

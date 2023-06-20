@@ -23,7 +23,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class RecipeIngredientCache implements ServerLifecycleEvents.SyncDataPackContents, TagsUpdatedCallback {
+public class RecipeIngredientCache {
     public static final RecipeIngredientCache INSTANCE = new RecipeIngredientCache();
 
     private final Map<RecipeType<?>, Map<Item, List<Ingredient>>> caches;
@@ -34,7 +34,6 @@ public class RecipeIngredientCache implements ServerLifecycleEvents.SyncDataPack
         this.caches = new HashMap<>();
     }
 
-    @Override
     public void onSyncDataPackContents(ServerPlayer player, boolean joined) {
         FriendlyByteBuf buffer = PacketByteBufs.create();
         buffer.writeVarInt(this.caches.size());
@@ -73,7 +72,6 @@ public class RecipeIngredientCache implements ServerLifecycleEvents.SyncDataPack
         }
     }
 
-    @Override
     public void onTagsUpdated(RegistryAccess registries) {
         var stopwatch = Stopwatch.createStarted();
 
