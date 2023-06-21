@@ -8,12 +8,14 @@ import com.alex.mysticalagriculture.blockentities.HarvesterBlockEntity;
 import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.mysticalagriculture.config.ModConfigs;
+import com.alex.mysticalagriculture.handler.ExperienceCapsuleHandler;
 import com.alex.mysticalagriculture.init.*;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
 import com.alex.mysticalagriculture.registry.PluginRegistry;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
+import io.github.fabricators_of_create.porting_lib.event.common.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.TagsUpdatedCallback;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -128,6 +130,7 @@ public class MysticalAgriculture implements ModInitializer {
 
         ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register(RecipeIngredientCache.INSTANCE::onSyncDataPackContents);
         TagsUpdatedCallback.EVENT.register(RecipeIngredientCache.INSTANCE::onTagsUpdated);
+        PlayerEvents.PICKUP_XP.register(ExperienceCapsuleHandler::onPlayerPickupXp);
 
         EnergyStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof HarvesterBlockEntity harvester) {

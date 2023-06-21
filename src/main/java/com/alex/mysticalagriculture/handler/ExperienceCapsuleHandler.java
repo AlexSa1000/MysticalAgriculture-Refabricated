@@ -1,9 +1,9 @@
 package com.alex.mysticalagriculture.handler;
 
-import com.alex.cucumber.forge.event.entity.player.PlayerXpEvent;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.items.ExperienceCapsuleItem;
+import io.github.fabricators_of_create.porting_lib.event.common.PlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
@@ -17,9 +17,9 @@ import java.util.List;
 public class ExperienceCapsuleHandler {
     public static ResourceLocation EXPERIENCE_CAPSULE_PICKUP = new ResourceLocation(MysticalAgriculture.MOD_ID, "experience_capsule_pickup");
 
-    public static boolean onPlayerPickupXp(PlayerXpEvent.PickupXp event) {
+    public static void onPlayerPickupXp(PlayerEvents.PickupXp event) {
         var orb = event.getOrb();
-        var player = event.getEntity();
+        var player = event.getPlayer();
 
         if (player != null) {
             var capsules = getExperienceCapsules(player);
@@ -36,12 +36,12 @@ public class ExperienceCapsuleHandler {
                         //NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ExperienceCapsulePickupMessage());
                         ServerPlayNetworking.send((ServerPlayer) player, EXPERIENCE_CAPSULE_PICKUP, PacketByteBufs.empty());
 
-                        return true;
+                        event.setCanceled(true);
+                        return;
                     }
                 }
             }
         }
-        return false;
     }
 
     private static List<ItemStack> getExperienceCapsules(Player player) {
