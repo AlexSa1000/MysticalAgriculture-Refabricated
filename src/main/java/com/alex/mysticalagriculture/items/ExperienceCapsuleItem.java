@@ -1,5 +1,6 @@
 package com.alex.mysticalagriculture.items;
 
+import com.alex.cucumber.util.Formatting;
 import com.alex.mysticalagriculture.api.util.ExperienceCapsuleUtils;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.cucumber.item.BaseItem;
@@ -61,7 +62,7 @@ public class ExperienceCapsuleItem extends BaseItem {
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         int experience = ExperienceCapsuleUtils.getExperience(stack);
-        tooltip.add(ModTooltips.EXPERIENCE_CAPSULE.args(experience, ExperienceCapsuleUtils.MAX_XP_POINTS).build());
+        tooltip.add(ModTooltips.EXPERIENCE_CAPSULE.args(Formatting.number(experience), Formatting.number(ExperienceCapsuleUtils.MAX_XP_POINTS)).build());
     }
 
     @Environment(value=EnvType.CLIENT)
