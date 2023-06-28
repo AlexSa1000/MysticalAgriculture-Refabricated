@@ -7,7 +7,7 @@
   ],
   "key": {
     "I": {
-      "tag": "c:iron_ingots"
+      "tag": "forge:ingots/iron"
     },
     "S": {
       "item": "mysticalagriculture:soulium_ingot"
@@ -20,6 +20,6 @@
     }
   },
   "result": {
-    "item": "mysticalagriculture:basic_reprocessor"
+    "item": "mysticalagriculture:seed_reprocessor"
   }
 }

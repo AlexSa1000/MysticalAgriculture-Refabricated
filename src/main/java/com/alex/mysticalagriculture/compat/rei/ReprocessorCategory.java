@@ -42,7 +42,7 @@ public class ReprocessorCategory implements DisplayCategory<ReprocessorCategory.
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ModBlocks.BASIC_REPROCESSOR);
+        return EntryStacks.of(ModBlocks.REPROCESSOR);
     }
 
     @Override

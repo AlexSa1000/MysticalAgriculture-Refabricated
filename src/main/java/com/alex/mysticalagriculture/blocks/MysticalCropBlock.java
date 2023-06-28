@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -57,7 +57,7 @@ public class MysticalCropBlock extends CropBlock implements ICropProvider {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         int age = state.getValue(AGE);
 
         int crop = 0;
@@ -71,7 +71,7 @@ public class MysticalCropBlock extends CropBlock implements ICropProvider {
 
             if (vec != null) {
                 var level = builder.getLevel();
-                var pos = new BlockPos((int) Math.floor(vec.x), (int) Math.floor(vec.y), (int) Math.floor(vec.z));
+                var pos = new BlockPos((int) vec.x, (int) vec.y, (int) vec.z);
                 var below = level.getBlockState(pos.below()).getBlock();
                 double chance = this.crop.getSecondaryChance(below);
 

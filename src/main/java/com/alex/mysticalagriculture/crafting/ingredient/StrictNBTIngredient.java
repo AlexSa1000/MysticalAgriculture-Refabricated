@@ -35,7 +35,7 @@ public class StrictNBTIngredient implements CustomIngredient {
     public boolean test(ItemStack input) {
         if (input == null)
             return false;
-        return this.stack.getItem() == input.getItem() && this.stack.getDamageValue() == input.getDamageValue() && this.stack.matches(input);
+        return this.stack.getItem() == input.getItem() && this.stack.getDamageValue() == input.getDamageValue() && this.stack.equals(input);
     }
 
     @Override

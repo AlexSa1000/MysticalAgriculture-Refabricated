@@ -24,9 +24,4 @@ public class ItemTagsJsonGenerator extends FabricTagProvider.ItemTagProvider {
             this.getOrCreateTagBuilder(MysticalAgricultureAPI.SEEDS_TAG).add(seedsId);
         }
     }
-
-    @Override
-    public String getName() {
-        return MysticalAgriculture.NAME +  " item tags generator";
-    }
 }

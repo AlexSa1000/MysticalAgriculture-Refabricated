@@ -1,9 +1,9 @@
 package com.alex.mysticalagriculture.blocks;
 
-import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.lib.Tooltips;
 import com.alex.cucumber.util.Formatting;
+import com.alex.mysticalagriculture.blockentities.SoulExtractorBlockEntity;
 import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,18 +25,19 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
 
 public class SoulExtractorBlock extends BaseEntityBlock {
-    private static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final BooleanProperty RUNNING = BooleanProperty.create("running");
 
     public SoulExtractorBlock() {
-        super(Material.METAL, SoundType.METAL, 3.5F, 3.5F, true);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+        super(SoundType.METAL, 3.5F, 3.5F, true);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(RUNNING, false));
     }
 
     @Override
@@ -100,7 +101,7 @@ public class SoulExtractorBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, RUNNING);
     }
 
     @Override

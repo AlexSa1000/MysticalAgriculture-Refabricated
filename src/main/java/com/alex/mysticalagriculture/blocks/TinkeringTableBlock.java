@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.blocks;
 
-import com.alex.mysticalagriculture.blockentities.TinkeringTableBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.util.VoxelShapeBuilder;
+import com.alex.mysticalagriculture.blockentities.TinkeringTableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,7 +37,7 @@ public class TinkeringTableBlock extends BaseEntityBlock {
             .build();
 
     public TinkeringTableBlock() {
-        super(Material.STONE, SoundType.STONE, 10.0F, 12.0F, true);
+        super(SoundType.STONE, 10.0F, 12.0F, true);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 

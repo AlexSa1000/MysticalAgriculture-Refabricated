@@ -32,7 +32,7 @@ public abstract class SheepMixin {
     @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
     private void inject(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir, ItemStack itemStack) {
         if (itemStack.is(SHEARS)) {
-            if (!((Entity) ((Object) this)).level.isClientSide && this.readyForShearing()) {
+            if (!((Entity) ((Object) this)).level().isClientSide && this.readyForShearing()) {
                 this.shear(SoundSource.PLAYERS);
                 ((Entity) ((Object) this)).gameEvent(GameEvent.SHEAR, player);
                 itemStack.hurtAndBreak(1, player, (playerx) -> playerx.broadcastBreakEvent(interactionHand));

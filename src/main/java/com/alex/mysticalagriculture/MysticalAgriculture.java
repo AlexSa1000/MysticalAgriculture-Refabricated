@@ -37,7 +37,7 @@ public class MysticalAgriculture implements ModInitializer {
     public static final String MOD_ID = "mysticalagriculture";
     public static final String NAME = "MysticalAgriculture: Refabricated";
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
-    public static final CreativeModeTab CREATIVE_MODE_TAB = FabricItemGroup.builder(new ResourceLocation(MysticalAgriculture.MOD_ID, "creative_mode_tab"))
+    public static final CreativeModeTab CREATIVE_MODE_TAB = FabricItemGroup.builder()
             .title(Component.translatable("itemGroup.minecraft.mysticalagriculture"))
             .icon(() -> new ItemStack(ModItems.INFERIUM_ESSENCE))
             .displayItems((ModCreativeModeTabs.displayItems)).build();
@@ -95,7 +95,7 @@ public class MysticalAgriculture implements ModInitializer {
             } else {
                 return EnergyStorage.EMPTY;
             }
-        }, ModBlocks.BASIC_REPROCESSOR, ModBlocks.INFERIUM_REPROCESSOR, ModBlocks.PRUDENTIUM_REPROCESSOR, ModBlocks.TERTIUM_REPROCESSOR, ModBlocks.IMPERIUM_REPROCESSOR, ModBlocks.SUPREMIUM_REPROCESSOR, ModBlocks.AWAKENED_SUPREMIUM_REPROCESSOR);
+        }, ModBlocks.REPROCESSOR);
 
         ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof BaseInventoryBlockEntity inventory) {
@@ -118,7 +118,7 @@ public class MysticalAgriculture implements ModInitializer {
                 }
             }
             return Storage.empty();
-        }, ModBlocks.BASIC_REPROCESSOR, ModBlocks.INFERIUM_REPROCESSOR, ModBlocks.PRUDENTIUM_REPROCESSOR, ModBlocks.TERTIUM_REPROCESSOR, ModBlocks.IMPERIUM_REPROCESSOR, ModBlocks.SUPREMIUM_REPROCESSOR, ModBlocks.AWAKENED_SUPREMIUM_REPROCESSOR);
+        }, ModBlocks.REPROCESSOR);
 
         ItemStorage.SIDED.registerForBlocks((world, pos, state, entity, direction) -> {
             if (entity instanceof SoulExtractorBlockEntity extractor) {

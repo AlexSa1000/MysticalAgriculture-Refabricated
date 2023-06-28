@@ -4,6 +4,7 @@ import com.alex.mysticalagriculture.container.TinkeringTableContainer;
 import com.alex.cucumber.client.screen.BaseContainerScreen;
 import com.alex.cucumber.iface.ToggleableSlot;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,23 +19,23 @@ public class TinkeringTableScreen extends BaseContainerScreen<TinkeringTableCont
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
         var title = this.getTitle().getString();
 
-        this.font.draw(stack, title, (float) (this.imageWidth / 2 - this.font.width(title) / 2), 6.0F, 4210752);
-        this.font.draw(stack, this.playerInventoryTitle, 8.0F, (float) (this.imageHeight - 96 + 2), 4210752);
+        gfx.drawString(this.font, title, (this.imageWidth / 2 - this.font.width(title) / 2), 6, 4210752, false);
+        gfx.drawString(this.font, this.playerInventoryTitle, 8, (this.imageHeight - 96 + 2), 4210752, false);
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        this.renderDefaultBg(stack, partialTicks, mouseX, mouseY);
+    protected void renderBg(GuiGraphics gfx, float partialTicks, int mouseX, int mouseY) {
+        this.renderDefaultBg(gfx, partialTicks, mouseX, mouseY);
 
         int x = this.leftPos;
         int y = this.topPos;
 
         for (var slot : this.menu.slots) {
             if (slot.isActive() && slot instanceof ToggleableSlot) {
-                this.blit(stack, x + slot.x, y + slot.y, 8, 115, 16, 16);
+                gfx.blit(BACKGROUND, x + slot.x, y + slot.y, 8, 115, 16, 16);
             }
         }
     }

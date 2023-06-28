@@ -6,6 +6,7 @@ import com.alex.cucumber.client.screen.BaseContainerScreen;
 import com.alex.cucumber.client.screen.widget.EnergyBarWidget;
 import com.alex.cucumber.util.Formatting;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,46 +31,57 @@ public class ReprocessorScreen extends BaseContainerScreen<ReprocessorContainer>
         this.block = this.getBlockEntity();
 
         if (this.block != null) {
-            this.addRenderableWidget(new EnergyBarWidget(x + 7, y + 17, this.block.getEnergy(), this));
+            this.addRenderableWidget(new EnergyBarWidget(x + 7, y + 17, this.block.getEnergy()));
         }
     }
 
     @Override
-    protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics gfx, int mouseX, int mouseY) {
         var title = this.getTitle().getString();
 
-        this.font.draw(stack, title, (float) (this.imageWidth / 2 - this.font.width(title) / 2), 6.0F, 4210752);
-        this.font.draw(stack, this.playerInventoryTitle, 8.0F, (float) (this.imageHeight - 96 + 2), 4210752);
+        gfx.drawString(this.font, title, (this.imageWidth / 2 - this.font.width(title) / 2), 6, 4210752, false);
+        gfx.drawString(this.font, this.playerInventoryTitle, 8, (this.imageHeight - 96 + 2), 4210752, false);
+
+        // TODO: temporary workaround for dynamic energy storage
+        if (this.block != null) {
+            var tier = this.block.getMachineTier();
+            var energy = this.block.getEnergy();
+
+            energy.resetMaxEnergyStorage();
+
+            if (tier != null) {
+                energy.setMaxEnergyStorage((int) (this.block.getEnergy().getCapacity() * tier.getFuelCapacityMultiplier()));
+            }
+        }
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        this.renderDefaultBg(stack, partialTicks, mouseX, mouseY);
+    protected void renderBg(GuiGraphics gfx, float partialTicks, int mouseX, int mouseY) {
+        this.renderDefaultBg(gfx, partialTicks, mouseX, mouseY);
 
         int x = this.leftPos;
         int y = this.topPos;
 
         if (this.getFuelItemValue() > 0) {
-            int lol = this.getBurnLeftScaled(13);
-            this.blit(stack, x + 31, y + 52 - lol, 176, 12 - lol, 14, lol + 1);
+            int i = this.getBurnLeftScaled(13);
+            gfx.blit(BACKGROUND, x + 31, y + 52 - i, 176, 12 - i, 14, i + 1);
         }
 
         if (this.getProgress() > 0) {
             int i2 = this.getProgressScaled(24);
-            this.blit(stack, x + 98, y + 51, 176, 14, i2 + 1, 16);
+            gfx.blit(BACKGROUND, x + 98, y + 51, 176, 14, i2 + 1, 16);
         }
     }
 
     @Override
-    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
+    protected void renderTooltip(GuiGraphics gfx, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
 
-        super.renderTooltip(stack, mouseX, mouseY);
+        super.renderTooltip(gfx, mouseX, mouseY);
 
         if (this.getFuelLeft() > 0 && mouseX > x + 30 && mouseX < x + 45 && mouseY > y + 39 && mouseY < y + 53) {
-            var text = Component.literal(number(this.getFuelLeft()) + " FE");
-            this.renderTooltip(stack, text, mouseX, mouseY);
+            gfx.renderTooltip(this.font, Formatting.energy(this.getFuelLeft()), mouseX, mouseY);
         }
     }
 
@@ -98,7 +110,11 @@ public class ReprocessorScreen extends BaseContainerScreen<ReprocessorContainer>
         if (this.block == null)
             return 0;
 
-        return this.block.getTier().getOperationTime();
+        var tier = this.block.getMachineTier();
+        if (tier != null)
+            return (int) (this.block.getOperationTime() * tier.getOperationTimeMultiplier());
+
+        return this.block.getOperationTime();
     }
 
     public int getFuelLeft() {

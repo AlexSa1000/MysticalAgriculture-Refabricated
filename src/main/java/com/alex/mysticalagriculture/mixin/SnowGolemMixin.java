@@ -34,12 +34,12 @@ public abstract class SnowGolemMixin {
         if (itemStack.is(SHEARS) && this.readyForShearing()) {
             this.shear(SoundSource.PLAYERS);
             ((Entity) ((Object) this)).gameEvent(GameEvent.SHEAR, player);
-            if (!((Entity) ((Object) this)).level.isClientSide) {
+            if (!((Entity) ((Object) this)).level().isClientSide) {
                 itemStack.hurtAndBreak(1, player, (playerx) -> {
                     playerx.broadcastBreakEvent(interactionHand);
                 });
             }
-            cir.setReturnValue(InteractionResult.sidedSuccess(((Entity) ((Object) this)).level.isClientSide));
+            cir.setReturnValue(InteractionResult.sidedSuccess(((Entity) ((Object) this)).level().isClientSide));
         }
     }
 }

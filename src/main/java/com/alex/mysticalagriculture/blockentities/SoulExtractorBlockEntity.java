@@ -2,6 +2,7 @@ package com.alex.mysticalagriculture.blockentities;
 
 import com.alex.cucumber.forge.common.util.LazyOptional;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
+import com.alex.mysticalagriculture.blocks.SoulExtractorBlock;
 import com.alex.mysticalagriculture.container.SoulExtractorContainer;
 import com.alex.mysticalagriculture.crafting.recipe.SoulExtractionRecipe;
 import com.alex.mysticalagriculture.init.ModBlockEntities;
@@ -45,11 +46,12 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
     private final UpgradeItemStackHandler upgradeInventory;
     private final DynamicEnergyStorage energy;
     public final LazyOptional<SidedItemStackHandler>[] inventoryCapabilities;
+    private SoulExtractionRecipe recipe;
+    private MachineUpgradeTier tier;
     private int progress;
     private int fuelLeft;
     private int fuelItemValue;
-    private SoulExtractionRecipe recipe;
-    private MachineUpgradeTier tier;
+    private boolean isRunning;
 
     public SoulExtractorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SOUL_EXTRACTOR, pos, state);
@@ -153,13 +155,19 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
             mark = true;
         }
 
+        var wasRunning = block.isRunning;
+
         if (block.recipe != null) {
+            block.isRunning = false;
+
             if (block.energy.getAmount() >= block.getFuelUsage()) {
+                block.isRunning = true;
                 block.progress++;
                 try (Transaction transaction = Transaction.openOuter()) {
                     block.energy.extract(block.getFuelUsage(), transaction);
                     transaction.commit();
                 }
+
                 if (block.progress >= block.getOperationTime()) {
                     block.inventory.setStackInSlot(0, StackHelper.shrink(block.inventory.getItem(0), 1, false));
                     block.inventory.setStackInSlot(2, block.recipe.assemble(block.inventory, level.registryAccess()));
@@ -170,11 +178,18 @@ public class SoulExtractorBlockEntity extends BaseInventoryBlockEntity implement
                 mark = true;
             }
         } else {
+            block.isRunning = false;
+
             if (block.progress > 0) {
                 block.progress = 0;
 
                 mark = true;
             }
+        }
+
+        if (wasRunning != block.isRunning) {
+            level.setBlock(pos, state.setValue(SoulExtractorBlock.RUNNING, block.isRunning), 3);
+            mark = true;
         }
 
         if (mark) {

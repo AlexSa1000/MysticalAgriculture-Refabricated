@@ -1,11 +1,11 @@
 package com.alex.mysticalagriculture.blocks;
 
-import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.lib.Tooltips;
 import com.alex.cucumber.util.Formatting;
+import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
+import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.lib.ModTooltips;
-import com.alex.mysticalagriculture.util.ReprocessorTier;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,28 +25,24 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 public class ReprocessorBlock extends BaseEntityBlock {
-    private static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    private final ReprocessorTier tier;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final BooleanProperty RUNNING = BooleanProperty.create("running");
 
-    public ReprocessorBlock(ReprocessorTier tier) {
-        super(Material.METAL, SoundType.METAL, 3.5F, 3.5F, true);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
-        this.tier = tier;
+    public ReprocessorBlock() {
+        super(SoundType.METAL, 3.5F, 3.5F, true);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(RUNNING, false));
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return this.tier.createTileEntity(pos, state);
+        return new ReprocessorBlockEntity(pos, state);
     }
 
     @Override
@@ -93,27 +89,23 @@ public class ReprocessorBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
-            tooltip.add(ModTooltips.MACHINE_SPEED.args(this.getStatText(this.tier.getOperationTime())).build());
-            tooltip.add(ModTooltips.MACHINE_FUEL_RATE.args(this.getStatText(this.tier.getFuelUsage())).build());
-            tooltip.add(ModTooltips.MACHINE_FUEL_CAPACITY.args(this.getStatText(this.tier.getFuelCapacity())).build());
+            tooltip.add(ModTooltips.MACHINE_SPEED.args(Formatting.number(ReprocessorBlockEntity.OPERATION_TIME)).build());
+            tooltip.add(ModTooltips.MACHINE_FUEL_RATE.args(Formatting.number(ReprocessorBlockEntity.FUEL_USAGE)).build());
+            tooltip.add(ModTooltips.MACHINE_FUEL_CAPACITY.args(Formatting.number(ReprocessorBlockEntity.FUEL_CAPACITY)).build());
         } else {
             tooltip.add(Tooltips.HOLD_SHIFT_FOR_INFO.build());
         }
     }
 
     @Override
-    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTicker(type, this.tier.getBlockEntityType(), ReprocessorBlockEntity::tick);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, RUNNING);
     }
 
-    private Component getStatText(Object stat) {
-        return Formatting.number(stat).withStyle(this.tier.getTextColor());
+    @Override
+    protected <T extends BlockEntity> BlockEntityTicker<T> getServerTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTicker(type, ModBlockEntities.REPROCESSOR, ReprocessorBlockEntity::tick);
     }
 }

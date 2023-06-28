@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture;
 
 import com.alex.cucumber.util.Utils;
+import com.alex.mysticalagriculture.client.EssenceVesselColorManager;
 import com.alex.mysticalagriculture.client.ModelHandler;
 import com.alex.mysticalagriculture.client.blockentity.*;
 import com.alex.mysticalagriculture.client.handler.ColorHandler;
@@ -19,25 +20,25 @@ import com.alex.mysticalagriculture.items.tool.EssenceBowItem;
 import com.alex.mysticalagriculture.items.tool.EssenceCrossbowItem;
 import com.alex.mysticalagriculture.items.tool.EssenceFishingRodItem;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
+import io.github.fabricators_of_create.porting_lib.util.FluidTextUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.alex.mysticalagriculture.handler.ExperienceCapsuleHandler.EXPERIENCE_CAPSULE_PICKUP;
 import static com.alex.mysticalagriculture.util.RecipeIngredientCache.RELOAD_INGREDIENT_CACHE;
@@ -48,6 +49,8 @@ public class MysticalAgricultureClient implements ClientModInitializer {
     public void onInitializeClient() {
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setAltarOverlay);
         HudRenderCallback.EVENT.register(GuiOverlayHandler::setEssenceVesselOverlay);
+
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(EssenceVesselColorManager.INSTANCE);
 
         ModelHandler.onRegisterAdditionalModels();
 
@@ -81,8 +84,18 @@ public class MysticalAgricultureClient implements ClientModInitializer {
                 }
             }
 
+            var validVesselItems = new HashSet<Item>();
+            var items = buffer.readVarInt();
+
+            for (var i = 0; i < items; i++) {
+                var item = BuiltInRegistries.ITEM.get(buffer.readResourceLocation());
+
+                validVesselItems.add(item);
+            }
+
             client.execute(() -> {
                 RecipeIngredientCache.INSTANCE.setCaches(caches);
+                RecipeIngredientCache.INSTANCE.setValidVesselItems(validVesselItems);
             });
         });
 

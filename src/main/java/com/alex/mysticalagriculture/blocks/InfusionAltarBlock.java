@@ -1,9 +1,9 @@
 package com.alex.mysticalagriculture.blocks;
 
-import com.alex.mysticalagriculture.blockentities.InfusionAltarBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.util.VoxelShapeBuilder;
+import com.alex.mysticalagriculture.blockentities.InfusionAltarBlockEntity;
 import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.items.WandItem;
 import com.alex.mysticalagriculture.lib.ModTooltips;
@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -49,7 +48,7 @@ public class InfusionAltarBlock extends BaseEntityBlock {
             .cuboid(5, 8, 5, 11, 10, 11).build();
 
     public InfusionAltarBlock() {
-        super(Material.STONE, SoundType.STONE, 10.0F, 12.0F, true);
+        super(SoundType.STONE, 10.0F, 12.0F, true);
     }
 
     @Nullable

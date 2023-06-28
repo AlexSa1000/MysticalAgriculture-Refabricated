@@ -1,8 +1,8 @@
 package com.alex.mysticalagriculture.blocks;
 
-import com.alex.mysticalagriculture.blockentities.EssenceVesselBlockEntity;
 import com.alex.cucumber.block.BaseEntityBlock;
 import com.alex.cucumber.util.VoxelShapeBuilder;
+import com.alex.mysticalagriculture.blockentities.EssenceVesselBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -44,7 +43,7 @@ public class EssenceVesselBlock extends BaseEntityBlock {
     ).build();
 
     public EssenceVesselBlock() {
-        super(Material.STONE, SoundType.STONE, 10.0F, 12.0F, true);
+        super(SoundType.STONE, 10.0F, 12.0F, true);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class EssenceVesselBlock extends BaseEntityBlock {
             var input = inventory.getItem(0);
             var held = player.getItemInHand(hand);
 
-            var remaining = vessel.insert(held);
+            var remaining = inventory.insertItem(0, held);
             if (held != remaining) {
                 player.setItemInHand(hand, remaining);
                 level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1.0F);

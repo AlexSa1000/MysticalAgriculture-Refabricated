@@ -2,17 +2,21 @@ package com.alex.mysticalagriculture.blockentities;
 
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.energy.BaseEnergyStorage;
+import com.alex.cucumber.energy.DynamicEnergyStorage;
 import com.alex.cucumber.forge.common.util.LazyOptional;
 import com.alex.cucumber.helper.StackHelper;
 import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.cucumber.inventory.SidedItemStackHandler;
 import com.alex.cucumber.util.Localizable;
+import com.alex.mysticalagriculture.blocks.ReprocessorBlock;
 import com.alex.mysticalagriculture.container.ReprocessorContainer;
+import com.alex.mysticalagriculture.container.inventory.UpgradeItemStackHandler;
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
 import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.init.ModRecipeTypes;
+import com.alex.mysticalagriculture.util.IUpgradeableMachine;
+import com.alex.mysticalagriculture.util.MachineUpgradeTier;
 import com.alex.mysticalagriculture.util.RecipeIngredientCache;
-import com.alex.mysticalagriculture.util.ReprocessorTier;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
@@ -28,27 +32,32 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory {
+public class ReprocessorBlockEntity extends BaseInventoryBlockEntity implements ExtendedScreenHandlerFactory, IUpgradeableMachine {
     private static final int FUEL_TICK_MULTIPLIER = 20;
+    public static final int OPERATION_TIME = 200;
+    public static final int FUEL_USAGE = 20;
+    public static final int FUEL_CAPACITY = 80000;
+
     private final BaseItemStackHandler inventory;
-    private final BaseEnergyStorage energy;
+    private final UpgradeItemStackHandler upgradeInventory;
+    private final DynamicEnergyStorage energy;
     public final LazyOptional<SidedItemStackHandler>[] inventoryCapabilities;
-    private final ReprocessorTier tier;
     private ReprocessorRecipe recipe;
+    private MachineUpgradeTier tier;
     private int progress;
     private int fuelLeft;
     private int fuelItemValue;
+    private boolean isRunning;
 
-    public ReprocessorBlockEntity(BlockEntityType<?> type, ReprocessorTier tier, BlockPos pos, BlockState state) {
-        super(type, pos, state);
+    public ReprocessorBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.REPROCESSOR, pos, state);
         this.inventory = createInventoryHandler(this::markDirtyAndDispatch);
-        this.energy = new BaseEnergyStorage(tier.getFuelCapacity(), this::markDirtyAndDispatch);
+        this.upgradeInventory = new UpgradeItemStackHandler();
+        this.energy = new DynamicEnergyStorage(FUEL_CAPACITY, this::markDirtyAndDispatch);
         this.inventoryCapabilities = SidedItemStackHandler.create(this.inventory, new Direction[] { Direction.UP, Direction.DOWN, Direction.NORTH }, this::canInsertStackSided, null);
-        this.tier = tier;
     }
 
     @Override
@@ -64,6 +73,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         this.fuelLeft = tag.getInt("FuelLeft");
         this.fuelItemValue = tag.getInt("FuelItemValue");
         this.energy.deserializeNBT(tag.get("Energy"));
+        this.upgradeInventory.deserializeNBT(tag.getCompound("UpgradeInventory"));
     }
 
     @Override
@@ -74,6 +84,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         tag.putInt("FuelLeft", this.fuelLeft);
         tag.putInt("FuelItemValue", this.fuelItemValue);
         tag.put("Energy", this.energy.serializeNBT());
+        tag.put("UpgradeInventory", this.upgradeInventory.serializeNBT());
     }
 
     @Override
@@ -83,7 +94,12 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
-        return ReprocessorContainer.create(id, playerInventory, this.inventory, this.getBlockPos());
+        return ReprocessorContainer.create(id, playerInventory, this.inventory, this.upgradeInventory, this.getBlockPos());
+    }
+
+    @Override
+    public UpgradeItemStackHandler getUpgradeInventory() {
+        return this.upgradeInventory;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, ReprocessorBlockEntity block) {
@@ -104,7 +120,7 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
             }
 
             if (block.fuelLeft > 0) {
-                var fuelPerTick = Math.min(Math.min(block.fuelLeft, block.tier.getFuelUsage() * 2), block.energy.getCapacity() - block.energy.getAmount());
+                var fuelPerTick = Math.min(Math.min(block.fuelLeft, block.getFuelUsage() * 2), block.energy.getCapacity() - block.energy.getAmount());
 
                 try (Transaction transaction = Transaction.openOuter()) {
                     block.fuelLeft -= block.energy.insert(fuelPerTick, transaction);
@@ -118,9 +134,27 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
             }
         }
 
-        if (block.energy.getAmount() >= block.tier.getFuelUsage()) {
+        var tier = block.getMachineTier();
+
+        if (tier != block.tier) {
+            block.tier = tier;
+
+            if (tier == null) {
+                block.energy.resetMaxEnergyStorage();
+            } else {
+                block.energy.setMaxEnergyStorage((int) (FUEL_CAPACITY * tier.getFuelCapacityMultiplier()));
+            }
+
+            mark = true;
+        }
+
+        var wasRunning = block.isRunning;
+
+        if (block.energy.getAmount() >= block.getFuelUsage()) {
             var input = block.inventory.getItem(0);
             var output = block.inventory.getItem(2);
+
+            block.isRunning = false;
 
             if (!input.isEmpty()) {
                 if (block.recipe == null || !block.recipe.matches(block.inventory)) {
@@ -131,12 +165,14 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
                 if (block.recipe != null) {
                     var recipeOutput = block.recipe.assemble(block.inventory, level.registryAccess());
                     if (!recipeOutput.isEmpty() && (output.isEmpty() || StackHelper.canCombineStacks(output, recipeOutput))) {
+                        block.isRunning = true;
                         block.progress++;
                         try (Transaction transaction = Transaction.openOuter()) {
-                            block.energy.extract(block.tier.getFuelUsage(), transaction);
+                            block.energy.extract(block.getFuelUsage(), transaction);
                             transaction.commit();
                         }
-                        if (block.progress >= block.tier.getOperationTime()) {
+
+                        if (block.progress >= block.getOperationTime()) {
                             block.inventory.setItem(0, StackHelper.shrink(block.inventory.getItem(0), 1, false));
 
                             var result = StackHelper.combineStacks(output, recipeOutput);
@@ -149,12 +185,22 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
                     }
                 }
             } else {
+                block.isRunning = false;
+
                 if (block.progress > 0) {
                     block.progress = 0;
                     block.recipe = null;
+
                     mark = true;
                 }
             }
+        } else {
+            block.isRunning = false;
+        }
+
+        if (wasRunning != block.isRunning) {
+            level.setBlock(pos, state.setValue(ReprocessorBlock.RUNNING, block.isRunning), 3);
+            mark = true;
         }
 
         if (mark) {
@@ -181,16 +227,19 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         });
     }
 
-    public ReprocessorTier getTier() {
-        return this.tier;
-    }
-
-    public BaseEnergyStorage getEnergy() {
+    public DynamicEnergyStorage getEnergy() {
         return this.energy;
     }
 
     public int getProgress() {
         return this.progress;
+    }
+
+    public int getOperationTime() {
+        if (this.tier == null)
+            return OPERATION_TIME;
+
+        return (int) (OPERATION_TIME * this.tier.getOperationTimeMultiplier());
     }
 
     public int getFuelLeft() {
@@ -199,6 +248,13 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
 
     public int getFuelItemValue() {
         return this.fuelItemValue;
+    }
+
+    public int getFuelUsage() {
+        if (this.tier == null)
+            return FUEL_USAGE;
+
+        return (int) (FUEL_USAGE * this.tier.getFuelUsageMultiplier());
     }
 
     private boolean canInsertStackSided(int slot, ItemStack stack, Direction direction) {
@@ -215,42 +271,5 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
     @Override
     public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
         buf.writeBlockPos(worldPosition);
-    }
-
-    public static class Basic extends ReprocessorBlockEntity {
-        public Basic(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.BASIC_REPROCESSOR, ReprocessorTier.BASIC, pos, state);
-        }
-    }
-    public static class Inferium extends ReprocessorBlockEntity {
-        public Inferium(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.INFERIUM_REPROCESSOR, ReprocessorTier.INFERIUM, pos, state);
-        }
-    }
-    public static class Prudentium extends ReprocessorBlockEntity {
-        public Prudentium(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.PRUDENTIUM_REPROCESSOR, ReprocessorTier.PRUDENTIUM, pos, state);
-        }
-    }
-    public static class Tertium extends ReprocessorBlockEntity {
-        public Tertium(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.TERTIUM_REPROCESSOR, ReprocessorTier.TERTIUM, pos, state);
-        }
-    }
-    public static class Imperium extends ReprocessorBlockEntity {
-        public Imperium(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.IMPERIUM_REPROCESSOR, ReprocessorTier.IMPERIUM, pos, state);
-        }
-    }
-    public static class Supremium extends ReprocessorBlockEntity {
-        public Supremium(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.SUPREMIUM_REPROCESSOR, ReprocessorTier.SUPREMIUM, pos, state);
-        }
-    }
-
-    public static class AwakenedSupremium extends ReprocessorBlockEntity {
-        public AwakenedSupremium(BlockPos pos, BlockState state) {
-            super(ModBlockEntities.AWAKENED_SUPREMIUM_REPROCESSOR, ReprocessorTier.AWAKENED_SUPREMIUM, pos, state);
-        }
     }
 }

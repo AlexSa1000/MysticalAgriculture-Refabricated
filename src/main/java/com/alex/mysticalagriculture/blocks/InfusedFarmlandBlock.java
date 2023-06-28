@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class InfusedFarmlandBlock extends FarmBlock implements Colored {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         List<ItemStack> drops = new ArrayList<>();
         var stack = builder.getOptionalParameter(LootContextParams.TOOL);
 
@@ -62,6 +63,7 @@ public class InfusedFarmlandBlock extends FarmBlock implements Colored {
             drops.add(new ItemStack(this));
         } else {
             drops.add(new ItemStack(Blocks.DIRT));
+
             var random = builder.getLevel().getRandom();
             if (random.nextInt(100) < 25)
                 drops.add(new ItemStack(this.tier.getEssence(), 1));

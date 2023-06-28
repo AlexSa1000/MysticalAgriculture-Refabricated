@@ -5,6 +5,7 @@ import com.alex.cucumber.inventory.BaseItemStackHandler;
 import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.init.ModBlockEntities;
 import com.alex.mysticalagriculture.util.EssenceVesselType;
+import com.alex.mysticalagriculture.util.RecipeIngredientCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,20 +27,8 @@ public class EssenceVesselBlockEntity extends BaseInventoryBlockEntity {
         return this.inventory;
     }
 
-    public ItemStack insert(ItemStack stack) {
-        return this.inventory.insertItem(0, stack);
-    }
-
-    public ItemStack extract(int amount) {
-        return this.inventory.extractItem(0, amount, false);
-    }
-
     private static boolean canInsertStack(ItemStack stack) {
-        if (stack.getItem() instanceof ICropProvider provider) {
-            return EssenceVesselType.fromCrop(provider) != null;
-        }
-
-        return false;
+        return RecipeIngredientCache.INSTANCE.isValidVesselItem(stack);
     }
 }
 

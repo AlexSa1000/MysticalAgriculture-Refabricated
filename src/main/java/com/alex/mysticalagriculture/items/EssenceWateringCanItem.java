@@ -5,6 +5,7 @@ import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.List;
@@ -68,7 +68,7 @@ public class EssenceWateringCanItem extends WateringCanItem {
         if (world.mayInteract(player, pos) && player.mayUseItemAt(pos.relative(direction), direction, stack)) {
             var state = world.getBlockState(pos);
 
-            if (state.getMaterial() == Material.WATER) {
+            if (state.getFluidState().is(FluidTags.WATER)) {
                 NBTHelper.setString(stack, "ID", UUID.randomUUID().toString());
                 NBTHelper.setBoolean(stack, "Water", true);
 

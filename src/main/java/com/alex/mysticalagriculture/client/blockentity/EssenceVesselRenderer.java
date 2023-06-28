@@ -3,6 +3,7 @@ package com.alex.mysticalagriculture.client.blockentity;
 import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.crop.ICropProvider;
 import com.alex.mysticalagriculture.blockentities.EssenceVesselBlockEntity;
+import com.alex.mysticalagriculture.client.EssenceVesselColorManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -24,7 +25,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
         var inventory = tile.getInventory();
         var stack = inventory.getItem(0);
 
-        if (!stack.isEmpty() && stack.getItem() instanceof ICropProvider provider) {
+        if (!stack.isEmpty()) {
             var builder = buffer.getBuffer(RenderType.solid());
             var sprite = Minecraft.getInstance()
                     .getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
@@ -37,7 +38,7 @@ public class EssenceVesselRenderer implements BlockEntityRenderer<EssenceVesselB
             matrix.translate(.5, .5, .5);
             matrix.translate(-.5, -.5, -.5);
 
-            var color = provider.getCrop().getEssenceColor();
+            var color = EssenceVesselColorManager.INSTANCE.getColor(stack);
 
             // top
             addVertex(builder, matrix, 0.2f, 0.75f + filledAmount, 0.8f, sprite.getU0(), sprite.getV1(), color, combinedLight);

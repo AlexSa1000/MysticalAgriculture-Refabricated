@@ -23,7 +23,7 @@ public class ReiCompat implements REIClientPlugin {
 
         var reprocessorCategory = new ReprocessorCategory();
         registry.add(reprocessorCategory);
-        registry.addWorkstations(reprocessorCategory.getCategoryIdentifier(), EntryStacks.of(ModBlocks.BASIC_REPROCESSOR), EntryStacks.of(ModBlocks.INFERIUM_REPROCESSOR), EntryStacks.of(ModBlocks.PRUDENTIUM_REPROCESSOR), EntryStacks.of(ModBlocks.TERTIUM_REPROCESSOR), EntryStacks.of(ModBlocks.IMPERIUM_REPROCESSOR), EntryStacks.of(ModBlocks.SUPREMIUM_REPROCESSOR), EntryStacks.of(ModBlocks.AWAKENED_SUPREMIUM_REPROCESSOR));
+        registry.addWorkstations(reprocessorCategory.getCategoryIdentifier(), EntryStacks.of(ModBlocks.REPROCESSOR));
         var soulExtractorCategory = new SoulExtractorCategory();
         registry.add(soulExtractorCategory);
         registry.addWorkstations(soulExtractorCategory.getCategoryIdentifier(), EntryStacks.of(ModBlocks.SOUL_EXTRACTOR));

@@ -18,13 +18,7 @@ public class ModBlockEntities {
     public static BlockEntityType<AwakeningAltarBlockEntity> AWAKENING_ALTAR;
     public static BlockEntityType<EssenceVesselBlockEntity> ESSENCE_VESSEL;
     public static BlockEntityType<TinkeringTableBlockEntity> TINKERING_TABLE;
-    public static BlockEntityType<ReprocessorBlockEntity.Basic> BASIC_REPROCESSOR;
-    public static BlockEntityType<ReprocessorBlockEntity.Inferium> INFERIUM_REPROCESSOR;
-    public static BlockEntityType<ReprocessorBlockEntity.Prudentium> PRUDENTIUM_REPROCESSOR;
-    public static BlockEntityType<ReprocessorBlockEntity.Tertium> TERTIUM_REPROCESSOR;
-    public static BlockEntityType<ReprocessorBlockEntity.Imperium> IMPERIUM_REPROCESSOR;
-    public static BlockEntityType<ReprocessorBlockEntity.Supremium> SUPREMIUM_REPROCESSOR;
-    public static BlockEntityType<ReprocessorBlockEntity.AwakenedSupremium> AWAKENED_SUPREMIUM_REPROCESSOR;
+    public static BlockEntityType<ReprocessorBlockEntity> REPROCESSOR;
     public static BlockEntityType<SoulExtractorBlockEntity> SOUL_EXTRACTOR;
     public static BlockEntityType<HarvesterBlockEntity> HARVESTER;
 
@@ -41,13 +35,7 @@ public class ModBlockEntities {
         AWAKENING_ALTAR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:awakening_altar_block", BlockEntityType.Builder.of(AwakeningAltarBlockEntity::new, ModBlocks.AWAKENING_ALTAR).build(null));
         ESSENCE_VESSEL = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:essence_vessel", BlockEntityType.Builder.of(EssenceVesselBlockEntity::new, ModBlocks.ESSENCE_VESSEL).build(null));
         TINKERING_TABLE = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:tinkering_table", BlockEntityType.Builder.of(TinkeringTableBlockEntity::new, ModBlocks.TINKERING_TABLE).build(null));
-        BASIC_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:basic_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity.Basic::new, ModBlocks.BASIC_REPROCESSOR).build(null));
-        INFERIUM_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:inferium_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity.Inferium::new, ModBlocks.INFERIUM_REPROCESSOR).build(null));
-        PRUDENTIUM_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:prudentium_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity.Prudentium::new, ModBlocks.PRUDENTIUM_REPROCESSOR).build(null));
-        TERTIUM_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:tertium_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity.Tertium::new, ModBlocks.TERTIUM_REPROCESSOR).build(null));
-        IMPERIUM_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:imperium_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity.Imperium::new, ModBlocks.IMPERIUM_REPROCESSOR).build(null));
-        SUPREMIUM_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:supremium_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity.Supremium::new, ModBlocks.SUPREMIUM_REPROCESSOR).build(null));
-        AWAKENED_SUPREMIUM_REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:awakened_supremium_processor", BlockEntityType.Builder.of(ReprocessorBlockEntity.AwakenedSupremium::new, ModBlocks.AWAKENED_SUPREMIUM_REPROCESSOR).build(null));
+        REPROCESSOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:seed_reprocessor", BlockEntityType.Builder.of(ReprocessorBlockEntity::new, ModBlocks.REPROCESSOR).build(null));
         SOUL_EXTRACTOR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:soul_extractor", BlockEntityType.Builder.of(SoulExtractorBlockEntity::new, ModBlocks.SOUL_EXTRACTOR).build(null));
         HARVESTER = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "mysticalagriculture:harvester", BlockEntityType.Builder.of(HarvesterBlockEntity::new, ModBlocks.HARVESTER).build(null));
     }

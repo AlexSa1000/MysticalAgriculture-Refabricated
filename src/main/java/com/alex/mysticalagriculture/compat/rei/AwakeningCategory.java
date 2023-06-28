@@ -20,6 +20,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -137,20 +138,21 @@ public class AwakeningCategory implements DisplayCategory<AwakeningCategory.Reci
         }
 
         private List<Collection<? extends EntryStack<?>>> toItemStackLists() {
-            var requirements = recipe.getEssenceRequirements();
-            var ingredients = recipe.getIngredients();
+            var result = new ArrayList<Collection<? extends EntryStack<?>>>(9);
 
-            return List.of(
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(0).getItems())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(1).getItems()[0], requirements.air(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(2).getItems())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(3).getItems()[0], requirements.earth(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(4).getItems())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(5).getItems()[0], requirements.water(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(6).getItems())),
-                    EntryIngredients.of(StackHelper.withSize(ingredients.get(7).getItems()[0], requirements.fire(), false)),
-                    EntryIngredients.ofItemStacks(List.of(ingredients.get(8).getItems()))
-            );
+            var ingredients = recipe.getIngredients();
+            var essences = recipe.getEssences();
+
+            for (int i = 0; i < ingredients.size(); i++) {
+                // essence vessel ingredient
+                if (i % 2 == 1) {
+                    result.add(EntryIngredients.ofItemStacks(List.of(essences.get(Math.floorDiv(i, 2)))));
+                } else {
+                    result.add(EntryIngredients.ofItemStacks(List.of(ingredients.get(i).getItems())));
+                }
+            }
+
+            return result;
         }
     }
 }

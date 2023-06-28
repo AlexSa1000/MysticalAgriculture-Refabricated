@@ -15,7 +15,6 @@ accessible method net/minecraft/world/item/crafting/Ingredient$TagValue <init> (
 accessible method net/minecraft/tags/BlockTags create (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
 accessible method net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity isLit ()Z
 accessible method net/minecraft/world/level/block/FarmBlock isNearWater (Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z
-accessible method net/minecraft/world/item/ItemStack matches (Lnet/minecraft/world/item/ItemStack;)Z
 
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingTotalTime I
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingProgress I
@@ -27,3 +26,13 @@ accessible field net/minecraft/world/entity/Entity maxUpStep F
 
 accessible field net/minecraft/world/item/crafting/RecipeManager recipes Ljava/util/Map;
 accessible field net/minecraft/world/item/crafting/RecipeManager byName Ljava/util/Map;
+accessible method net/minecraft/world/item/crafting/RecipeManager byType (Lnet/minecraft/world/item/crafting/RecipeType;)Ljava/util/Map;
+
+accessible method net/minecraft/client/renderer/blockentity/BlockEntityRenderers register (Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/client/renderer/blockentity/BlockEntityRendererProvider;)V
+accessible method net/minecraft/client/renderer/item/ItemProperties register (Lnet/minecraft/world/item/Item;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)V
+
+accessible field net/minecraft/data/models/BlockModelGenerators blockStateOutput Ljava/util/function/Consumer;
+accessible field net/minecraft/data/models/BlockModelGenerators modelOutput Ljava/util/function/BiConsumer;
+accessible field net/minecraft/data/models/ItemModelGenerators output Ljava/util/function/BiConsumer;
+
+accessible method net/minecraft/data/models/ItemModelGenerators generateFlatItem (Lnet/minecraft/world/item/Item;Lnet/minecraft/data/models/model/ModelTemplate;)V

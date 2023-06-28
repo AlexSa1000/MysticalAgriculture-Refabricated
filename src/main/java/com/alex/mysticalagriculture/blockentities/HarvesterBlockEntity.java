@@ -47,14 +47,14 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
     private final BaseItemStackHandler inventory;
     private final UpgradeItemStackHandler upgradeInventory;
     private final DynamicEnergyStorage energy;
-    private int progress;
-    private int fuelLeft;
-    private int fuelItemValue;
-    private long oldEnergy;
     private List<BlockPos> positions;
     private BlockPos lastPosition = BlockPos.ZERO;
     private MachineUpgradeTier tier;
     private Direction direction;
+    private int progress;
+    private int fuelLeft;
+    private int fuelItemValue;
+    private boolean isRunning;
 
     public HarvesterBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.HARVESTER, pos, state);
@@ -157,9 +157,10 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
             mark = true;
         }
 
+        var isDisabled = level.hasNeighborSignal(blockEntity.getBlockPos());
         var operationTime = blockEntity.getOperationTime();
 
-        if (blockEntity.progress > operationTime && !level.hasNeighborSignal(blockEntity.getBlockPos())) {
+        if (blockEntity.progress > operationTime && !isDisabled) {
             var nextPos = blockEntity.findNextPosition();
             var cropState = level.getBlockState(nextPos);
             var block = cropState.getBlock();
@@ -203,15 +204,19 @@ public class HarvesterBlockEntity extends BaseInventoryBlockEntity implements Ex
             mark = true;
         }
 
-        if (blockEntity.energy.getAmount() >= blockEntity.getFuelUsage()) {
+        var wasRunning = blockEntity.isRunning;
+
+        if (!isDisabled && blockEntity.energy.getAmount() >= blockEntity.getFuelUsage()) {
             blockEntity.progress++;
+            blockEntity.isRunning = true;
 
             mark = true;
+        } else {
+            blockEntity.isRunning = false;
         }
 
-        if (blockEntity.oldEnergy != blockEntity.energy.getAmount()) {
-            blockEntity.oldEnergy = blockEntity.energy.getAmount();
-
+        if (wasRunning != blockEntity.isRunning) {
+            level.setBlock(pos, state.setValue(HarvesterBlock.RUNNING, blockEntity.isRunning), 3);
             mark = true;
         }
 

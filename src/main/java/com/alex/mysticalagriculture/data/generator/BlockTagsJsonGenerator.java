@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.data.generator;
 
-import com.alex.mysticalagriculture.MysticalAgriculture;
 import com.alex.mysticalagriculture.api.MysticalAgricultureAPI;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -21,10 +20,5 @@ public class BlockTagsJsonGenerator extends FabricTagProvider.BlockTagProvider {
             var id = BuiltInRegistries.BLOCK.getKey(crop.getCropBlock());
             this.getOrCreateTagBuilder(MysticalAgricultureAPI.CROPS_TAG).add(id);
         }
-    }
-
-    @Override
-    public String getName() {
-        return MysticalAgriculture.NAME +  " block tags generator";
     }
 }

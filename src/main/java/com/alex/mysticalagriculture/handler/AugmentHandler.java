@@ -14,7 +14,7 @@ public class AugmentHandler {
         LivingFallEvent event = new LivingFallEvent(entity, distance, damageMultiplier);
 
         if (entity instanceof Player player) {
-            var world = player.getLevel();
+            var world = player.getCommandSenderWorld();
 
             AugmentUtils.getArmorAugments(player).forEach(a -> {
                 a.onPlayerFall(world, player, event);
