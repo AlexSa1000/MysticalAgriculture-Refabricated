@@ -6,11 +6,17 @@ import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import com.alex.mysticalagriculture.registry.AugmentRegistry;
 import com.alex.mysticalagriculture.registry.CropRegistry;
 import com.alex.mysticalagriculture.registry.MobSoulTypeRegistry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
+import static com.alex.mysticalagriculture.MysticalAgriculture.MOD_ID;
+
 public class ModCreativeModeTabs {
-    
+    public static final ResourceKey<CreativeModeTab> CREATIVE_MODE_TAB = ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(MOD_ID, "creative_mode_tab"));
+
     public static final CreativeModeTab.DisplayItemsGenerator displayItems = FeatureFlagDisplayItemGenerator.create((parameters, output) -> {
         var stack = ItemStack.EMPTY;
 

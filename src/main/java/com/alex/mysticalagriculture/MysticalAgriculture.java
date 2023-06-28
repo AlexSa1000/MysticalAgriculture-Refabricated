@@ -24,6 +24,9 @@ import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -38,12 +41,14 @@ public class MysticalAgriculture implements ModInitializer {
     public static final String NAME = "MysticalAgriculture: Refabricated";
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
     public static final CreativeModeTab CREATIVE_MODE_TAB = FabricItemGroup.builder()
-            .title(Component.translatable("itemGroup.minecraft.mysticalagriculture"))
+            .title(Component.translatable("creativeModeTab.minecraft.mysticalagriculture"))
             .icon(() -> new ItemStack(ModItems.INFERIUM_ESSENCE))
             .displayItems((ModCreativeModeTabs.displayItems)).build();
 
     @Override
     public void onInitialize() {
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ModCreativeModeTabs.CREATIVE_MODE_TAB, CREATIVE_MODE_TAB);
+
         MobDropHandler.onLivingDrops();
 
         try {
