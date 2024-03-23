@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture;
 
-
 import com.alex.cucumber.blockentity.BaseInventoryBlockEntity;
 import com.alex.cucumber.helper.ConfigHelper;
 import com.alex.mysticalagriculture.api.MysticalAgricultureAPI;
@@ -26,9 +25,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.config.ModConfig;

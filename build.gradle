@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.2-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -44,6 +44,11 @@ repositories {
 	}
 
 	maven {
+		name = "draylarRepository"
+		url = "https://maven.draylar.dev/releases"
+	}
+
+	maven {
 		name = "Curse"
 		url = "https://www.cursemaven.com"
 	}
@@ -64,6 +69,7 @@ repositories {
 		name = "vram"
 		url = "https://maven.vram.io/"
 	}
+	maven { url "https://maven.jamieswhiteshirt.com/libs-release" }
 }
 
 dependencies {
@@ -104,7 +110,7 @@ dependencies {
 		throw new GradleException("Invalid runtime_itemlist_mod value: " + project.runtime_itemlist_mod)
 	}
 
-	include modImplementation("draylar:magna:${project.magna_version}") {
+	include modImplementation("dev.draylar:magna:${project.magna_version}") {
         exclude group: "net.fabricmc"
         exclude group: "com.jamieswhiteshirt"
         exclude group: "me.shedaniel.cloth"
@@ -113,13 +119,21 @@ dependencies {
 
 	modImplementation("curse.maven:jade-324717:${project.jade_version}")
 
-	modImplementation("com.alex.cucumber:Cucumber-Refabricated:${project.cucumber_version}")
+//	modImplementation("com.alex.cucumber:Cucumber-Refabricated:${project.cucumber_version}")
+	modImplementation(files("libs/Cucumber-Refabricated-1.20.1-2.1.0.jar"))
 
 	implementation "com.electronwill.night-config:core:${project.nightconfig_version}"
 	implementation "com.electronwill.night-config:toml:${project.nightconfig_version}"
 	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
 
-	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:${project.portinglib_version}"))
+	modApi("teamreborn:energy:3.0.0") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:base:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:common:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:core:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:extensions:${project.portinglib_version}"))
 }
 
 base {
