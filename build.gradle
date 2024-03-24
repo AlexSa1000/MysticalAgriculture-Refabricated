@@ -134,6 +134,15 @@ dependencies {
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:common:${project.portinglib_version}"))
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:core:${project.portinglib_version}"))
 	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:extensions:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:accessors:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:attributes:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:entity:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:fluids:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:lazy_registration:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:mixin_extensions:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:tags:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:transfer:${project.portinglib_version}"))
+	modImplementation(include("io.github.fabricators_of_create.Porting-Lib:utility:${project.portinglib_version}"))
 }
 
 base {
